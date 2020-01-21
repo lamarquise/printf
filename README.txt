@@ -1,5 +1,8 @@
 
 
+Basically everything has changed, i think
+
+
 ft_printf is a function
 
 Files:
