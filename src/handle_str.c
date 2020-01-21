@@ -4,16 +4,35 @@
 
 	// eventually add spec struct to args...
 
-int			ft_handle_str(va_list ap, t_buf *buf, t_param *p)
+int			ft_handle_str(va_list ap, char **str, t_param *p)
 {
 	char	*tmp;
 
 	tmp = NULL;
-	if (p->type == 'c')
-		// do the char thing
-	else
-		// string
+	// OR
+//	tmp = va_arg(ap, char*);	take both and sort out later... ?
 
+	if (p->type == 'c')
+	{
+		// do the char thing
+		*tmp = va_arg(ap, char);
+	}
+	else
+	{
+		// string
+		tmp = va_arg(ap, char*);
+
+
+	}
+	// now what ???
+
+	// use p->type which is the int, to do shit, a generic function that could be applied to all handles would be nice...
+
+	// need to create what comes before and what comes after...
+
+
+		// OR i write a func that takes 3 param and smashes them together, also frees them ???
+	*str = ft_str(ft_strjoin(pre, tmp), post);
 
 
 
