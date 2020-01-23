@@ -7,6 +7,7 @@
 int			ft_handle_str(va_list ap, char **str, t_param *p)
 {
 	char	*tmp;
+	int		len;
 
 	tmp = NULL;
 	// OR
@@ -16,15 +17,25 @@ int			ft_handle_str(va_list ap, char **str, t_param *p)
 	{
 		// do the char thing
 		*tmp = va_arg(ap, char);
+		len = 1;
 	}
 	else
 	{
 		// string
 		tmp = va_arg(ap, char*);
-
-
+		while (tmp[len])
+			++len;
 	}
 	// now what ???
+
+	// precision is meaningless to strings
+
+	// is width bigger
+	// if yes, by how much
+	// is there a 0
+	// is there a -
+	
+
 
 	// use p->type which is the int, to do shit, a generic function that could be applied to all handles would be nice...
 
