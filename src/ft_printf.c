@@ -139,6 +139,15 @@ static void		ft_funcfactory(void)
 */
 
 
+	// ok so using my system might not be so bad regarding error management, read all before print
+	// and also pretty good for unicode, which is a bonus but a pretty good idea cuz not too hard aparenly....
+	// also for dif outputs my way is pretty good
+
+
+
+
+
+
 	// we are going to start by assuming all printing happens on Stdout
 
 int		ft_printf(const char *format, ...)
