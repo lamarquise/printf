@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_buffer.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/18 18:33:24 by erlazo            #+#    #+#             */
+/*   Updated: 2020/02/18 20:16:05 by erlazo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "printf.h"
 
@@ -55,7 +65,7 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	// in this func, like after the number or whatever has been produced.
 
 
-	p.type = *format;
+	p.spec = *format;
 
 	// change all this, spec caller
 	
@@ -63,7 +73,7 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 
 	printf("field parsing i: %d\n", i);
 
-	if (i <= 5)
+	if (i <= 5)						// or using defines ???? I guess i just need to make my own thing as some point....
 		// handle int
 	else if (i <= 7)
 		// handle string

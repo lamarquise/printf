@@ -1,5 +1,14 @@
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   printf.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/17 16:13:46 by erlazo            #+#    #+#             */
+/*   Updated: 2020/02/18 20:16:13 by erlazo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PRINTF_H
 #define PRINTF_H
@@ -15,17 +24,48 @@
 # include "libft.h"
 
 
+
+# define B_16			1234567890abcdef
+
+	// other bases ????
+
+
+	// here add defines for the bitwise ops, but do them in HEX like Joanne cuz that way the math is like way easier....
+
+
+# define F_ZERO			0x01
+# define F_HASH			0x02
+# define F_PLUS			0x04
+# define F_MINU			0x08
+# define F_SPAC			0x10
+
+// others ???
+
+# define C_UNSIGNED		0x01
+# define C_SHORT		0x02
+# define C_LONG			0x04
+# define C_LONG_LONG	0x08
+# define C_INT			0x10
+
+// there are more ...
+
+
+
+
 typedef struct	s_param
 {
-	char	spec;			// flag contains - + space #
+	char		spec;			// flag contains - + space #
 					// fuck, where do we store 0 or no
-	int		flag;	// this is where the bitwise comes in i think
-	size_t	width;
-	size_t	precision;
+	int			flag;	// this is where the bitwise comes in i think
+	size_t		width;
+	size_t		precision;
 
 	// could add int base...
+//	static char	base[16] = "1234567890abcdef";		// or decare it ????
+	char		*base;
 
-	char	prefix[3];		// 0 here ??? what is it for again ???
+
+	char		prefix[3];		// 0 here ??? what is it for again ???
 	
 }				t_param;
 
@@ -64,6 +104,8 @@ int			ft_get_width(char **format, t_param *p, va_list ap);
 	// List stuff
 t_pfelem	*new_pfelem(char *str/*, size_t size, int pos, t_param *param*/);
 int			pflist_append(t_pfelem **lst, t_pfelem *new);
+t_pfelem	*ft_buf_to_elem(const char *str);
+
 
 
 	// Handler functions

@@ -1,6 +1,45 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_str.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/18 20:05:43 by erlazo            #+#    #+#             */
+/*   Updated: 2020/02/18 20:15:58 by erlazo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "printf.h"
+
+
+		// we want it to handle either strings or chars...
+
+int				ft_handle_str(va_list ap, char **str, t_param *p)
+{
+	char	*tmp;
+
+	if (p->spec == 'c')
+	{
+		*tmp = va_arg(ap, char);	// correct casting ???
+		// things ???
+	}
+	else if (p->spec == 's')
+	{
+		tmp =  va_arg(ap, char*);
+		// more ???
+	}
+
+	
+
+
+
+}
+
+
+
+/*
+
 
 	// eventually move this to another file
 	// just for char * for now
@@ -114,3 +153,7 @@ int			ft_handle_str(va_list ap, char **str, t_param *p)
 
 	return (1);
 }
+
+
+*/
+

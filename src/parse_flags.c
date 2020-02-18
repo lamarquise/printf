@@ -1,5 +1,14 @@
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_flags.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/17 16:25:48 by erlazo            #+#    #+#             */
+/*   Updated: 2020/02/18 18:47:41 by erlazo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "printf.h"
 
@@ -18,7 +27,7 @@ int			ft_flag_parsing(char **format, t_param *p, va_list ap)
 	{
 		if (i <= 4)		// wait doesnt this prevent 0 from being used later ?
 		{
-			p->type |= (1 << i);
+			p->type |= (1 << i);		// also fucking clever.... this or the HEX defines ???? need both ???
 			++*format;
 
 			// something to do with bitwise

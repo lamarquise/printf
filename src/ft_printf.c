@@ -1,115 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/17 17:29:04 by erlazo            #+#    #+#             */
+/*   Updated: 2020/02/18 18:33:17 by erlazo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 
 #include "printf.h"
-
-
-/*		// all this stuff is now obsolete...
-
-	// returns ints based on which flag it has come accross...
-
-	// not sure this func is gonna be necessary
-char	*list_join_del(t_arg **lst)
-{
-	char	*ret;
-	t_arg	*tmp;		// not sure ill need tmp, but use for now
-
-	if (!lst || !*lst)
-		return (0);
-	while (*lst)
-	{
-		tmp = (*lst);
-		ft_strjoin(ret, (*lst)->content);
-		(*lst) = (*lst)->next;
-		free(tmp);
-	}
-//	free(lst);		// do i need this???
-	return (ret);
-}
-
-	// reads through format and sorts out strings from specifiers
-
-t_felem	*format_seperator(char *str, int start)	// and args??? or next arg?
-{
-	char	*ret;
-	int		i;
-	int		c;
-
-	i = 0;
-	ret = NULL;
-
-	// check for % then see about specifiers
-	if (str[start] == '%')
-	{
-		// need to check if there are still args passed to printf
-		// then, ???
-		
-		// specefier check function
-		// create new felem with all info
-	}
-	else
-	{
-		while (str[start + i] && str[start + i] != '%')
-			++i;
-		if (i > 0)
-		{
-			if (!(ret = (char *)ft_memalloc(sizeof(char) * (i + 1))))
-				return (0);
-			c = 0;
-			while (c < i)
-			{
-				ret[c] = str[start + c];
-				++c;
-			}
-			return (ft_new_felem(ret, (size_t)i, start, 0));
-		}
-	}
-	return (0);
-}
-*/
-
-
-/*		// old version...
-
-int		ft_printf(const char *format, ...)
-{
-	int		i;
-	t_felem	*tmp;
-	t_felem	*flst;		// or a pointer ???
-
-
-	// need to initialize the t_spec's
-	// no i don't it will be initialized when the first is called.
-	
-
-
-	i = 0;
-	// should i instead do some init stuff in here???
-	while (format[i])
-	{
-
-		// ok so here only hanlde string seperation into elem
-
-		if ((tmp = format_seperator(format, i)))	// if its 1, right ???
-		{
-
-			// here we apend the list of felems
-			flist_append(&flst, tmp);
-			i += tmp->size;
-		}
-		else
-		{
-			//something has gone wrong, handle error cases
-
-		}
-	}
-
-	// call func that prints whole list...
-
-
-
-	return (0);		// what the hell am i retruning???
-}
-*/
 
 /*
 
@@ -132,9 +34,7 @@ static void		ft_funcfactory(void)
 //	g_ftable['d'] = ft_handle_int;
 //	g_ftable['d'] = ft_handle_int;
 
-
 }
-
 
 */
 
@@ -142,10 +42,6 @@ static void		ft_funcfactory(void)
 	// ok so using my system might not be so bad regarding error management, read all before print
 	// and also pretty good for unicode, which is a bonus but a pretty good idea cuz not too hard aparenly....
 	// also for dif outputs my way is pretty good
-
-
-
-
 
 
 	// we are going to start by assuming all printing happens on Stdout

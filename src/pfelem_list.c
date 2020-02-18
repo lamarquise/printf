@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pfelem_list.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/18 18:48:49 by erlazo            #+#    #+#             */
+/*   Updated: 2020/02/18 19:55:26 by erlazo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "printf.h"
 
@@ -55,4 +65,22 @@ int		pflist_append(t_pfelem **lst, t_pfelem *new)
 
 	return (1);
 }
+
+t_pfelem	*ft_buf_to_elem(const char *str)
+{
+	t_pfelem	*new;
+	char		*cp;		// more efficeint to use a var for len
+	int			l;
+
+	l = ft_strlen(str);
+	if (!(cp = (char*)ft_memalloc(sizeof(char) * (l + 1))))
+		return (NULL);
+	//  ft_strcpy(cp, str);
+	new = new_pfelem(ft_strcpy(cp, str)/*, l*/);// something more secure ???
+	return (new);
+
+
+}
+
+
 

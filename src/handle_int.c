@@ -1,6 +1,28 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_int.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/18 19:56:08 by erlazo            #+#    #+#             */
+/*   Updated: 2020/02/18 20:16:26 by erlazo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "printf.h"
+
+											// **str insetad ?????
+int				ft_handle_int(va_list ap, t_buf *buf, t_param *p)
+{
+	
+
+
+}
+
+
+/*
+
 
 							// uintmax_t better ?
 int				ft_calc_len(long long nb, param *p)
@@ -24,9 +46,27 @@ int				ft_calc_len(long long nb, param *p)
 	return (len);
 }
 
+int			ft_base_setup(t_param *p)		// more elaborate params if decide it can be many dif bases... send the string, the size, etc...
+{
+	
+									// could do size here
+//	if (!(p->base = malloc(sizeof(char) * (16 + 1))))
+//		return (-1);
+//	p->base = B_16;		// im not sure that will work....
+
+	
+
+	// OR
+				// could do size
+	static char		b[16] = B_16;
+	p->base = &b;					// would that even work ???
+
+	return (0);
+}
+
 
 	// can i globally define the base ?
-static char		base[16] = "0123456789abcdef";
+//static char		base[16] = "0123456789abcdef";
 
 				// ret a double pointer ????
 				// does it get an int ????
@@ -59,18 +99,18 @@ int			ft_handle_int(va_list ap, t_buf *buf, t_param *p)
 
 	// 
 
-/*
 
-	what is it?
-	recover it
-	prefix now ?
-	base changes now ?
-	handle width and precision
+
+//	what is it?
+//	recover it
+//	prefix now ?
+//	base changes now ?
+//	handle width and precision
 
 
 
 	
-*/
+
 
 
 
@@ -121,7 +161,7 @@ int			ft_handle_int(va_list ap, t_buf *buf, t_param *p)
 	return(1);
 }
 
-
+*/
 
 
 

@@ -1,28 +1,18 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/18 18:29:21 by erlazo            #+#    #+#             */
+/*   Updated: 2020/02/18 18:32:39 by erlazo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "printf.h"
 
-
 // Parse.c cuts format around %'s and puts resutls in a linked list
-
-
-
-	// i need to think more about the structure, what do i want these 
-	// structs to do, what do i want to get out of buff ???
-
-t_pfelem	*ft_buf_to_elem(const char *str)
-{
-	t_pfelem	*new;
-	char		*cp;	// more efficient to use a var for len???
-	int			l;
-
-	l = ft_strlen(str);
-	if (!(cp = (char*)ft_memalloc(sizeof(char) * (l + 1))))
-		return (NULL);
-//	ft_strcpy(cp, str);
-	new = new_pfelem(ft_strcpy(cp, str)/*, l*/);// something more secure ???
-	return (new);
-}
 
 
 	// can add fd arg if necessary
@@ -45,6 +35,17 @@ int     	ft_hq(char *format, va_list ap, t_buf *buf)
 	printf("hq test 1\n");
 //	buf->cursor = 0;
 //	ft_bzero(buf->content, BUFF_SIZE);
+
+
+
+
+
+		// could use a ft_findchar here, as in look for '%'...
+		// OR
+		// if it aint broke don't fix it ??? may be too much trouble....
+		// cuz at that point could also do 
+
+
 	while (format[i])		// totally forgot but i need to do cursor too...
 	{						// the cursor is i, I think...
 //		printf("hq test 2\n");
