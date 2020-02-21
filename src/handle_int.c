@@ -6,16 +6,37 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 19:56:08 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/18 20:16:26 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/21 19:04:23 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-											// **str insetad ?????
-int				ft_handle_int(va_list ap, t_buf *buf, t_param *p)
+int				ft_handle_int(va_list ap, char **str, t_param *p)
 {
-	
+	char		*tmp;
+	size_t		len;
+	size_t		wlen;
+	size_t		plen;
+	size_t		i;
+
+	tmp = 0;
+	len = 0;
+
+		// diuUxX		// possibly also oO other things too ????	better way of doing this ????
+
+	if (p->spec == 'd' || p->spec == 'i')	// regular ints i think
+	{
+
+	}
+	else if (p->spec == 'u' || p->spec == 'U')		// could manage this by storring if there is a majuscule or nah with bitwise or something
+	{
+
+	}
+	else if (p->spec == 'x' || p->spec == 'X')
+	{
+
+	}
 
 
 }

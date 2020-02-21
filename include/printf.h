@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:13:46 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/18 20:16:13 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/21 19:04:36 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 						// has to be the max size of arg in format...
 
 
+//# include <stdlib.h>
 # include <stdio.h>
 # include <stdarg.h>
-# include <unistd.h>
+//# include <unistd.h>
 # include "libft.h"
 
 
@@ -78,7 +79,7 @@ typedef struct	s_pfelem
 	struct s_pfelem	*next;
 }				t_pfelem;
 
-typedef struct	s_buf
+typedef struct	s_buf			// obsolete unless i decide to use the buffer thing
 {
 //	char		*content;	// do i need it at all ?
 //	char		content[BUFF_SIZE];		// change to * not []
@@ -93,18 +94,18 @@ typedef int		(*t_ftc)(t_buf*, va_list, t_param*);
 int			ft_printf(const char *format, ...);
 
 	// Parsing		// do i want the const ???
-int			ft_hq(/*const */char *format, va_list ap, t_buf *buf);
-int			ft_field_parsing(char *format, va_list ap, char **tmp);
+int			ft_hq(/*const */char *format, va_list ap, /*t_buf *buf*/t_pfelem **lst);
+int			ft_field_parsing(char *format, va_list ap, char **str);
 
-int			ft_flag_parsing(char **format, t_param *p, va_list ap);
-int			ft_get_precision(char **format, t_param *p, va_list ap);
-int			ft_get_width(char **format, t_param *p, va_list ap);
+int			ft_flag_parsing(char *format, t_param *p, va_list ap);
+int			ft_get_precision(char *format, t_param *p, va_list ap);
+int			ft_get_width(char *format, t_param *p, va_list ap);
 
 
 	// List stuff
 t_pfelem	*new_pfelem(char *str/*, size_t size, int pos, t_param *param*/);
 int			pflist_append(t_pfelem **lst, t_pfelem *new);
-t_pfelem	*ft_buf_to_elem(const char *str);
+t_pfelem	*ft_buf_to_elem(char *str);
 
 
 

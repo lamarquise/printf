@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:33:24 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/18 20:16:05 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/21 19:04:33 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,26 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 
 	i = 0;
 	ret = 0;
-
-
+	
+	p.flag = 0;
+	p.width = 0;
+	p.precision = 0;
+	
 	// check for %
 
-	if (*format != '%')
+	printf("pre flag parsing: format; [%c]\n", *format);
+
+	if (format[ret] != '%')
 		return (-1);
-	++format;
-	++ret;
+	++ret;		// maybe not this if do ++format...		// or maybe i do apparently
 
 
-	ft_flag_parsing(&format, &p, ap);	// use ret to move *format?
+	ret += ft_flag_parsing(&format[ret], &p, ap);	// use ret to move *format?
+
+//	printf("post flag parsing: format; [%c]\n", *format);
+
 
 	// in theory params are set now, we know what the flags are...
-
 
 
 	// check for 0	-> has to be first !!!
@@ -65,47 +71,30 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	// in this func, like after the number or whatever has been produced.
 
 
-	p.spec = *format;
+	// add some security ???
+	p.spec = format[ret];
 
 	// change all this, spec caller
 	
-	i = ft_findchar("diuUxXcspn%", *format);
+	i = ft_findchar("diuUxXcspn%", format[ret]);
 
-	printf("field parsing i: %d\n", i);
+//	printf("field parsing i: %d\n", i);
 
-	if (i <= 5)						// or using defines ???? I guess i just need to make my own thing as some point....
-		// handle int
-	else if (i <= 7)
-		// handle string
-	else if (i == 8)
+//	if (i <= 5)						// or using defines ???? I guess i just need to make my own thing as some point....
+		ret += ft_handle_int(ap, tmp, &p)
+	if (i <= 7)
+		ret += ft_handle_str(ap, tmp, &p);		// assuming its not -1 ????
+//	else if (i == 8)
 		// handle pointer
-	else if (i == 9)
+//	else if (i == 9)
 		// handle nothing
-	else if (i == 10)
+//	else if (i == 10)
 		// handle %
-	else
+//	else
 		// the thing where its not defined properly
 
-	if (i == 6)
-	{
-		ret += ft_handle_int(ap, tmp, &p);
-		// also handle int ????
-	}	
 
-/*	if (i == 8)
-		ret += ft_handle_perc(ap, buf, &p);
-*/
-	if (i == 3)
-		ret += ft_handle_int(ap, tmp, &p);
-
-	if (i == 1)
-		ret += ft_handle_str(ap, tmp, &p);
-
-	// copy into buf->content ???
-		// OR ret a str ???
-//	ret += i;
-
-	printf("field parsing test end\n");
+//	printf("field parsing test end\n");
 
 	printf("ret %d\n", ret);
 

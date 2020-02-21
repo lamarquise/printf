@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 20:05:43 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/18 20:15:58 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/21 19:04:26 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,90 @@
 int				ft_handle_str(va_list ap, char **str, t_param *p)
 {
 	char	*tmp;
+	size_t	len;
+	size_t	wlen;
+	size_t	i;
 
+
+//	printf("handle str test 1\n");
+
+
+	tmp = NULL;
+	len = 0;
 	if (p->spec == 'c')
 	{
-		*tmp = va_arg(ap, char);	// correct casting ???
-		// things ???
+//		printf("found a c\n");
+		if (!(tmp = malloc(sizeof(char) * 1)))
+			return (-1);
+		*tmp = (char)va_arg(ap, int);	// correct casting ???		will it work for the whiles ???? // has to be an int for some reason....
+		len = 1;
+//		printf("tmp: %c\n", *tmp);
 	}
 	else if (p->spec == 's')
 	{
 		tmp =  va_arg(ap, char*);
-		// more ???
+		len = ft_strlen(tmp);
 	}
 
-	
+
+//	printf("handle str test 2, tmp: %s\n", tmp);
+
+	// check width then others...
+	// '-' left justify with width. - is 3rd pos
+	// '0' no left justify adds 0s with width.	0 is 0th pos 
+
+	wlen = (p->width <= len ? 0 : p->width - len);	// now it's the number of spaces or 0s....
+
+//	printf("wlen: %zu\n", wlen);
+
+	if (!(*str = malloc(sizeof(char) * (wlen + len + 1))))
+		return (0);
 
 
+	i = 0;
+//	if (wlen > 0)		// theres extra width...
+//	{
+//		printf("made it into there is a width\n");
+		if (wlen && p->flag & 7)	// correct syntax ???	// theres a -		// & 7 ???
+		{
+			while (*tmp)
+				(*str)[i] = *tmp++;
+			while (i < wlen + len)
+				(*str)[i++] = ' ';
+			(*str)[i] = '\0';
+		}
+		else if (wlen && p->flag & 1)		// theres a 0		// this did not work at all lol 
+		{
+//			printf("made it into there is a 0\n");
+			while (i < wlen)
+				(*str)[i++] = '0';
+			while (i < wlen + len)
+				(*str)[i++] = *tmp++;
+			(*str)[i] = '\0';
+		}
+		else // width or no
+		{
+			while (i < wlen)
+				(*str)[i++] = ' ';
+			while (*tmp)
+				(*str)[i++] = *tmp++;
+			(*str)[i] = '\0';
+//			printf("wlen and str: |%s|\n", *str);
+		}
+//	}
+/*	else
+	{
+		while (*tmp)
+			(*str)[i++] = *tmp++;
+		(*str)[i] = '\0';
+	}
+*/
 
+//	printf("handle str test 3, str: %s\n", *str);
+
+		// I assume all that will work for c and for wlen = 0...
+
+	return (1);		// 1 ????	i think yes 1 unless have a lL or hH or that shit
 }
 
 

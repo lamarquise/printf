@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/19 17:57:48 by erlazo            #+#    #+#             */
+/*   Updated: 2020/02/21 17:22:12 by erlazo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "printf.h"
 
@@ -13,7 +23,7 @@ int		ft_display_del(t_pfelem **lst)
 	t_pfelem	*tmp;
 //	t_pfelem	*lst;
 
-	printf("display test 1\n");
+//	printf("display test 1\n");
 
 //	lst = buf->lst;
 
@@ -23,7 +33,7 @@ int		ft_display_del(t_pfelem **lst)
 		return (-1);
 	while (*lst)	// maybe secure, if something fucks up then ret 0....
 	{
-//		printf("display test 2\n");
+//		printf("\ndisplay test 2\n");
 		write(1, (*lst)->content, ft_strlen((*lst)->content));
 //		write(1, "\n", 1);
 		tmp = (*lst)->next;
