@@ -38,6 +38,11 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 	}
 
+	// check flags
+	// do width and precision math
+	// something else ??? yea that size thing...
+
+
 
 }
 
