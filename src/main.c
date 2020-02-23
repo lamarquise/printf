@@ -16,13 +16,19 @@ int		main(int ac, char **av)
 	if (ac == 2)
 		str = av[1];
 
-	ft_printf("test 1");
+	ft_printf("test ints: |% 10.7d|\n", b);
 	
 //	ft_printf("[the start, |%*s|\n]", 10, "the end");
 
-	printf("\n\nOG printf:\n[a number: |%-10.7d|\n]", b);
+	printf("OG a number: |% 10.7d|\n", b);
+//	printf("OG a number: |% 0.7d|\n", b);
 
-	printf("\n\nOG printf:\n[a number: |%-.7d|\n]", b);
+
+//	printf("\n\nOG printf:\n[a number: |%-10.7d|\n]", b);
+
+//	printf("\n\nOG printf:\n[a number: |%-.7d|\n]", b);
+
+
 
 //	ft_printf("%s\n", "the end");
 

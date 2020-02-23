@@ -45,7 +45,7 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 			str = ft_memcpy(str, &format[c], i - c);		// i think, grabs all before %
 			if (!pflist_append(/*&buf->*/lst, ft_buf_to_elem(str)))
 				return (0);
-			printf("hq spec test 2, str: %s\n", str);
+//			printf("hq spec test 2, str: %s\n", str);
 
 			ft_bzero(str, ft_strlen(str));	// is all this necessary ????
 			free(str);
@@ -62,7 +62,7 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 
 			if (!pflist_append(/*&buf->*/lst, ft_buf_to_elem(str)))
 				return (0);
-			printf("hq spec test 4, str: %s\n", str);
+//			printf("hq spec test 4, str: %s\n", str);
 //			printf("str: |%s|\n", str);
 //			printf("format: |%c|\n", format[i]);
 	
@@ -81,7 +81,7 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 			str = ft_memcpy(str, &format[c], i - c);			// hopefully this math is right...
 			if (!pflist_append(/*&buf->*/lst, ft_buf_to_elem(str)))
 				return (0);
-			printf("hq no spec test 1, str: %s\n", str);
+//			printf("hq no spec test 1, str: %s\n", str);
 
 			// bzero here ???
 

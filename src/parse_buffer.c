@@ -86,7 +86,7 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 
 	if (i <= 5)						// or using defines ???? I guess i just need to make my own thing as some point....
 		ret += ft_handle_int(ap, tmp, &p);
-	if (i <= 7)
+	else if (i <= 7)
 		ret += ft_handle_str(ap, tmp, &p);		// assuming its not -1 ????
 //	else if (i == 8)
 		// handle pointer

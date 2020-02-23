@@ -120,7 +120,7 @@ int			ft_display_del(t_pfelem **lst);
 
 
 	// Extra
-//char		*ft_fstrjoin(char **s1, char *s2);
+char		*ft_fstrjoin(char *s1, char *s2);
 char		*ft_fill_with(char this, size_t len);
 
 /*

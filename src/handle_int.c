@@ -33,7 +33,10 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	len = 0;		// usefull ???
 
 	i = 0;
+	num = 0;
 
+
+	printf("handle int test 1\n");
 
 		// diuUxX		// possibly also oO other things too ????	better way of doing this ????
 
@@ -43,6 +46,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		tmp = ft_itoa(num);
 
 		len = ft_strlen(tmp);
+		printf("handle int test 2 its an int\n");
 
 	}
 	else if (p->spec == 'u' || p->spec == 'U')		// could manage this by storring if there is a majuscule or nah with bitwise or something
@@ -53,6 +57,8 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	{
 		// tmp = some_function_that_changes_base( va_arg(ap, int?
 	}
+
+	printf("handle int test 3\n");
 
 	if (num < 0)		// if it's neg same as if flag + so set to 1
 		p->flag |= 4;		// ????		// is 4 equivalent to (1 << 3) ?????? no idea, but i hope so...
@@ -80,19 +86,25 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 
 
-	wlen = (p->width <= len ? 0 : p->width - len);
+//	printf("width: %zu, precision: %zu\n", p->width, p->precision);
 
-	plen = (p->width <= len ? 0 : p->width - len);
+	wlen = (p->width <= len ? 0 : p->width - len);
+	plen = (p->precision <= len ? 0 : p->precision - len);
+
+//	printf("wlen: %zu, plen: %zu\n", wlen, plen);
 
 		// #				// + but only if not neg ???		// space but only sometimes ??? also will hex work ???
-	i = (p->flag & 2) * 2 + (p->flag & 4) + (p->flag & 0x10) /*+ 1*/;	// more things that add ????
+	i = (p->flag & 2) /* * 2 + (p->flag & 4) + (p->flag & 0x10)*/ /*+ 1*/;	// more things that add ????
+
+	printf("the mysterious i: %zu\n", i);
+
 	// i is all the things that are counted by width but not by precision...
 
 
 
 			// this may be unnecessary...
-	if (!(*str = malloc(sizeof(char) * ((wlen > plen ? wlen : plen) + len /*+ i*/ + 1))))
-		return (-1); 		// better return would be nice...
+//	if (!(*str = malloc(sizeof(char) * ((wlen > plen ? wlen : plen) + len /*+ i*/ + 1))))
+//		return (-1); 		// better return would be nice...
 
 
 	// if - then all on left but precision 0s on left of num whereas width 
@@ -104,38 +116,57 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 	if (plen)		// adding 0s from precision
 		pre = ft_fill_with('0', plen);		// could make this a sep func so that can take into acount if a num is a float or whatever....
-	if ((p->spec == 'x' ||p->spec == 'X') && p->flag & 3)	// thers a # so add 0x
+	if ((p->spec == 'x' || p->spec == 'X') && p->flag & 3)	// thers a # so add 0x
 	{
-		pre = ft_strjoin("0x", pre);
+		pre = ft_fstrjoin("0x", pre);
 	}
 	if (p->flag & 4)	// theres a + or its negative		// has to be before the - one		// adding a sign
 	{
-		pre = ft_strjoin((num < 0 ? '-' : '+'), pre);
+//		pre = ft_fstrjoin((num < 0 ? '-' : '+'), pre);
 	}
 	if (wlen > plen)	// if - then ignor 0 meaning will put spaces on right, else puts 0s on left
 	{
+		printf("wlen > plen\n");
 		c = ' ';
-		if (p->flag & 1 && p->flag ! 7)	// theres a 0 and theres no -
+		if (p->flag & 1 && !(p->flag & 7))	// theres a 0 and theres no -
 			c = '0';
 		post = ft_fill_with(c, wlen - plen - i);
-		if (p->flag ! 7)    // there is not a -
-			pre = ft_strjoin(post, pre);
-			// bzero post and free it ???
+		if (!(p->flag & 7))    // there is not a -
+		{
+			pre = ft_fstrjoin(post, pre);
+			ft_bzero(post, ft_strlen(post));
+			free(post);
+			post = NULL;
+			//bzero post and free it ???
+		}
+	}
+	else if (p->flag & 0x10)
+	{
+		pre = ft_fstrjoin(" ", pre);
 	}
 
-
+	printf("handle int: pre |%s|, tmp |%s|, post |%s|\n", pre, tmp, post);
+	
+	
 	// adding the space is prolly at the end cuz outside...
 	// how does space behave, do i need to include in the i math, like about width...
+	// space is included in the width but not the precision
+	// it does replace a 0 tho if '0' flag
+	
 
-	*str = ft_strjoin(ft_strjoin(pre, tmp), post);
 
+	*str = ft_fstrjoin(ft_fstrjoin(pre, tmp), post);
 
+	printf("handle int test 4, str: |%s|\n", *str);
 
 	return (1);			// better ret ????
 }
 
 
 	// there has 1000% got to be a better way of doing this...
+
+/*
+static char	base[16] = "B_16";
 
 void		ft_hex_base_convert(long nb, char **ret, t_param *p)
 {
@@ -146,11 +177,11 @@ void		ft_hex_base_convert(long nb, char **ret, t_param *p)
 
 	ft_bzero(s, 2);
 	if (nb >= 16)
-		ft_hint_base_convert(nb / 16, ret, p);
+		ft_hex_base_convert(nb / 16, ret, p);
 	s[0] = base[nb % 16];
 	*ret = ft_fstrjoin(*ret, s);
 }
-
+*/
 
 
 /*

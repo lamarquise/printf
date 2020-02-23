@@ -28,40 +28,39 @@ int			ft_flag_parsing(char *format, t_param *p, va_list ap)
 	// " ' " needs to go in here somewhere....
 
 
-//	printf("flag parsing test 1\n");
+	printf("flag parsing test 1\n");
 
 
 	while ((i = ft_findchar("0#+- .123456789*hljz", format[ret])) >= 0)
 	{
 
-//		printf("is a flag parsing test 1, format: [%c]\n", **format);
+//		printf("is a flag parsing test 1, format: [%c]\n", format[ret]);
 
-		if (i <= 4)		// wait doesnt this prevent 0 from being used later ?
+		if (i <= 4)
 		{
+			printf("is a flag\n");
 			p->flag |= (1 << i);		// also fucking clever.... this or the HEX defines ???? need both ???
 			++ret;
 			
-//			printf("flag parsing, i = %d\n", i);
-
-			// something to do with bitwise
+			printf("flag parsing, i = %d\n", i);
 		}
-		else if (i == 5)	// also store . in p->type, might as well
+		else if (i == 5)
 		{
-			ret += ft_get_precision(format, p, ap);
+			printf("flag parsing going to precision\n");
+			ret += ft_get_precision(&format[ret], p, ap);
 		}
 		else if (i <= 15)	// cuz numbers and 0
 		{	// perhaps we get 0 after other digits in the func we call ?
 			// get width
-			
-			ret += ft_get_width(format, p, ap);
+		
+			ret += ft_get_width(&format[ret], p, ap);
 //			printf("width gotten, format: [%c]\n", **format);
 		}
-		else
-		{
+//		else
+//		{
 			// handle size hHlL that shit...
-		}
+//		}
 //		++n;
-//		++*format;
 	}
 
 	printf("flag parsing test 2, format: [%c]\n", format[ret]);
@@ -77,7 +76,7 @@ int			ft_get_precision(char *format, t_param *p, va_list ap)
 	int		tmp;
 	int		ret;
 
-	printf("precision parsing test 1\n");
+	printf("precision parsing test 1, format: |%c|\n", *format);
 
 	ret = 0;
 	// double check that theres a . then ++
@@ -120,7 +119,7 @@ int			ft_get_width(char *format, t_param *p, va_list ap)
 	ret = 0;
 	// also check for * or loop
 
-//	printf("width parsing test 1\n");
+	printf("width parsing test 1, format: |%c|\n", *format);
 
 
 	if (*format == '*')
