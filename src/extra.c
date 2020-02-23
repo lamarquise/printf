@@ -6,11 +6,30 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 18:49:08 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/19 18:55:43 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/23 19:11:52 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
+
+char	*ft_fill_with(char this, size_t len)
+{
+	char	*ret;
+	size_t	i;
+
+	if (!this || len < 1)
+		return (NULL);
+	if (!(ret = malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	i = 0;
+	while (i < len)
+		ret[i++] = this;
+	ret[i] = '\0';
+	return (ret);
+}
+
+
+/*
 
 size_t	ft_fstrlen(const char *s)
 {
@@ -51,3 +70,6 @@ char	*ft_fstrjoin(char **s1, char *s2)
 		free(*s1);
 	return (ret);
 }
+
+
+*/

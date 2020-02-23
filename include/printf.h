@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:13:46 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/21 19:04:36 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/23 19:26:30 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ t_pfelem	*ft_buf_to_elem(char *str);
 
 
 	// Handler functions
-int			ft_handle_int(va_list ap, char **tmp, t_param *param);
-int			ft_handle_str(va_list ap, char **tmp, t_param *param);
+int			ft_handle_int(va_list ap, char **str, t_param *param);
+int			ft_handle_str(va_list ap, char **str, t_param *param);
 
 
 	// Display
@@ -120,7 +120,8 @@ int			ft_display_del(t_pfelem **lst);
 
 
 	// Extra
-char		*ft_fstrjoin(char **s1, char *s2);
+//char		*ft_fstrjoin(char **s1, char *s2);
+char		*ft_fill_with(char this, size_t len);
 
 /*
 	// List stuff

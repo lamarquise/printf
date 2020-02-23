@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:25:48 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/21 18:58:11 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/23 18:18:40 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int			ft_flag_parsing(char *format, t_param *p, va_list ap)
 //		++*format;
 	}
 
-//	printf("flag parsing test 2, format: [%c]\n", **format);
+	printf("flag parsing test 2, format: [%c]\n", format[ret]);
 
 	return (ret); // what do i return ????
 }
@@ -85,11 +85,13 @@ int			ft_get_precision(char *format, t_param *p, va_list ap)
 	++format;
 	if (*format == '*')
 	{
+		printf("star precision 1\n");
 		tmp = va_arg(ap, int);
 		p->precision = tmp < 0 ? 0 : tmp;
 		p->flag |= tmp < 0 ? 0 : 256;	// could use a define for 256, isnt
-		++format;	// will that remain in 
+//		++format;	// will that remain in 
 		++ret;
+		printf("star precision 1\n");
 	}									// that 1000 ??? in binary
 	else
 	{		// i don't want to copy everything but he used a special atoi
@@ -123,11 +125,13 @@ int			ft_get_width(char *format, t_param *p, va_list ap)
 
 	if (*format == '*')
 	{
+		printf("star width 1\n");
 		tmp = va_arg(ap, int);
 		p->width = tmp < 0 ? 0 : tmp;
-		p->flag |= tmp < 0 ? 0 : 128;	// or not 128 ???
-		++format;	// will this work ???
+//		p->flag |= tmp < 0 ? 0 : 128;	// or not 128 ???
+//		++format;	// will this work ???
 		++ret;
+		printf("star width 2\n");
 	}
 	else if (*format >= '1' && *format <= '9')
 	{

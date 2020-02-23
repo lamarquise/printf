@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 20:05:43 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/21 19:04:26 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/23 19:07:02 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,14 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 	if (!(*str = malloc(sizeof(char) * (wlen + len + 1))))
 		return (0);
 
+	// would it be easier to use a join ???
+
 
 	i = 0;
 //	if (wlen > 0)		// theres extra width...
 //	{
 //		printf("made it into there is a width\n");
-		if (wlen && p->flag & 7)	// correct syntax ???	// theres a -		// & 7 ???
+		if (wlen && p->flag & 7)	// theres a -
 		{
 			while (*tmp)
 				(*str)[i] = *tmp++;
@@ -70,7 +72,7 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 				(*str)[i++] = ' ';
 			(*str)[i] = '\0';
 		}
-		else if (wlen && p->flag & 1)		// theres a 0		// this did not work at all lol 
+		else if (wlen && p->flag & 1)		// theres a 0
 		{
 //			printf("made it into there is a 0\n");
 			while (i < wlen)

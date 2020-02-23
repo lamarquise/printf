@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:33:24 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/21 19:04:33 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/23 19:11:55 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	// in theory params are set now, we know what the flags are...
 
 
+	// where do i handle flag order errors ????
+
+
 	// check for 0	-> has to be first !!!
 	// check for .	-> precition, either number of *
 	// check for *	-> width
@@ -74,14 +77,15 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	// add some security ???
 	p.spec = format[ret];
 
-	// change all this, spec caller
 	
-	i = ft_findchar("diuUxXcspn%", format[ret]);
+	i = ft_findchar("diuUxXcspn%", format[ret]);		
+
+	// is this where i should change the maj to min ???
 
 //	printf("field parsing i: %d\n", i);
 
-//	if (i <= 5)						// or using defines ???? I guess i just need to make my own thing as some point....
-		ret += ft_handle_int(ap, tmp, &p)
+	if (i <= 5)						// or using defines ???? I guess i just need to make my own thing as some point....
+		ret += ft_handle_int(ap, tmp, &p);
 	if (i <= 7)
 		ret += ft_handle_str(ap, tmp, &p);		// assuming its not -1 ????
 //	else if (i == 8)
