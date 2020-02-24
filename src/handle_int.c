@@ -6,14 +6,24 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 19:56:08 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/23 19:26:25 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/24 19:26:43 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
 
-	// make a function that returns a string of things to be added before or after the bit in va_list
+//static char		bl16[16] = "0123456789abcdef";			// remove this shit !!!!!!!!!!!!!!!!!
+//static char		bu16[16] = "0123456789ABCDEF";
+
+
+void			ft_scott_free(char **str)
+{
+	ft_bzero(*str, ft_fstrlen(*str));
+	free(*str);
+	*str = NULL;
+}
+
 
 int				ft_handle_int(va_list ap, char **str, t_param *p)
 {
@@ -45,7 +55,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		num = va_arg(ap, int);		// use a special itoa ???
 		tmp = ft_itoa(num);
 
-		len = ft_strlen(tmp);
+		len = ft_fstrlen(tmp);
 		printf("handle int test 2 its an int\n");
 
 	}
@@ -54,8 +64,28 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 	}
 	else if (p->spec == 'x' || p->spec == 'X')		// do a thing where i standardize x and X to just x but remember if it's maj, same for u and U ???
+//		(ft_strchr(p->spec, "xX") != NULL)		// kick ass idea
 	{
-		// tmp = some_function_that_changes_base( va_arg(ap, int?
+		num = va_arg(ap, int);
+		printf("is a hex, num: %d\n", num);
+		if (p->spec == 'x')
+		{
+			printf("still a hex\n");
+			tmp = ft_any_base_convert((long)num, "0123456789abcdef");
+		}
+//		else
+//			tmp = ft_any_base_convert((long)num, bu16);
+		len = ft_fstrlen(tmp);
+		printf("its a hex, tmp: |%s|\n", tmp);
+	}
+	else if (p->spec == 'b')
+	{
+		post = va_arg(ap, char*);
+		num = va_arg(ap, int);
+		if (!(tmp = ft_any_base_convert(num, post)))		// should do this more and securiser in parse_buffer too
+			return (-1);
+		len = ft_fstrlen(tmp);
+		ft_scott_free(&post);
 	}
 
 	printf("handle int test 3\n");
@@ -134,9 +164,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		if (!(p->flag & 7))    // there is not a -
 		{
 			pre = ft_fstrjoin(post, pre);
-			ft_bzero(post, ft_strlen(post));
-			free(post);
-			post = NULL;
+			ft_scott_free(&post);
 			//bzero post and free it ???
 		}
 	}
@@ -163,10 +191,88 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 }
 
 
-	// there has 1000% got to be a better way of doing this...
+	// kinda like a strjoin		// appends a char
+char		*ft_add_char(char **str, char c)				//void		ft_add_char(char **str, char c)
+{
+	char	*tmp;
+	int		i;
+
+	printf("made it to add char 1, str: |%s|, len: %zu\n", *str, ft_fstrlen(*str));
+	tmp = NULL;
+	if ((!str || !*str) && !c)
+		return (NULL);					// use other strlen ???
+	if (!(tmp = malloc(sizeof(char) * (ft_fstrlen(*str) + 2))))
+		return (NULL);
+	i = 0;
+	printf("made it to add char 2, str: |%s|\n", *str);
+	tmp[i] = c;
+	while (*str && (*str)[i])
+	{
+		printf("while in add char\n");
+		tmp[i + 1] = (*str)[i];
+		++i;
+	}
+	printf("made it to add char 3\n");
+	tmp[i + 1] = '\0';
+	if (str && *str)
+	{
+		printf("freeing in add char, tmp: |%s|\n", tmp);
+		ft_bzero(*str, ft_fstrlen(*str));
+		free(*str);
+	}
+//	*str = tmp;
+	return (tmp);
+}
+
+int			ft_base_check(char *base)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (base[i])
+	{
+		j = i + 1;
+		while (base[j])
+		{
+			if (base[i] == base[j])		// more conditions ???????
+				return (0);
+			++j;
+		}
+		++i;
+	}
+	printf("base check 1\n");
+	return (1);
+}
+						// more than a long ???			// should work ????
+char		*ft_any_base_convert(long nb, char *base)
+{
+	int		i;
+	int		size;
+	char	*ret;
+//	char	*tmp;
+
+	i = 0;
+	ret = NULL;
+	size = ft_strlen(base);
+	if (!ft_base_check(base))
+		return (NULL);
+	while (nb >= size)
+	{
+		printf("ret in base conv: |%s|\n", ret);
+		ret = ft_add_char(&ret, base[nb % size]);
+		printf("ret in base 2\n");
+		nb /= size;
+//		ft_bzero(ret, ft_fstrlen(ret));
+//		free(ret);
+//		ret = tmp;
+	}
+	ret = ft_add_char(&ret, base[nb % size]);		// do i need to do it one last time...
+	printf("base convert, ret: |%s|\n", ret);
+	return (ret);
+}
 
 /*
-static char	base[16] = "B_16";
 
 void		ft_hex_base_convert(long nb, char **ret, t_param *p)
 {
@@ -185,29 +291,6 @@ void		ft_hex_base_convert(long nb, char **ret, t_param *p)
 
 
 /*
-
-
-							// uintmax_t better ?
-int				ft_calc_len(long long nb, param *p)
-{
-	int		tmp;	// best be a long long ???
-	int		len;
-
-	tmp = nb;
-	while (tmp /= base)	// i would need to define or send base at some point
-		++len;
-		// more conditions ?
-	p->precision = precision > len ? precision : len;
-	
-	// should i also be hanlding the pos of spaces and 0s and justification
-	// here ?
-	
-	// i should prolly also take 0x and other such things into account here
-
-
-
-	return (len);
-}
 
 int			ft_base_setup(t_param *p)		// more elaborate params if decide it can be many dif bases... send the string, the size, etc...
 {

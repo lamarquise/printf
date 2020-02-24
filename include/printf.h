@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:13:46 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/23 19:26:30 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/24 19:26:48 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,15 @@ int			ft_display_del(t_pfelem **lst);
 
 	// Extra
 char		*ft_fstrjoin(char *s1, char *s2);
+size_t		ft_fstrlen(const char *s);
 char		*ft_fill_with(char this, size_t len);
+char		*ft_add_char(char **str, char c);
+int			ft_base_check(char *base);
+char		*ft_any_base_convert(long nb, char *base);
+void		ft_scott_free(char **str);
+
+
+
 
 /*
 	// List stuff

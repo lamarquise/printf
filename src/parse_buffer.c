@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:33:24 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/23 19:11:55 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/24 19:14:01 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,15 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	p.spec = format[ret];
 
 	
-	i = ft_findchar("diuUxXcspn%", format[ret]);		
+	i = ft_findchar("diuUxXbcspn%", format[ret]);		
 
 	// is this where i should change the maj to min ???
 
 //	printf("field parsing i: %d\n", i);
 
-	if (i <= 5)						// or using defines ???? I guess i just need to make my own thing as some point....
+	if (i <= 6)						// or using defines ???? I guess i just need to make my own thing as some point....
 		ret += ft_handle_int(ap, tmp, &p);
-	else if (i <= 7)
+	else if (i <= 8)
 		ret += ft_handle_str(ap, tmp, &p);		// assuming its not -1 ????
 //	else if (i == 8)
 		// handle pointer
