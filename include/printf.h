@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:13:46 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/24 19:26:48 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/25 19:18:41 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_pfelem	*ft_buf_to_elem(char *str);
 	// Handler functions
 int			ft_handle_int(va_list ap, char **str, t_param *param);
 int			ft_handle_str(va_list ap, char **str, t_param *param);
-
+int			ft_handle_modulo(char **str, t_param *p);
 
 	// Display
 //int				ft_display_del(t_buf *buf);

@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:33:24 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/24 19:14:01 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/25 19:18:55 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,60 +48,30 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 //	printf("post flag parsing: format; [%c]\n", *format);
 
 
-	// in theory params are set now, we know what the flags are...
-
-
-	// where do i handle flag order errors ????
-
-
-	// check for 0	-> has to be first !!!
-	// check for .	-> precition, either number of *
-	// check for *	-> width
-	// check for number -> width
-
-	// if it's a * get size, then based off what had before either 
-	// precition or width
-
-	
-	// check other flags after ????
-	// - + # space %
-	// or % is checked with specs...
-	// does the pos of space make a dif relative to other flags ???
-	// space should be checked first too
-
-
-	// handle the printing of shit like vis a vis the dif btw width and prec
-	// in this func, like after the number or whatever has been produced.
-
-
 	// add some security ???
 	p.spec = format[ret];
 
 	
-	i = ft_findchar("diuUxXbcspn%", format[ret]);		
-
-	// is this where i should change the maj to min ???
+	i = ft_findchar("diuxXbcspn%", format[ret]);
 
 //	printf("field parsing i: %d\n", i);
 
-	if (i <= 6)						// or using defines ???? I guess i just need to make my own thing as some point....
-		ret += ft_handle_int(ap, tmp, &p);
-	else if (i <= 8)
-		ret += ft_handle_str(ap, tmp, &p);		// assuming its not -1 ????
+	if (i <= 5)						// or using defines ???? I guess i just need to make my own thing as some point....
+		i = ft_handle_int(ap, tmp, &p);
+	else if (i <= 7)
+		i = ft_handle_str(ap, tmp, &p);		// assuming its not -1 ????
 //	else if (i == 8)
 		// handle pointer
 //	else if (i == 9)
 		// handle nothing
 //	else if (i == 10)
-		// handle %
-//	else
-		// the thing where its not defined properly
-
-
+//		i = ft_handle_modulo(tmp, &p);
+	else
+		i = -1;
 //	printf("field parsing test end\n");
 
 	printf("ret %d\n", ret);
 
-	return (ret);		// -1 if failure... ???
+	return (i = -1 ? -1 : i + ret);
 }
 

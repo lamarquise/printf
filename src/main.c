@@ -16,12 +16,22 @@ int		main(int ac, char **av)
 	if (ac == 2)
 		str = av[1];
 
-	ft_printf("test hexs: |% #x|\n", b);
-	ft_printf("test base: |%b|\n", "01234", b);
+//	ft_printf("test unsi: |%u|\n", b);
+//	ft_printf("test octa: |%o|\n", b);
+//	ft_printf("test octa: |%#o|\n", b);
+//	ft_printf("test hexs: |% #x|\n", b);
+//	ft_printf("test base: |%b|\n", "0123456789abcdef", b);
 	
 //	ft_printf("[the start, |%*s|\n]", 10, "the end");
 
-	printf("OG a number: |%x|\n", b);
+//	printf("OG a |% 010%|\n");
+
+//	printf("OG a number: |%o|\n", b);
+//	printf("OG a number: |%#o|\n", b);
+
+	printf("pointer: |%p|\n", &a);
+	printf("pointer: |%-15p|\n", NULL);
+
 //	printf("OG a number: |% 0.7d|\n", b);
 
 

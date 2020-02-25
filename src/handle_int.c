@@ -6,16 +6,28 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 19:56:08 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/24 19:26:43 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/25 19:18:44 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
+/*
+something		ft_size_stuff()
+{
 
-//static char		bl16[16] = "0123456789abcdef";			// remove this shit !!!!!!!!!!!!!!!!!
-//static char		bu16[16] = "0123456789ABCDEF";
 
+	va_arg(ap, int);
+	va_arg(ap, long);
+	va_arg(ap, long long);
+	va_arg(ap, short);
+	va_arg(ap, short short);
+	va_arg(ap, size_t);		// zu is that what that is ?????
+	
+
+
+}
+*/
 
 void			ft_scott_free(char **str)
 {
@@ -24,14 +36,13 @@ void			ft_scott_free(char **str)
 	*str = NULL;
 }
 
-
 int				ft_handle_int(va_list ap, char **str, t_param *p)
 {
 	char		*tmp;
 	char		*pre;
 	char		*post;
 	char		c;
-	int			num;
+	long		num;		// just make it a long long ???? size_t ????
 	size_t		len;
 	size_t		wlen;
 	size_t		plen;
@@ -52,40 +63,45 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 	if (p->spec == 'd' || p->spec == 'i')	// regular ints i think
 	{
-		num = va_arg(ap, int);		// use a special itoa ???
-		tmp = ft_itoa(num);
+		num = va_arg(ap, int);		// may need to change this to cast as not an int if l or ll or h or ....	// same for all following....
+		tmp = ft_itoa(num);		// special itoa ???
 
 		len = ft_fstrlen(tmp);
-		printf("handle int test 2 its an int\n");
+//		printf("handle int test 2 its an int\n");
 
 	}
-	else if (p->spec == 'u' || p->spec == 'U')		// could manage this by storring if there is a majuscule or nah with bitwise or something
-	{
-
+	else if (p->spec == 'u')		// could manage this by storring if there is a majuscule or nah with bitwise or something
+	{				// this is basically the same as 'd' or 'i', use a func table to get same result without all ifs ????
+		num = va_arg(ap, unsigned int);		// not num, dif var ???
+		tmp = ft_itoa(num);
+		len = ft_fstrlen(tmp);
 	}
 	else if (p->spec == 'x' || p->spec == 'X')		// do a thing where i standardize x and X to just x but remember if it's maj, same for u and U ???
 //		(ft_strchr(p->spec, "xX") != NULL)		// kick ass idea
 	{
 		num = va_arg(ap, int);
-		printf("is a hex, num: %d\n", num);
+//		printf("is a hex, num: %d\n", num);
 		if (p->spec == 'x')
-		{
-			printf("still a hex\n");
 			tmp = ft_any_base_convert((long)num, "0123456789abcdef");
-		}
-//		else
-//			tmp = ft_any_base_convert((long)num, bu16);
+		else
+			tmp = ft_any_base_convert((long)num, "0123456789ABCDEF");
 		len = ft_fstrlen(tmp);
-		printf("its a hex, tmp: |%s|\n", tmp);
+//		printf("its a hex, tmp: |%s|\n", tmp);
 	}
 	else if (p->spec == 'b')
 	{
-		post = va_arg(ap, char*);
+		post = va_arg(ap, char*);	// can not free post, not sure why, ok so can't free because its a arg passed to func, so don't worry, just set to NULL...
 		num = va_arg(ap, int);
 		if (!(tmp = ft_any_base_convert(num, post)))		// should do this more and securiser in parse_buffer too
 			return (-1);
 		len = ft_fstrlen(tmp);
-		ft_scott_free(&post);
+		post = NULL;
+	}
+	else if (p->spec == 'o')		// unsigned ocatal
+	{
+		num = va_arg(ap, int);
+		tmp = ft_any_base_convert((long)num, "01234567");
+		len = ft_fstrlen(tmp);
 	}
 
 	printf("handle int test 3\n");
@@ -94,11 +110,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		p->flag |= 4;		// ????		// is 4 equivalent to (1 << 3) ?????? no idea, but i hope so...
 
 
-	// check flags
-	// do width and precision math
-	// something else ??? yea that size thing...
 	// "0#+- .123456789*hljz"
-
 	
 	// Precision: pads with '0's on right, unaffected by '-', takes precedent over width.	// 0s added on left never right of num unless a float ???
 	// Width: pads with ' 's on right, OR '0's if '0' flag, OR left justify with ' '  not '0' if '-'
@@ -130,25 +142,18 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 	// i is all the things that are counted by width but not by precision...
 
-
-
-			// this may be unnecessary...
-//	if (!(*str = malloc(sizeof(char) * ((wlen > plen ? wlen : plen) + len /*+ i*/ + 1))))
-//		return (-1); 		// better return would be nice...
-
-
-	// if - then all on left but precision 0s on left of num whereas width 
-
-
 	// how to adapt this middle out system to other specs, like the unsigned ones ???? 
-
-	// OK the freeing in this whole things is an absolute shit show...
 
 	if (plen)		// adding 0s from precision
 		pre = ft_fill_with('0', plen);		// could make this a sep func so that can take into acount if a num is a float or whatever....
-	if ((p->spec == 'x' || p->spec == 'X') && p->flag & 3)	// thers a # so add 0x
+	if (p->flag & 3)	// thers a # so add 0x
 	{
-		pre = ft_fstrjoin("0x", pre);
+		if (p->spec == 'x')
+			pre = ft_fstrjoin("0x", pre);
+		else if (p->spec == 'X')
+			pre = ft_fstrjoin("0X", pre);
+		else if (p->spec == 'o')
+			pre = ft_fstrjoin("0", pre);
 	}
 	if (p->flag & 4)	// theres a + or its negative		// has to be before the - one		// adding a sign
 	{
@@ -175,14 +180,6 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 	printf("handle int: pre |%s|, tmp |%s|, post |%s|\n", pre, tmp, post);
 	
-	
-	// adding the space is prolly at the end cuz outside...
-	// how does space behave, do i need to include in the i math, like about width...
-	// space is included in the width but not the precision
-	// it does replace a 0 tho if '0' flag
-	
-
-
 	*str = ft_fstrjoin(ft_fstrjoin(pre, tmp), post);
 
 	printf("handle int test 4, str: |%s|\n", *str);
@@ -197,26 +194,26 @@ char		*ft_add_char(char **str, char c)				//void		ft_add_char(char **str, char c
 	char	*tmp;
 	int		i;
 
-	printf("made it to add char 1, str: |%s|, len: %zu\n", *str, ft_fstrlen(*str));
+//	printf("made it to add char 1, str: |%s|, len: %zu\n", *str, ft_fstrlen(*str));
 	tmp = NULL;
 	if ((!str || !*str) && !c)
 		return (NULL);					// use other strlen ???
 	if (!(tmp = malloc(sizeof(char) * (ft_fstrlen(*str) + 2))))
 		return (NULL);
 	i = 0;
-	printf("made it to add char 2, str: |%s|\n", *str);
+//	printf("made it to add char 2, str: |%s|\n", *str);
 	tmp[i] = c;
 	while (*str && (*str)[i])
 	{
-		printf("while in add char\n");
+//		printf("while in add char\n");
 		tmp[i + 1] = (*str)[i];
 		++i;
 	}
-	printf("made it to add char 3\n");
+//	printf("made it to add char 3\n");
 	tmp[i + 1] = '\0';
 	if (str && *str)
 	{
-		printf("freeing in add char, tmp: |%s|\n", tmp);
+//		printf("freeing in add char, tmp: |%s|\n", tmp);
 		ft_bzero(*str, ft_fstrlen(*str));
 		free(*str);
 	}
@@ -241,7 +238,7 @@ int			ft_base_check(char *base)
 		}
 		++i;
 	}
-	printf("base check 1\n");
+//	printf("base check 1\n");
 	return (1);
 }
 						// more than a long ???			// should work ????
@@ -259,9 +256,9 @@ char		*ft_any_base_convert(long nb, char *base)
 		return (NULL);
 	while (nb >= size)
 	{
-		printf("ret in base conv: |%s|\n", ret);
+//		printf("ret in base conv: |%s|\n", ret);
 		ret = ft_add_char(&ret, base[nb % size]);
-		printf("ret in base 2\n");
+//		printf("ret in base 2\n");
 		nb /= size;
 //		ft_bzero(ret, ft_fstrlen(ret));
 //		free(ret);
