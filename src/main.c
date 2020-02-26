@@ -18,17 +18,23 @@ int		main(int ac, char **av)
 	if (ac == 2)
 		str = av[1];
 
-	ft_printf("test bina: |%B|\n", c);
 
-//	ft_printf("test poin: |%p|\n", b);
+//	printf("%s", "\x98\xA0\n");
 
-	ft_printf("test modu: |%%|\n");
-		
+//	ft_printf("test bina: |%B|\n", c);
 
-	ft_printf("test unsi: |%u|\n", b);
+
+	ft_printf("test n: |%n| again |%n|\n");
+
+//	ft_printf("test poin: |%20p|\n", &b);
+//	printf("OG pointer: |%20p|\n", &b);
+
+//	ft_printf("test modu: |%%|\n");
+
+//	ft_printf("test unsi: |%u|\n", b);
 //	ft_printf("test octa: |%o|\n", b);
 //	ft_printf("test octa: |%#o|\n", b);
-//	ft_printf("test hexs: |% #x|\n", b);
+//	ft_printf("test hexs: |%#10x|\n", b);
 //	ft_printf("test base: |%b|\n", "0123456789abcdef", b);
 	
 //	ft_printf("[the start, |%*s|\n]", 10, "the end");
@@ -42,7 +48,7 @@ int		main(int ac, char **av)
 //	printf("pointer: |%-5p|\n", NULL);
 //	printf("pointer: |%5p|\n", NULL);
 
-//	printf("OG a number: |% 0.7d|\n", b);
+//	printf("OG a number: |%.0d|\n", b);
 
 
 //	printf("\n\nOG printf:\n[a number: |%-10.7d|\n]", b);

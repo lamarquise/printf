@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:29:04 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/20 16:11:59 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/26 16:25:51 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int		ft_printf(const char *format, ...)
 		ret = ft_display_del(/*&buf.*/&lst);
 //		ret = ft_display_del(&buf);// or do i have to link through buf ???
 							// call &buf.lst if want to do the old way...
+
+	// else something ????
 
 	va_end(ap);
 	return (ret);

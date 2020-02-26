@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:25:48 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/24 19:13:36 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/26 18:18:07 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ int			ft_flag_parsing(char *format, t_param *p, va_list ap)
 			ret += ft_get_width(&format[ret], p, ap);
 //			printf("width gotten, format: [%c]\n", **format);
 		}
-//		else
-//		{
-			// handle size hHlL that shit...
-//		}
+		else
+		{
+			ret += ft_get_size(&format[ret], p);
+		}
 //		++n;
 	}
 
@@ -81,31 +81,25 @@ int			ft_get_precision(char *format, t_param *p, va_list ap)
 	ret = 0;
 	// double check that theres a . then ++
 	++ret;
-	++format;
-	if (*format == '*')
+	if (format[ret] == '*')
 	{
-		printf("star precision 1\n");
+//		printf("star precision 1\n");
 		tmp = va_arg(ap, int);
 		p->precision = tmp < 0 ? 0 : tmp;
-		p->flag |= tmp < 0 ? 0 : 256;	// could use a define for 256, isnt
-//		++format;	// will that remain in 
+//		p->flag |= tmp < 0 ? 0 : 256;	// could use a define for 256, necessary ???
 		++ret;
-		printf("star precision 1\n");
-	}									// that 1000 ??? in binary
+//		printf("star precision 1\n");
+	}
 	else
-	{		// i don't want to copy everything but he used a special atoi
-		p->precision = (tmp = ft_atoi(format)) < 0 ? 0 : tmp;
-							// atoi or a loop? this is a bit savage...
-		while (*format >= '0' && *format <= '9')
-		{
-			++ret;
-			++format;	// or count and ret number...
-		}
-		p->flag |= (1 << 5);	// is the 5th space free ???
+	{
+		p->precision = (tmp = ft_latoi(&format[ret], &ret)) < 0 ? 0 : tmp;
+//		while (format[ret] >= '0' && format[ret] <= '9')
+//			++ret;
+//		p->flag |= (1 << 5);	// is the 5th space free ???
 	}
 	//check for * or loop through format while a digit
 
-	printf("precision parsing test 2\n");
+//	printf("precision parsing test 2\n");
 
 	return (ret); // what do i return 
 }
@@ -119,43 +113,60 @@ int			ft_get_width(char *format, t_param *p, va_list ap)
 	ret = 0;
 	// also check for * or loop
 
-	printf("width parsing test 1, format: |%c|\n", *format);
+//	printf("width parsing test 1, format: |%c|\n", *format);
 
 
-	if (*format == '*')
+	if (format[ret] == '*')
 	{
-		printf("star width 1\n");
+//		printf("star width 1\n");
 		tmp = va_arg(ap, int);
 		p->width = tmp < 0 ? 0 : tmp;
 //		p->flag |= tmp < 0 ? 0 : 128;	// or not 128 ???
 //		++format;	// will this work ???
 		++ret;
-		printf("star width 2\n");
+//		printf("star width 2\n");
 	}
-	else if (*format >= '1' && *format <= '9')
+	else if (format[ret] >= '1' && format[ret] <= '9')
 	{
-		p->width = (tmp = ft_atoi(format)) < 0 ? 0 : tmp;
-		while (*format >= '0' && *format <= '9')
-		{
-			++ret;
-			++format;
-		}
-		p->flag |= (1 << 6);
+		p->width = (tmp = ft_latoi(&format[ret], &ret)) < 0 ? 0 : tmp;		// dif atoi ????
+//		p->width = (tmp = ft_atoi(&format[ret])) < 0 ? 0 : tmp;
+//		while (format[ret] >= '0' && format[ret] <= '9')
+//			++ret;
+//		p->flag |= (1 << 6);	// not sure i need this...
 	}
 	
-//	printf("width parsing test 2, width = %zu\n", p->width);
+	printf("width parsing test 2, width = %zu\n", p->width);
 //	printf("width parsing test 2, format: [%c]\n", **format);
 	return (ret);
 }
 
-/*
 
-int			ft_get_size()
+	// 1:l 2:ll 3:h 6:hh
+
+int			ft_get_size(char *format, t_param *p)
 {
-	// somehow manage the hHlL shit
+	int		ret;
+	int		i;
+
+
+	// l is long, also wchar_t*
+	// ll is long long
+	// h is short int
+	// hh is signed char
+	// j is intmax_t
+	// z is size_t
+
+
+	ret = 0;
+	while ((i = ft_findchar("hl", format[ret])) >= 0)
+	{
+		p->size += i;			// store in end of p->flag ????
+		++ret;
+	}
+	return (ret); 
 }
 
-*/
+
 
 
 

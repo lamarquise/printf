@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:29:21 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/25 19:18:53 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/26 16:50:12 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 			// i is the pos of %
 
 			if (!(str = ft_memalloc(sizeof(char) * (i - c + 1))))
-				return (0);
+				return (-1);
 
 			ft_bzero(str, i - c + 1);	// i don't love this
 		
 			str = ft_memcpy(str, &format[c], i - c);		// i think, grabs all before %
 			if (!pflist_append(/*&buf->*/lst, ft_buf_to_elem(str)))
-				return (0);
+				return (-1);
 //			printf("hq spec test 2, str: %s\n", str);
 
 			ft_scott_free(&str);
@@ -53,16 +53,17 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 //			str = NULL;
 			
 					// might want to check that ret isn't like -1, and if so stop all...
-			i += ft_field_parsing(&format[i], ap, &str);		// returns the length of % and stuff thats been read.
+			if (!(c = ft_field_parsing(&format[i], ap, &str)))		// returns the length of % and stuff thats been read.
+				return (-1);
+			printf("HQ spec 3\n");
+			i += c;
+			c = i;
 
 //			printf("format: %c\n", *format);
-
-			c = i;		// i should be one after specefier...
-			
 //			printf("hq spec test 3, str: %s\n", str);
 
 			if (!pflist_append(/*&buf->*/lst, ft_buf_to_elem(str)))
-				return (0);
+				return (-1);
 //			printf("hq spec test 4, str: %s\n", str);
 //			printf("str: |%s|\n", str);
 //			printf("format: |%c|\n", format[i]);
@@ -72,23 +73,26 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 			ft_bzero(str, ft_strlen(str));
 			free(str);
 			str = NULL;
+
+			printf("HQ spec 4\n");
+		
 		}
 		else
 		{
 			i = ft_strlen(format);		// do - c here so only use i ???						// can all this stuff be compressed ????
 			if (!(str = ft_memalloc(sizeof(char) * (i - c + 1))))		// not + 1????
-				return (0);
+				return (-1);
 			ft_bzero(str, i - c + 1);
 			str = ft_memcpy(str, &format[c], i - c);			// hopefully this math is right...
 			if (!pflist_append(/*&buf->*/lst, ft_buf_to_elem(str)))
-				return (0);
+				return (-1);
 //			printf("hq no spec test 1, str: %s\n", str);
 
 			// bzero here ???
 
 		}
 	}
-//	printf("end of hq\n");
+	printf("end of hq\n");
 	return (1);		// something better ????
 }
 

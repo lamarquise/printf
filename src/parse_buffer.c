@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:33:24 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/25 19:18:55 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/26 19:43:58 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,13 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 		i = ft_handle_int(ap, tmp, &p);
 	else if (i <= 8)
 		i = ft_handle_str(ap, tmp, &p);
-	else if (i == 10)
+	else if (i == 9)
 		i = ft_handle_pointer(ap, tmp, &p);
-//	else if (i == 9)
-		// handle nothing	// more complicated than i thought...
+	else if (i == 10)		// assuming no flags, is that correct ????
+	{
+		*tmp = ft_strdup("");
+		i = 1;
+	}
 	else if (i == 11)
 		i = ft_handle_modulo(tmp, &p);
 	else
