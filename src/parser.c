@@ -47,9 +47,10 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 				return (0);
 //			printf("hq spec test 2, str: %s\n", str);
 
-			ft_bzero(str, ft_strlen(str));	// is all this necessary ????
-			free(str);
-			str = NULL;
+			ft_scott_free(&str);
+//			ft_bzero(str, ft_strlen(str));	// is all this necessary ????
+//			free(str);
+//			str = NULL;
 			
 					// might want to check that ret isn't like -1, and if so stop all...
 			i += ft_field_parsing(&format[i], ap, &str);		// returns the length of % and stuff thats been read.

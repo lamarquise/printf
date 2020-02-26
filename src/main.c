@@ -7,16 +7,25 @@ int		main(int ac, char **av)
 	int		a;
 	char	*str;
 	int		b;
+	int		c;
 
 	b = 12345;
 	a = 30;
+	c = 3;
 	if (ac < 0)
 		return (0);
 
 	if (ac == 2)
 		str = av[1];
 
-//	ft_printf("test unsi: |%u|\n", b);
+	ft_printf("test bina: |%B|\n", c);
+
+//	ft_printf("test poin: |%p|\n", b);
+
+	ft_printf("test modu: |%%|\n");
+		
+
+	ft_printf("test unsi: |%u|\n", b);
 //	ft_printf("test octa: |%o|\n", b);
 //	ft_printf("test octa: |%#o|\n", b);
 //	ft_printf("test hexs: |% #x|\n", b);
@@ -29,8 +38,9 @@ int		main(int ac, char **av)
 //	printf("OG a number: |%o|\n", b);
 //	printf("OG a number: |%#o|\n", b);
 
-	printf("pointer: |%p|\n", &a);
-	printf("pointer: |%-15p|\n", NULL);
+//	printf("pointer: |%p|\n", &a);
+//	printf("pointer: |%-5p|\n", NULL);
+//	printf("pointer: |%5p|\n", NULL);
 
 //	printf("OG a number: |% 0.7d|\n", b);
 

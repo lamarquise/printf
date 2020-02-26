@@ -113,6 +113,8 @@ t_pfelem	*ft_buf_to_elem(char *str);
 int			ft_handle_int(va_list ap, char **str, t_param *param);
 int			ft_handle_str(va_list ap, char **str, t_param *param);
 int			ft_handle_modulo(char **str, t_param *p);
+int			ft_handle_pointer(va_list ap, char **str, t_param *p);
+
 
 	// Display
 //int				ft_display_del(t_buf *buf);

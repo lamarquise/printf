@@ -52,26 +52,27 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	p.spec = format[ret];
 
 	
-	i = ft_findchar("diuxXbcspn%", format[ret]);
+	i = ft_findchar("diuxXbBcspn%", format[ret]);
 
-//	printf("field parsing i: %d\n", i);
+	printf("field parsing i: %d\n", i);
 
-	if (i <= 5)						// or using defines ???? I guess i just need to make my own thing as some point....
+	if (i <= 6)						// or using defines ???? I guess i just need to make my own thing as some point....
 		i = ft_handle_int(ap, tmp, &p);
-	else if (i <= 7)
-		i = ft_handle_str(ap, tmp, &p);		// assuming its not -1 ????
-//	else if (i == 8)
-		// handle pointer
+	else if (i <= 8)
+		i = ft_handle_str(ap, tmp, &p);
+	else if (i == 10)
+		i = ft_handle_pointer(ap, tmp, &p);
 //	else if (i == 9)
-		// handle nothing
-//	else if (i == 10)
-//		i = ft_handle_modulo(tmp, &p);
+		// handle nothing	// more complicated than i thought...
+	else if (i == 11)
+		i = ft_handle_modulo(tmp, &p);
 	else
 		i = -1;
 //	printf("field parsing test end\n");
 
-	printf("ret %d\n", ret);
+	printf("parse buff i %d\n", i);
+//	printf("parse buff ret: %d\n", (i == -1) ? -1 : i + ret);
 
-	return (i = -1 ? -1 : i + ret);
+	return ((i == -1) ? -1 : i + ret);
 }
 

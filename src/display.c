@@ -34,7 +34,7 @@ int		ft_display_del(t_pfelem **lst)
 	while (*lst)	// maybe secure, if something fucks up then ret 0....
 	{
 //		printf("\ndisplay test 2\n");
-		write(1, (*lst)->content, ft_strlen((*lst)->content));
+		write(1, (*lst)->content, ft_fstrlen((*lst)->content));
 //		write(1, "\n", 1);
 		tmp = (*lst)->next;
 //		free(lst->content);

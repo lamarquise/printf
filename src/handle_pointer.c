@@ -15,31 +15,35 @@
 int			ft_handle_pointer(va_list ap, char **str, t_param *p)
 {
 	char	*tmp;
+	size_t	len;
 
 	// 0x0 is address null
 
 	// petite protection ???
 
-	tmp = ft_any_base_convert(va_arg(ap, int), "0123456789abcdef");		// what happens if pointer is NULL ??? it should make 0 to then make 0x0
+	printf("pointer test 1\n");
 
+			// ok so we're not quite there yet, segfault and cant seem to retrieve the address....
 
-	// any flags ????
+	tmp = ft_any_base_convert((int)va_arg(ap, void*), "0123456789abcdef");		// what happens if pointer is NULL ??? it should make 0 to then make 0x0
 
-	*str = ft_fstrjoin("0x", tmp);
-	return (1);
-}
+	// flags to handle:
+	// - left justify
+	// width
+	// more ??? Double check
 
-int			ft_handle_binairy(va_list ap, char **str, t_param *p)
-{
-	char	*tmp;
-	int		num;		// int ???
+	tmp = ft_fstrjoin("0x", tmp);	// handle freeing...
+	len = ft_fstrlen(tmp);
+	
+	if (p->width > len)
+	{
+		if (p->flag & 7)
+			*str = ft_fstrjoin(tmp, ft_fill_with(' ', p->width - len));
+		else
+			*str = ft_fstrjoin(ft_fill_with(' ', p->width - len), tmp);
+	}
+	printf("pointer test 2\n");
 
-	// also petite protection...
-
-	num = va_arg(ap, int);
-	tmp = ft_any_base_convert(num, "01");
-
-	*str = tmp; // any flags ????
 
 	return (1);
 }

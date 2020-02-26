@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#includ "printf.h"
+#include "printf.h"
 
 			// no va_list ap
 int		ft_handle_modulo(char **str, t_param *p)
@@ -41,6 +41,8 @@ int		ft_handle_modulo(char **str, t_param *p)
 
 
 	*str = ft_fstrjoin(ft_fstrjoin(pre, "%"), post);
+
+	printf("modulo test 1, str |%s|\n", *str);
 	
 	return (1);		// 1 ???
 }

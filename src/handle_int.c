@@ -88,13 +88,18 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		len = ft_fstrlen(tmp);
 //		printf("its a hex, tmp: |%s|\n", tmp);
 	}
-	else if (p->spec == 'b')
+	else if (p->spec == 'b' || p->spec == 'B')		// add binary here ???
 	{
-		post = va_arg(ap, char*);	// can not free post, not sure why, ok so can't free because its a arg passed to func, so don't worry, just set to NULL...
+		if (p->spec == 'b')
+			post = va_arg(ap, char*);	// can not free post, not sure why, ok so can't free because its a arg passed to func, so don't worry, just set to NULL...
+		else if (p->spec == 'B')	// binary
+			post = ft_strdup("01");
 		num = va_arg(ap, int);
 		if (!(tmp = ft_any_base_convert(num, post)))		// should do this more and securiser in parse_buffer too
 			return (-1);
 		len = ft_fstrlen(tmp);
+		if (p->spec == 'B')
+			free(post);			// do this better ????
 		post = NULL;
 	}
 	else if (p->spec == 'o')		// unsigned ocatal
