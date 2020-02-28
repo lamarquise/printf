@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+	// other flags ???
+
 #include "printf.h"
 
-			// no va_list ap
 int		ft_handle_modulo(char **str, t_param *p)
 {
 	char	*pre;
@@ -21,28 +22,21 @@ int		ft_handle_modulo(char **str, t_param *p)
 
 	pre = NULL;
 	post = NULL;
-	if (p->width > 1)	// there is a width
+	if (p->width > 1)
 	{
 		c = ' ';
-		if (p->flag & 7)	// left justify
-		{
+		if (p->flag & F_MINU)
 			post = ft_fill_with(c, p->width - 1);
-		}
-		else if (p->flag & 1)	// theres a '0'
-		{
+		else if (p->flag & F_ZERO)
 			c = '0';
-		}
 		pre = ft_fill_with(c, p->width - 1);
 	}
-	else if (p->flag & 0x10)
-	{
+	else if (p->flag & F_SPAC)
 		pre = ft_fstrjoin(" ", pre);
-	}
-
 
 	*str = ft_fstrjoin(ft_fstrjoin(pre, "%"), post);
 
-	printf("modulo test 1, str |%s|\n", *str);
+//	printf("modulo test 1, str |%s|\n", *str);
 	
 	return (1);		// 1 ???
 }

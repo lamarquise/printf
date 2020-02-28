@@ -10,22 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+	// need to double check a few things and see about more security
+
 #include "printf.h"
 
-	// kinda like a strjoin		// appends a char
-char		*ft_add_char(char **str, char c)				//void		ft_add_char(char **str, char c)
+char		*ft_add_char(char c, char **str)
 {
 	char	*tmp;
 	int		i;
 
-//	printf("made it to add char 1, str: |%s|, len: %zu\n", *str, ft_fstrlen(*str));
 	tmp = NULL;
 	if ((!str || !*str) && !c)
-		return (NULL);					// use other strlen ???
-	if (!(tmp = malloc(sizeof(char) * (ft_fstrlen(*str) + 2))))
+		return (NULL);
+	if (!(tmp = ft_memalloc(sizeof(char) * (ft_fstrlen(*str) + 2))))
 		return (NULL);
 	i = 0;
-//	printf("made it to add char 2, str: |%s|\n", *str);
 	tmp[i] = c;
 	while (*str && (*str)[i])
 	{
@@ -36,34 +35,29 @@ char		*ft_add_char(char **str, char c)				//void		ft_add_char(char **str, char c
 //	printf("made it to add char 3\n");
 	tmp[i + 1] = '\0';
 	if (str && *str)
-	{
-//		printf("freeing in add char, tmp: |%s|\n", tmp);
-		ft_bzero(*str, ft_fstrlen(*str));
-		free(*str);
-	}
-//	*str = tmp;
+		ft_scott_free(str);
 	return (tmp);
 }
 
 int			ft_base_check(char *base)
 {
 	int		i;
-	int		j;
+	int		ret;
 
-	i = 0;
-	while (base[i])
+	ret = 0;
+	while (base[ret])
 	{
-		j = i + 1;
-		while (base[j])
+		i = ret + 1;
+		while (base[i])
 		{
-			if (base[i] == base[j])		// more conditions ???????
-				return (0);
-			++j;
+			if (base[ret] == base[i])		// more conditions ???????
+				return (-1);
+			++i;
 		}
-		++i;
+		++ret;
 	}
 //	printf("base check 1\n");
-	return (1);
+	return (ret > 1 ? ret : -1);
 }
 						// more than a long ???			// should work ????
 char		*ft_any_base_convert(long nb, char *base)
@@ -71,25 +65,20 @@ char		*ft_any_base_convert(long nb, char *base)
 	int		i;
 	int		size;
 	char	*ret;
-//	char	*tmp;
 
 	i = 0;
 	ret = NULL;
-	size = ft_strlen(base);
-	if (!ft_base_check(base))
+	if ((size = ft_base_check(base)) == -1)
 		return (NULL);
 	while (nb >= size)
 	{
 //		printf("ret in base conv: |%s|\n", ret);
-		ret = ft_add_char(&ret, base[nb % size]);
-//		printf("ret in base 2\n");
+		ret = ft_add_char(base[nb % size], &ret);		// is this the right order ??
+//		printf("ret in base 2\n");						// double check...
 		nb /= size;
-//		ft_bzero(ret, ft_fstrlen(ret));
-//		free(ret);
-//		ret = tmp;
 	}
-	ret = ft_add_char(&ret, base[nb % size]);		// do i need to do it one last time...
-	printf("base convert, ret: |%s|\n", ret);
+	ret = ft_add_char(base[nb % size], &ret);		// do i need to do it one last time...
+//	printf("base convert, ret: |%s|\n", ret);
 	return (ret);
 }
 

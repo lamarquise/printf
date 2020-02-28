@@ -21,8 +21,8 @@ int		ft_latoi(char *str, int *len)
 	a = 0;
 	ret = 0;
 	neg = 1;
-//	if (!*len)
-//		*len = 0;
+	if (!*len)
+		*len = 0;
 	while ((str[a] >= 9 && str[a] <= 13) || str[a] == 32)
 		++a;
 	if (str[a] == 43 || str[a] == 45)
@@ -54,7 +54,7 @@ char	*ft_fill_with(char this, size_t len)
 
 	if (!this || len < 1)
 		return (NULL);
-	if (!(ret = malloc(sizeof(char) * (len + 1))))
+	if (!(ret = ft_memalloc(sizeof(char) * (len + 1))))
 		return (NULL);
 	i = 0;
 	while (i < len)
@@ -76,37 +76,21 @@ size_t	ft_fstrlen(const char *s)
 	return (a);
 }
 
-	// this shit definitly lealks
-
 char	*ft_fstrjoin(char *s1, char *s2)
 {
 	int		a;
 	char	*ret;
-	int		c;
 
 	if (!s1 && !s2)
 		return (NULL);
 	a = ft_fstrlen(s1) + ft_fstrlen(s2) + 1;
-	if (!(ret = (char*)malloc(sizeof(char) * a)))
+	if (!(ret = (char*)ft_memalloc(sizeof(char) * a)))
 		return (NULL);
-	ft_bzero(ret, a);
 	a = 0;
-	c = 0;
-	while (s1 && (s1)[c])
-	{
-		ret[a++] = (s1)[c];
-		++c;
-	}
+	while (s1 && *s1)
+		ret[a++] = *s1++;
 	while (s2 && *s2)
-	{
-		ret[a++] = *s2;
-		++s2;
-	}
+		ret[a++] = *s2++;
 	ret[a] = '\0';
-//	if (s1 && *s1)
-//		free(*s1);
 	return (ret);
 }
-
-
-

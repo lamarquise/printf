@@ -10,13 +10,15 @@ int		main(int ac, char **av)
 	int		c;
 
 	b = 12345;
-	a = 30;
+	a = 15;
 	c = 3;
 	if (ac < 0)
 		return (0);
 
 	if (ac == 2)
 		str = av[1];
+
+//	printf("testing main 1\n");
 
 
 //	ft_printf("[n: |%d|m: |%d|\n]", a, b);
@@ -27,21 +29,26 @@ int		main(int ac, char **av)
 
 //	ft_printf("test n: |%N|\n");
 
+	ft_printf("testing precision: |%.10d|\n", b);
+
 	ft_printf("test n: |%N| again |%N|\n");
 //	printf("test n: |%N| again |%N|\n");
 
 	ft_printf("test poin: |%20p|\n", &b);
 //	printf("OG pointer: |%20p|\n", &b);
 
-	ft_printf("test modu: |%%|\n");
+//	ft_printf("test modu: |%%|\n");
 
 	ft_printf("test unsi: |%u|\n", b);
 //	ft_printf("test octa: |%o|\n", b);
 	ft_printf("test octa: |%#o|\n", b);
 	ft_printf("test hexs: |%#10x|\n", b);
-//	ft_printf("test base: |%b|\n", "0123456789abcdef", b);
+	ft_printf("test base: |%b|\n", "0123456789abcdef", b);
+	ft_printf("test stri: |%*s|\n", a, "hi there");
+//	ft_printf("test bad base: |%b|\n", "0123455", b);
 	
-	ft_printf("[the start, |%*s|\n]", 10, "the end");
+	
+//	ft_printf("[the start, |%*s|\n]", 10, "the end");
 
 //	printf("OG a |% 010%|\n");
 

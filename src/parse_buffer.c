@@ -12,14 +12,7 @@
 
 #include "printf.h"
 
-// Parse_buffer.c takes after a % and figures out where to send shit and 
-// returns whatever
-
-
-//static void		ft_function_factory(void)
-
-
-	// returns the number of char that have been read
+	// shorten... n ???
 
 int		ft_field_parsing(char *format, va_list ap, char **tmp)
 {
@@ -30,51 +23,40 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	i = 0;
 	ret = 0;
 	
-	p.flag = 0;
+	p.flag = 0;		// else where ????
 	p.width = 0;
 	p.precision = 0;
-	
-	// check for %
-
-//	printf("pre flag parsing: format; [%c]\n", *format);
-
-	if (format[ret] != '%')
+	if (format[ret++] != '%')
 		return (-1);
-	++ret;		// maybe not this if do ++format...		// or maybe i do apparently
 
-
-	ret += ft_flag_parsing(&format[ret], &p, ap);	// use ret to move *format?
-
-//	printf("post flag parsing: format; [%c]\n", *format);
-
-
-	// add some security ???
-	p.spec = format[ret];
-
+		// protect ????
+	ret += ft_flag_parsing(&format[ret], &p, ap);
 	
-	i = ft_findchar("diuxXbBcspNn%", format[ret]);
+	if ((i = ft_findchar("diuoxXbBcspNn%", format[ret])) >= 0)
+		p.spec = format[ret];
+	else
+		return (-1);
 
 //	printf("field parsing i: %d\n", i);
 
-	if (i <= 6)						// or using defines ???? I guess i just need to make my own thing as some point....
+	if (i <= 7)
 		i = ft_handle_int(ap, tmp, &p);
-	else if (i <= 8)
+	else if (i <= 9)
 		i = ft_handle_str(ap, tmp, &p);
-	else if (i == 9)
+	else if (i == 10)
 		i = ft_handle_pointer(ap, tmp, &p);
-	else if (i == 10)		// assuming no flags, is that correct ????
+	else if (i == 11)		// assuming no flags, is that correct ????
 	{
 		*tmp = ft_strdup("");
 		i = 1;
 	}
-/*	else if (i == 11)
+/*	else if (i == 12)
 	{
 		*tmp = va_arg(ap, void*);
 	}
-*/	else if (i == 12)
+*/	else if (i == 13)
 		i = ft_handle_modulo(tmp, &p);
-	else
-		i = -1;
+
 //	printf("field parsing test end\n");
 
 //	printf("parse buff i %d\n", i);

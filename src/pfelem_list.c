@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+	// double check some things, free things ???
+	// make an elem_del func ???
+
 #include "printf.h"
 
 t_pfelem	*new_pfelem(char *str)
@@ -25,26 +28,17 @@ t_pfelem	*new_pfelem(char *str)
 	return (new);
 }
 
-
-			// may not need a **lst,  *lst would do, i think...
-
 int		pflist_append(t_pfelem **lst, t_pfelem *new)
 {
 	t_pfelem	*tmp;
 
-//	printf("append list test 1\n");
-
 //	printf("new content: [%s]\n", new->content);
 
-
 	if (!lst || !new)
-		return (0);
-//	printf("append list test 1.1\n");
+		return (-1);
 	if (!(*lst))
 	{
-//		printf("append list test 1.2\n");
 		*lst = new;
-//		printf("append list test 1.5\n");
 		return (1);
 	}
 	tmp = *lst;
@@ -54,44 +48,22 @@ int		pflist_append(t_pfelem **lst, t_pfelem *new)
 	new->next = NULL;		// necessary???
 
 //	printf("append list test 2\n");
-
 	return (1);
 }
 
-t_pfelem	*ft_buf_to_elem( char *str)			// not constant char any more
+t_pfelem	*ft_buf_to_elem(char *str)
 {
 	t_pfelem	*new;
-	char		*cp;		// more efficeint to use a var for len
-	int			l;
+	char		*cp;
 
 //	printf("buf to elem test 1\n");
 
-	l = ft_strlen(str);
-	if (!(cp = (char*)ft_memalloc(sizeof(char) * (l + 1))))
+	if (!(cp = (char*)ft_memalloc(sizeof(char) * (ft_fstrlen(str) + 1))))
 		return (NULL);
-	new = new_pfelem(ft_strcpy(cp, str)/*, l*/);// something more secure ???
+	new = new_pfelem(ft_strcpy(cp, str));	// something more secure ???
 
-	// OR i could do the free of str here ???	
+	// could actually scott free str here...
 
 //	printf("buf to elem test 2, str: %s\n", str);
-
 	return (new);
-
-
 }
-/*
-int			ft_del_pflist(t_pfelem **lst)
-{
-	t_pfelem	*tmp;
-
-	
-
-
-
-}
-
-*/
-
-
-
-

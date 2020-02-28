@@ -12,6 +12,11 @@
 
 #include "printf.h"
 
+
+	// This file is gonna need some work...
+
+
+
 /*
 something		ft_size_stuff()
 {
@@ -54,7 +59,6 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 
 	
-
 	
 
 
@@ -129,26 +133,15 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	// '#' 0x in front of hex numbers
 
 
-
-//	printf("width: %zu, precision: %zu\n", p->width, p->precision);
-
 	wlen = (p->width <= len ? 0 : p->width - len);
 	plen = (p->precision <= len ? 0 : p->precision - len);
 
-//	printf("wlen: %zu, plen: %zu\n", wlen, plen);
-
-		// # was 2			// + but only if not neg ???		// space but only sometimes ??? also will hex work ???
-	i = (p->flag & F_HASH) /* * 2 + (p->flag & 4) + (p->flag & 0x10)*/ /*+ 1*/;	// more things that add ????
-
-//	printf("the mysterious i: %zu\n", i);
-
-	// i is all the things that are counted by width but not by precision...
 
 	// how to adapt this middle out system to other specs, like the unsigned ones ???? 
 
-	if (plen)		// adding 0s from precision
-		pre = ft_fill_with('0', plen);		// could make this a sep func so that can take into acount if a num is a float or whatever....
-	if (p->flag & F_HASH)	// was 3 thers a # so add 0x
+	if (plen)
+		pre = ft_fill_with('0', plen);
+	if (p->flag & F_HASH)
 	{
 		if (p->spec == 'x')
 			pre = ft_fstrjoin("0x", pre);
@@ -165,14 +158,13 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	{
 //		printf("wlen > plen\n");
 		c = ' ';
-		if (p->flag & F_ZERO && !(p->flag & F_MINU))	// was 1 and 7theres a 0 and theres no -
+		if (p->flag & F_ZERO && !(p->flag & F_MINU))	// was 1 and 7 there
 			c = '0';
 		post = ft_fill_with(c, wlen - plen - i);
-		if (!(p->flag & F_MINU))    // there is not a -
+		if (!(p->flag & F_MINU))
 		{
 			pre = ft_fstrjoin(post, pre);
 			ft_scott_free(&post);
-			//bzero post and free it ???
 		}
 	}
 	else if (p->flag & F_SPAC)
@@ -186,7 +178,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 //	printf("handle int test 4, str: |%s|\n", *str);
 
-	return (1);			// better ret ????
+	return (1);
 }
 
 

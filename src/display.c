@@ -12,9 +12,6 @@
 
 #include "printf.h"
 
-		// displays and deletes
-		// could easily add a fd arg
-
 int		ft_display_del(int fd, t_pfelem **lst)
 {
 	int			c;
@@ -34,7 +31,7 @@ int		ft_display_del(int fd, t_pfelem **lst)
 		if ((*lst)->content[0] == '\0')
 		{
 			str = ft_itoa(c);
-			write(fd, str, ft_fstrlen(str));	// will it work ????
+			write(fd, str, ft_fstrlen(str));
 			c = ft_fstrlen(str);
 			ft_scott_free(&str);
 		}

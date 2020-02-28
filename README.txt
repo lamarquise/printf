@@ -1,9 +1,7 @@
 
 
-Basically everything has changed, i think
 
-
-Ft_Printf.c:
+Ft_Printf.c
 
 ft_printf():
 Simple and straight forward, it inits a few variables, the linked list,
@@ -11,14 +9,14 @@ and does some basic checks before calling the first bulky func.
 
 
 
-Pfelem_List.c:
+Pfelem_List.c
 
 new_pfelem():
 Creates a new element of t_pfelem structure type.
 
 pfelem_append():
 Appends a list of t_pfelem type, does not create its own new elem, that
-is passed as a param.
+is passed as a param. Easier to send a **lst rather than *lst.
 
 ft_buf_to_elem():
 Takes a string (sourced from *format) and creates a new elem containing
@@ -26,7 +24,7 @@ that str.
 
 
 
-Parser.c:
+Parser.c
 
 ft_HQ():
 Does the majority of the work of going though *format, includes a loop
@@ -35,7 +33,7 @@ linked list.
 
 
 
-Parse_Buffer.c:
+Parse_Buffer.c
 
 ft_field_parsing():
 Called from ft_HQ(), this function takes *format after a % has been reached,
@@ -46,7 +44,7 @@ been read after a %.
 
 
 
-Parse_flags.c:
+Parse_Flags.c
 
 ft_flag_parsing():
 Called from ft_field_parsing() to recover all but the specifiers, uses
@@ -60,61 +58,106 @@ ft_get_width():
 Called from ft_flag_parsing() once a non 0 digit is reached, it finds
 and stores the value of the width.
 
-Do i want a function that handles casting here too ???
-
+ft_get_size():
+Called from ft_flag_parsing() when any of lhzj are reached, not sure how
+it stores them yet...
 
 
 
 HANDLER FUNCTIONS
 
-Handle_Int.c:
+Handle_Int.c
 
-?
+ft_handle_int():
+Called from ft_field_parsing() after the flags, width, precision and size have
+been parsed.
+First it discerns between specifiers ( diuxXbB ) and collects the value from
+va_list.
+Then works through the specifiers aprefixing or appending tmp as need be
+using a middle out sort of methode (ie, start with tmp, and add to front and
+back). Uses a special ft_fstrjoin() and ft_fill_with(), for this.
+Finally it sets the final result = *str.
 
 
 Handle_Str.c
 
-?
+ft_handle_str():
+Called from ft_field_parsing(), very similar to ft_handle_int(), it handles
+( cs ) specifiers, basically the same structure for dealing with flags.
+
+
+Handle_Pointer.c
+
+ft_handle_pointer():
+Called from ft_field_parsing(), very similar to ft_handle_int(), handles ( p )
+
+
+Handle_Modulo.c
+
+ft_handle_modulo():
+Called from ft_field_parsing(), very similar to ft_handle_int(), handles ( % )
+
+
+Base_Conversion.c
+
+ft_add_char():
+Basically a strjoin() but prefixes a single char to a *str, mallocs a new str
+and frees the old one if possible.
+Used by ft_any_base_convert() to prefix its result.
+It has a char* return so we can secure the malloc.
+
+ft_base_check():
+Checks if a base is valid, no repeating char, also returns the size of the base
+
+ft_any_base_convert():
+Called in ft_handle_int() for multiple specifiers, converts any int to a given
+base, returning a *str.
+
+
+Display.c
+
+ft_display_del():
+Called from ft_printf() once the whole *format has been processed successfully,
+it goes through the linked list that has been created to contain the strings
+and prints them before freeing the element of the linked list.
+It also handles the ( N ) specifier, counting the number of char printed and
+displaying that number should an element containing only '\0' be come accross.
+
+
+Extra.c
+
+ft_latoi():
+Called from Parse_Flags.c, it is a regular atoi which also counts the string
+size of the number it is converting from a string to an int, this number is
+stored in an int* passed as a param.
+
+ft_scott_free():
+A short cut function, it takes a **str and bzero, free and sets it to NULL.
+
+ft_fill_with():
+Mallocs an amount of memory + 1 and fills it with the requested char and
+NULL terminates.
+IE it creates a str x long of a given char.
+
+ft_fstrlen():
+A secure version of strlen(), can take a NULL pointer passed in parameter.
+
+ft_fstrjoin():
+A secure version of strjoin(), can take either pointers sent in param being
+NULL. Not the same as in GNL, does not free anything...
+
+
+
+
+I think that's it.
+
+Oh yea, the Makefile is dope tho...
 
 
 
 
 
 
-ft_printf is a function
-
-Files:
-felem_list.c
-ft_printf.c
-initflags.c
-
-
-Starts at ft_printf.c
-Recieves the format string and the arguments
-The argmuments must be processes using va_args stuff (not sure how yet)
-The format string is processed by func format_specifier which returns
-a filled element of felem type to func ft_printf
-ft_printf calls functions to check the element and append it to flst LL
-
-format_specifier starts by looking for %
-if it finds a % it looks for the specifier
-Things will happen from there to make sure the specifier is managed and 
-linked to correct argument passed to ft_printf
-If no %, reads sting until end or %, takes section and puts in a new elem
-to be returned to ft_printf
-
-
-felem_list.c
-Contains new_felem and flist_append
-The first creates and fills new felems returning them
-The second takes the flist and new felem and appends one to the other
-
-
-initflags.c
-Contains a flag check (incomplete)
-and
-a function which initiates a static var table of all the flag types,
-or at least i think that's what it should do.
 
 
 

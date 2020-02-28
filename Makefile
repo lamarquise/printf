@@ -31,12 +31,10 @@ SDIR = src/
 LIBFTDIR = libft/
 LIBFT = $(LIBFTDIR)libft.a
 LIBFTINC = $(LIBFTDIR)
-CFLAGS = -Wall -Wextra -Werror -I$(IDIR) -I$(LIBFTINC) #-MMD -MP
+CFLAGS = -Wall -Wextra -Werror -I$(IDIR) -I$(LIBFTINC)
 
 SRCS = $(addprefix $(SDIR), $(FILES))
 INCS = $(addprefix $(IDIR), $(IFILES))
-# OBJS = $(SRCS:.c=.o)
-
 
 ODIR = obj/
 OBJ_NAME = $(FILES:.c=.o)
@@ -49,19 +47,14 @@ $(LIBFT):
 	make bonus -C $(LIBFTDIR) libft.a
 
 $(NAME): $(OBJS) $(LIBFT) $(IDIR)
-	printf "$(_GREEN)\r\33[2K\r$(NAME) created  😎\n$(_END)"
 	cp $(LIBFT) $@
 	ar rsc $@ $(OBJS)
-
-
+	printf "$(_GREEN)\r\33[2K\r$(NAME) created  😎\n$(_END)"
 
 $(ODIR)%.o: $(SDIR)%.c $(IDIR)
 	mkdir -p $(ODIR)
 	$(CC) -o $@ -c $< $(CFLAGS)
 	printf "$(_CYAN)\r\33[2K\rCompling $@$(_END)"
-
-
-
 
 clean:
 	make -C $(LIBFTDIR) $@
@@ -75,13 +68,20 @@ fclean: clean
 re: fclean all
 
 test: all
-	gcc -L. -lftprintf -Iinclude -Ilibft ./main.c -o test
+	gcc $(CFLAGS) -L. -lftprintf ./main.c -o test
+	echo "$(_CYAN)Test ready  😬$(_END)"
 
 testl: all
-	gcc -L. -lftprintf -Iinclude -Ilibft ./main.c -o testl -g
+	gcc $(CFLAGS) -L. -lftprintf ./main.c -o testl -g
+	echo "$(_CYAN)Valgrind Test ready  😬$(_END)"
 
 tests: all
-	gcc -Wall -Wextra -Werror -L. -lftprintf -Iinclude -Ilibft ./main.c -o tests -g3 -fsanitize=address
+	gcc $(CFLAGS) -L. -lftprintf ./main.c -o tests -g3 -fsanitize=address
+	echo "$(_CYAN)Fsanitize Test ready  😬$(_END)"
+
+tclean: fclean
+	rm -rf testl.dSYM tests.dSYM test tests testl
+	echo "$(_RED)Test files deleted  😱$(_END)"
 
 .PHONY: all clean fclean re
 
@@ -98,6 +98,5 @@ _PURPLE=$ \033[35m
 _CYAN=$ \033[36m
 _WHITE=$ \033[37m
 _END=$ \033[0m
-
 
 .SILENT:
