@@ -23,6 +23,7 @@ int		main(int ac, char **av)
 
 //	ft_printf("test bina: |%B|\n", c);
 
+//	ft_printf("test n: |%n|\n");
 
 	ft_printf("test n: |%n| again |%n|\n");
 

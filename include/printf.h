@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:13:46 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/26 17:24:26 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/27 18:15:14 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,12 @@ typedef struct	s_buf			// obsolete unless i decide to use the buffer thing
 }				t_buf;
 
 
-typedef int		(*t_ftc)(t_buf*, va_list, t_param*);
+//typedef int		(*t_ftc)(t_buf*, va_list, t_param*);
 
 
 int			ft_printf(const char *format, ...);
+int			ft_fdprintf(int fd, const char *format, ...);
+
 
 	// Parsing		// do i want the const ???
 int			ft_hq(/*const */char *format, va_list ap, /*t_buf *buf*/t_pfelem **lst);
@@ -109,8 +111,7 @@ int			ft_handle_pointer(va_list ap, char **str, t_param *p);
 
 
 	// Display
-//int				ft_display_del(t_buf *buf);
-int			ft_display_del(t_pfelem **lst);
+int			ft_display_del(int fd, t_pfelem **lst);
 
 
 	// Extra

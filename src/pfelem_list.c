@@ -6,30 +6,22 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:48:49 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/21 16:56:57 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/27 18:45:21 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-t_pfelem	*new_pfelem(char *str)/*, size_t size, int pos), t_spec *spec)*/
+t_pfelem	*new_pfelem(char *str)
 {
 	t_pfelem	*new;
-
-//	printf("new elem test 1\n");
 
 	if (!str)
 		return (NULL);
 	if (!(new = (t_pfelem*)ft_memalloc(sizeof(t_pfelem))))
 		return (NULL);
-	new->content = str;		// the actual contents
-//	new->size = size;		// basically len
-//	new->pos = pos;			// in the format string
-//	new->spec = spec;		// the specifiers, 
+	new->content = str;
 	new->next = NULL;
-
-//	printf("new elem test 2, content: [%s]\n", new->content);
-
 	return (new);
 }
 
@@ -87,6 +79,19 @@ t_pfelem	*ft_buf_to_elem( char *str)			// not constant char any more
 
 
 }
+/*
+int			ft_del_pflist(t_pfelem **lst)
+{
+	t_pfelem	*tmp;
+
+	
+
+
+
+}
+
+*/
+
 
 
 

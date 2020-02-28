@@ -1,66 +1,97 @@
-#**************************************************************************** #
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tlamart <tlamart@student.42.fr>            +#+  +:+       +#+         #
+#    By: erlazo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/04/24 15:44:24 by tlamart           #+#    #+#              #
-#    Updated: 2020/02/19 17:52:24 by erlazo           ###   ########.fr        #
+#    Created: 2020/02/27 15:37:26 by erlazo            #+#    #+#              #
+#    Updated: 2020/02/27 18:38:51 by erlazo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = printf
-
-SRC_PATH =	src/
-SRC_NAME =	main.c \
-			ft_printf.c \
+CC = gcc
+FILES =		ft_printf.c \
 			parser.c \
 			parse_buffer.c \
+			parse_flags.c \
 			pfelem_list.c \
 			handle_int.c \
 			handle_str.c \
+			handle_modulo.c \
+			handle_pointer.c \
+			base_conversion.c \
 			display.c \
 			extra.c \
-			
-			
 
-SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
+IFILES = printf.h
+NAME = libftprintf.a
+IDIR = include/
+SDIR = src/
+LIBFTDIR = libft/
+LIBFT = $(LIBFTDIR)libft.a
+LIBFTINC = $(LIBFTDIR)
+CFLAGS = -Wall -Wextra -Werror -I$(IDIR) -I$(LIBFTINC) #-MMD -MP
 
-OBJ_PATH = obj/
-OBJ_NAME = $(SRC_NAME:.c=.o)
-OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
-
-
-#	// not sure this stuff is right ???
-
-INC = -I include -I libft
-HEADER = include/printf.h
-LIB_PATH = -L libft
-LIB = -lft
+SRCS = $(addprefix $(SDIR), $(FILES))
+INCS = $(addprefix $(IDIR), $(IFILES))
+# OBJS = $(SRCS:.c=.o)
 
 
-CC = clang
-CFLAGS = -Wall -Wextra -Werror
+ODIR = obj/
+OBJ_NAME = $(FILES:.c=.o)
+OBJS = $(addprefix $(ODIR),$(OBJ_NAME))
+
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-#	make -C libft
-	$(CC) -o $@ $^ $(LIB_PATH) $(LIB) $(FW)
+$(LIBFT):
+	make bonus -C $(LIBFTDIR) libft.a
 
-$(OBJ_PATH)%.o : $(SRC_PATH)%.c $(HEADER)
-	@mkdir -p $(OBJ_PATH)
-	$(CC)  $(INC) -o $@ -c $<
+$(NAME): $(OBJS) $(LIBFT) $(IDIR)
+	printf "$(_GREEN)\r\33[2K\r$(NAME) created  😎\n$(_END)"
+	cp $(LIBFT) $@
+	ar rsc $@ $(OBJS)
+
+
+
+$(ODIR)%.o: $(SDIR)%.c $(IDIR)
+	mkdir -p $(ODIR)
+	$(CC) -o $@ -c $< $(CFLAGS)
+	printf "$(_CYAN)\r\33[2K\rCompling $@$(_END)"
+
+
+
 
 clean:
-#	make clean -C libft
-	rm -rf $(OBJ_PATH)
+	make -C $(LIBFTDIR) $@
+	rm -rf $(ODIR)
 
 fclean: clean
-#	make fclean -C libft
-	rm -rf $(NAME)
+	make -C $(LIBFTDIR) $@
+	rm -f $(NAME)
+	echo "$(_RED)$(NAME) Deleted  😱$(_END)"
 
 re: fclean all
 
+test: all
+	gcc -L. -lftprintf -Iinclude -Ilibft ./main.c -o test
+
 .PHONY: all clean fclean re
+
+##################
+##    COLORS    ##
+##################
+
+_GREY=$ \033[30m
+_RED=$ \033[31m
+_GREEN=$ \033[32m
+_YELLOW=$ \033[33m
+_BLUE=$ \033[34m
+_PURPLE=$ \033[35m
+_CYAN=$ \033[36m
+_WHITE=$ \033[37m
+_END=$ \033[0m
+
+
+.SILENT:

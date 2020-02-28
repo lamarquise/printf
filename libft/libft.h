@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 14:05:41 by erlazo            #+#    #+#             */
-/*   Updated: 2019/05/29 19:18:23 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/27 17:38:33 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,11 @@
 # include <stdlib.h>
 # include <string.h>
 
-# define DELIM '\n'
-
 typedef struct	s_list
 {
 	void			*content;
-	size_t			content_size;
 	struct s_list	*next;
 }				t_list;
-
-typedef struct	s_glst
-{
-	char			*s;
-	int				fd;
-	struct s_glst	*next;
-}				t_glst;
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
@@ -73,11 +63,11 @@ char			*ft_strmap(char const *s, char (*f)(char));
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int				ft_strequ(char const *s1, char const *s2);
 int				ft_strnequ(char const *s1, char const *s2, size_t n);
-char			*ft_strsub(char const *s, unsigned int start, size_t len);
+char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
-char			*ft_strtrim(char const *s);
-char			**ft_strsplit(char const *s, char c);
-char			*ft_itoa(int n);
+char			*ft_strtrim(char const *s1, char const *set);
+char			**ft_split(char const *s, char c);
+char			*ft_itoa(long long n);
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
 void			ft_putendl(char const *s);
@@ -86,12 +76,15 @@ void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
-t_list			*ft_lstnew(void const *content, size_t content_size);
-void			ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
-void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
-void			ft_lstadd(t_list **alst, t_list *new);
-void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
-t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+t_list			*ft_lstnew(void *content);
+void			ft_lstdelone(t_list *lst, void (*del)(void*));
+void			ft_lstclear(t_list **lst, void (*del)(void*));
+void			ft_lstadd_front(t_list **alst, t_list *new);
+void			ft_lstiter(t_list *lst, void (*f)(void*));
+t_list			*ft_lstlast(t_list *lst);
+t_list			*ft_lstmap(t_list *lst, void *(*f)(void*),
+				void (*del)(void*));
+int				ft_lstsize(t_list *lst);
 void			ft_print_elem(t_list *elem);
 void			ft_lstprint(t_list *lst);
 t_list			*ft_lstgen(char *s, char c);
@@ -99,18 +92,14 @@ int				ft_isspace(char c);
 void			ft_strswap(char **s1, char **s2);
 void			ft_lstrev(t_list **lst);
 int				ft_findchar(char *str, char c);
-int				gnl(char **l, char **s, int b_size, int fd);
-
-// Tibo's lib
-
+size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
+void			*ft_calloc(size_t count, size_t size);
+void			ft_lstdel_cnt(void *content);
 void			ft_putnbrnl(int nb);
-int				ft_lstnl(t_list **list, const void *content,\
-				size_t content_size);
-t_list			*ft_lstcreate(void *content, size_t content_size);
-int				ft_lstlen(t_list *list);
-void			ft_lstdel_cnt(void *content, size_t content_size);
-void			ft_lstappend(t_list **lst, t_list *new);
+int				ft_lstnl(t_list **list, const void *content);
+void			ft_lstdel_cnt(void *content);
+void			ft_lstadd_back(t_list **alst, t_list *new);
 void			ft_lstcut_next(t_list **lst);
-t_list			*ft_lstset(void *content, size_t content_size, size_t len);
+t_list			*ft_lstset(void *content, size_t len);
 
 #endif

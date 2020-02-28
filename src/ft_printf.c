@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:29:04 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/26 16:25:51 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/27 19:02:04 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,39 @@ static void		ft_funcfactory(void)
 
 	// we are going to start by assuming all printing happens on Stdout
 
+
+int		ft_fdprintf(int fd, const char *format, ...)
+{
+	int			ret;
+	va_list		ap;
+	t_pfelem	*lst;
+
+	lst = NULL;
+	va_start(ap, format);
+	if ((ret = ft_hq((char*)format, ap, &/*buf*/lst)) == 1)
+		ret = ft_display_del(fd, &lst);	// fd_display ????
+//	else
+		// error ???
+
+	va_end(ap);
+	return (ret);
+
+}
+
 int		ft_printf(const char *format, ...)
 {
 	int			ret;
 	va_list		ap;
-//	t_buf		buf;
 	t_pfelem	*lst;
 
 	printf("main test\n");
 	
 	lst = NULL;
-//	ft_memset(&buf, 0, sizeof(buf));
-//	buf.lst = lst;
-//	buf.content = NULL;
 	va_start(ap, format);
 	if ((ret = ft_hq((char*)format, ap, &/*buf*/lst)) == 1)
-		ret = ft_display_del(/*&buf.*/&lst);
-//		ret = ft_display_del(&buf);// or do i have to link through buf ???
-							// call &buf.lst if want to do the old way...
-
-	// else something ????
-
+		ret = ft_display_del(1, &lst);
+	else
+		ft_putnbr(ret);
 	va_end(ap);
 	return (ret);
 }
