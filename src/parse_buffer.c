@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:33:24 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/27 18:51:50 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/28 19:11:29 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	
 	// check for %
 
-	printf("pre flag parsing: format; [%c]\n", *format);
+//	printf("pre flag parsing: format; [%c]\n", *format);
 
 	if (format[ret] != '%')
 		return (-1);
@@ -52,9 +52,9 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	p.spec = format[ret];
 
 	
-	i = ft_findchar("diuxXbBcspn%", format[ret]);
+	i = ft_findchar("diuxXbBcspNn%", format[ret]);
 
-	printf("field parsing i: %d\n", i);
+//	printf("field parsing i: %d\n", i);
 
 	if (i <= 6)						// or using defines ???? I guess i just need to make my own thing as some point....
 		i = ft_handle_int(ap, tmp, &p);
@@ -67,13 +67,17 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 		*tmp = ft_strdup("");
 		i = 1;
 	}
-	else if (i == 11)
+/*	else if (i == 11)
+	{
+		*tmp = va_arg(ap, void*);
+	}
+*/	else if (i == 12)
 		i = ft_handle_modulo(tmp, &p);
 	else
 		i = -1;
 //	printf("field parsing test end\n");
 
-	printf("parse buff i %d\n", i);
+//	printf("parse buff i %d\n", i);
 //	printf("parse buff ret: %d\n", (i == -1) ? -1 : i + ret);
 
 	return ((i == -1) ? -1 : i + ret);

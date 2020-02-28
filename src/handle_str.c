@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 20:05:43 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/23 19:07:02 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/28 19:23:16 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 	if (p->spec == 'c')
 	{
 //		printf("found a c\n");
-		if (!(tmp = malloc(sizeof(char) * 1)))
+		if (!(tmp = ft_memalloc(sizeof(char) * 1)))
 			return (-1);
 		*tmp = (char)va_arg(ap, int);	// correct casting ???		will it work for the whiles ???? // has to be an int for some reason....
 		len = 1;
@@ -39,8 +39,8 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 	}
 	else if (p->spec == 's')
 	{
-		tmp =  va_arg(ap, char*);
-		len = ft_strlen(tmp);
+		tmp = va_arg(ap, char*);
+		len = ft_fstrlen(tmp);
 	}
 
 
@@ -54,7 +54,7 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 
 //	printf("wlen: %zu\n", wlen);
 
-	if (!(*str = malloc(sizeof(char) * (wlen + len + 1))))
+	if (!(*str = ft_memalloc(sizeof(char) * (wlen + len + 1))))
 		return (0);
 
 	// would it be easier to use a join ???

@@ -19,26 +19,29 @@ int		main(int ac, char **av)
 		str = av[1];
 
 
+//	ft_printf("[n: |%d|m: |%d|\n]", a, b);
+
 //	printf("%s", "\x98\xA0\n");
 
-//	ft_printf("test bina: |%B|\n", c);
+	ft_printf("test bina: |%B|\n", c);
 
-//	ft_printf("test n: |%n|\n");
+//	ft_printf("test n: |%N|\n");
 
-	ft_printf("test n: |%n| again |%n|\n");
+	ft_printf("test n: |%N| again |%N|\n");
+//	printf("test n: |%N| again |%N|\n");
 
-//	ft_printf("test poin: |%20p|\n", &b);
+	ft_printf("test poin: |%20p|\n", &b);
 //	printf("OG pointer: |%20p|\n", &b);
 
-//	ft_printf("test modu: |%%|\n");
+	ft_printf("test modu: |%%|\n");
 
-//	ft_printf("test unsi: |%u|\n", b);
+	ft_printf("test unsi: |%u|\n", b);
 //	ft_printf("test octa: |%o|\n", b);
-//	ft_printf("test octa: |%#o|\n", b);
-//	ft_printf("test hexs: |%#10x|\n", b);
+	ft_printf("test octa: |%#o|\n", b);
+	ft_printf("test hexs: |%#10x|\n", b);
 //	ft_printf("test base: |%b|\n", "0123456789abcdef", b);
 	
-//	ft_printf("[the start, |%*s|\n]", 10, "the end");
+	ft_printf("[the start, |%*s|\n]", 10, "the end");
 
 //	printf("OG a |% 010%|\n");
 
@@ -65,7 +68,7 @@ int		main(int ac, char **av)
 //	ft_printf("the start, [%    s] [%   d] the end\n", "a number:", ft_atoi("16"));
 
 //	ft_printf("printing hex: %x\n", ft_atoi(av[1]));
-
+//	system("leaks tests");
 	return (0);
 }
 

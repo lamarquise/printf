@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:29:04 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/27 19:02:04 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/28 19:10:40 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int		ft_fdprintf(int fd, const char *format, ...)
 
 	lst = NULL;
 	va_start(ap, format);
-	if ((ret = ft_hq((char*)format, ap, &/*buf*/lst)) == 1)
-		ret = ft_display_del(fd, &lst);	// fd_display ????
+	if ((ret = ft_hq((char*)format, ap, &lst)) == 1)
+		ret = ft_display_del(fd, &lst);
 //	else
 		// error ???
 
@@ -71,11 +71,11 @@ int		ft_printf(const char *format, ...)
 	va_list		ap;
 	t_pfelem	*lst;
 
-	printf("main test\n");
+//	printf("main test\n");
 	
 	lst = NULL;
 	va_start(ap, format);
-	if ((ret = ft_hq((char*)format, ap, &/*buf*/lst)) == 1)
+	if ((ret = ft_hq((char*)format, ap, &lst)) == 1)
 		ret = ft_display_del(1, &lst);
 	else
 		ft_putnbr(ret);

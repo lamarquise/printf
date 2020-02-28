@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 19:56:08 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/27 18:06:26 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/02/28 19:11:02 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	num = 0;
 
 
-	printf("handle int test 1\n");
+//	printf("handle int test 1\n");
 
 
 	
@@ -106,7 +106,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		len = ft_fstrlen(tmp);
 	}
 
-	printf("handle int test 3\n");
+//	printf("handle int test 3\n");
 
 	if (num < 0)		// if it's neg same as if flag + so set to 1
 		p->flag |= 4;		// ????		// is 4 equivalent to (1 << 3) ?????? no idea, but i hope so...
@@ -140,7 +140,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		// # was 2			// + but only if not neg ???		// space but only sometimes ??? also will hex work ???
 	i = (p->flag & F_HASH) /* * 2 + (p->flag & 4) + (p->flag & 0x10)*/ /*+ 1*/;	// more things that add ????
 
-	printf("the mysterious i: %zu\n", i);
+//	printf("the mysterious i: %zu\n", i);
 
 	// i is all the things that are counted by width but not by precision...
 
@@ -163,7 +163,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	}
 	if (wlen > plen)	// if - then ignor 0 meaning will put spaces on right, else puts 0s on left
 	{
-		printf("wlen > plen\n");
+//		printf("wlen > plen\n");
 		c = ' ';
 		if (p->flag & F_ZERO && !(p->flag & F_MINU))	// was 1 and 7theres a 0 and theres no -
 			c = '0';
@@ -180,11 +180,11 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		pre = ft_fstrjoin(" ", pre);
 	}
 
-	printf("handle int: pre |%s|, tmp |%s|, post |%s|\n", pre, tmp, post);
+//	printf("handle int: pre |%s|, tmp |%s|, post |%s|\n", pre, tmp, post);
 	
 	*str = ft_fstrjoin(ft_fstrjoin(pre, tmp), post);
 
-	printf("handle int test 4, str: |%s|\n", *str);
+//	printf("handle int test 4, str: |%s|\n", *str);
 
 	return (1);			// better ret ????
 }

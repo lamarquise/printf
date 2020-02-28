@@ -6,7 +6,7 @@
 #    By: erlazo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/27 15:37:26 by erlazo            #+#    #+#              #
-#    Updated: 2020/02/27 18:38:51 by erlazo           ###   ########.fr        #
+#    Updated: 2020/02/28 19:06:42 by erlazo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,6 +76,12 @@ re: fclean all
 
 test: all
 	gcc -L. -lftprintf -Iinclude -Ilibft ./main.c -o test
+
+testl: all
+	gcc -L. -lftprintf -Iinclude -Ilibft ./main.c -o testl -g
+
+tests: all
+	gcc -Wall -Wextra -Werror -L. -lftprintf -Iinclude -Ilibft ./main.c -o tests -g3 -fsanitize=address
 
 .PHONY: all clean fclean re
 
