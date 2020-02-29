@@ -19,6 +19,9 @@
 	// need to figure out how to get + or - to be joined to front of 0s if
 	// there are any but not before spaces
 
+	// also, same as for handle_str()
+	// need to get precision == 0 working, and prolly also if a null sent...
+
 
 /*
 something		ft_size_stuff()
