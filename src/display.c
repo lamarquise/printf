@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
+	// need to fix %N
+
 #include "printf.h"
 
 int		ft_display_del(int fd, t_pfelem **lst)
@@ -30,7 +33,7 @@ int		ft_display_del(int fd, t_pfelem **lst)
 		return (-1);
 	while (*lst)	// maybe secure, if something fucks up then ret 0....
 	{
-		if ((*lst)->content[0] == '\0')
+/*		if ((*lst)->content[0] == '\0')	// needs to be fixed...
 		{
 			str = ft_itoa(c);
 			write(fd, str, ft_fstrlen(str));
@@ -40,11 +43,13 @@ int		ft_display_del(int fd, t_pfelem **lst)
 		}
 		else
 		{
+*/	//		printf("[lst cont: |%s|\n]", (*lst)->content);
+
 			len = ft_fstrlen((*lst)->content);
 			write(fd, (*lst)->content, len);
 			c += len;
 			ret += len;
-		}
+//		}
 		tmp = (*lst)->next;
 		free((*lst)->content);
 		free(*lst);

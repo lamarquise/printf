@@ -16,6 +16,9 @@
 	// This file is gonna need some work...
 
 
+	// need to figure out how to get + or - to be joined to front of 0s if
+	// there are any but not before spaces
+
 
 /*
 something		ft_size_stuff()
@@ -46,6 +49,8 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	size_t		plen;
 	size_t		i;
 
+	int			neg;
+
 	tmp = NULL;
 	pre = NULL;
 	post = NULL;
@@ -54,6 +59,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	i = 0;
 	num = 0;
 
+	neg = 0;
 
 //	printf("handle int test 1\n");
 
@@ -65,9 +71,15 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	if (p->spec == 'd' || p->spec == 'i')	// regular ints i think
 	{
 		num = va_arg(ap, int);		// may need to change this to cast as not an int if l or ll or h or ....	// same for all following....
+
+		if (num < 0)
+		{
+			neg = -1;
+			num = - num;
+		}
 		tmp = ft_itoa(num);		// special itoa ???
 
-		len = ft_fstrlen(tmp);
+		len = ft_fstrlen(tmp) - neg;
 //		printf("handle int test 2 its an int\n");
 
 	}
@@ -112,8 +124,8 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 //	printf("handle int test 3\n");
 
-	if (num < 0)		// if it's neg same as if flag + so set to 1
-		p->flag |= 4;		// ????		// is 4 equivalent to (1 << 3) ?????? no idea, but i hope so...
+	if (neg < 0)		// if it's neg same as if flag + so set to 1
+		p->flag |= (1 << 2);// is 4 equivalent to (1 << 3) ?????? no idea, but i hope so...
 
 
 	// "0#+- .123456789*hljz"
@@ -134,7 +146,10 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 
 
 	wlen = (p->width <= len ? 0 : p->width - len);
-	plen = (p->precision <= len ? 0 : p->precision - len);
+
+
+		// precision does not take + or - into acount
+	plen = (p->precision <= (len + neg) ? 0 : p->precision - (len + neg));
 
 
 	// how to adapt this middle out system to other specs, like the unsigned ones ???? 
@@ -150,15 +165,19 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		else if (p->spec == 'o')
 			pre = ft_fstrjoin("0", pre);
 	}
-	if (p->flag & F_PLUS)	// was 4 theres a + or its negative		// has to be before the - one		// adding a sign
+	if (p->flag & F_PLUS)	// was 4 theres a + or its negative
 	{
-//		pre = ft_fstrjoin((num < 0 ? '-' : '+'), pre);
+		pre = ft_fstrjoin(neg < 0 ? "-" : "+", pre);
 	}
+
+	// if width and prec but width bigger than prec, we do spaces then 0s
+	// but if no prec then only 0s if '0' flag...
+
 	if (wlen > plen)	// if - then ignor 0 meaning will put spaces on right, else puts 0s on left
 	{
 //		printf("wlen > plen\n");
 		c = ' ';
-		if (p->flag & F_ZERO && !(p->flag & F_MINU))	// was 1 and 7 there
+		if (p->flag & F_ZERO && !(p->flag & F_MINU) && !(p->flag & F_PREC))
 			c = '0';
 		post = ft_fill_with(c, wlen - plen - i);
 		if (!(p->flag & F_MINU))

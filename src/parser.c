@@ -31,6 +31,7 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 //		printf("hq loop start test\n");
 		if ((m = ft_findchar(&format[c], '%')) != -1)	// get around using m ????
 		{
+//			printf("HQ modulo found, i: %d, c: %d, m: %d\n", i, c, m);
 			i += m;
 //			printf("hq spec test 1, i = %d, c = %d\n", i, c);
 			if (!(str = ft_memalloc(sizeof(char) * (i - c + 1))))
@@ -48,7 +49,7 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 			if (!pflist_append(lst, ft_buf_to_elem(str)))
 				return (-4);
 			ft_scott_free(&str);
-//			printf("HQ spec 4, i: %d, c: %d\n", i, c);
+//			printf("HQ end spec 4, i: %d, c: %d\n", i, c);
 		}
 		else
 		{

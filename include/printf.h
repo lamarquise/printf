@@ -40,6 +40,9 @@
 # define F_PLUS			0x04
 # define F_MINU			0x08
 # define F_SPAC			0x10
+# define F_PREC			0x20
+# define F_WIDT			0x40
+# define F_NULL			0x80
 
 // others ???
 

@@ -21,7 +21,6 @@ int			ft_flag_parsing(char *format, t_param *p, va_list ap)
 	int		ret;
 
 	i = 0;
-	n = 0;
 	ret = 0;
 		// secure around format not being over ???
 
@@ -31,12 +30,13 @@ int			ft_flag_parsing(char *format, t_param *p, va_list ap)
 	{
 //		printf("is a flag parsing test 1, format: [%c]\n", format[ret]);
 
+//		printf("parse flags i: %d\n", i);
+		n = 0;
 		if (i <= 4)
 		{
 //			printf("is a flag\n");
 			p->flag |= (1 << i); // also fucking clever.... this or the HEX defines ???? need both ???
-			++ret;
-			
+			n = 1;
 //			printf("flag parsing, i = %d\n", i);
 		}
 		else if (i == 5)
@@ -45,13 +45,20 @@ int			ft_flag_parsing(char *format, t_param *p, va_list ap)
 			n = ft_get_width(&format[ret], p, ap);
 		else
 			n = ft_get_size(&format[ret], p);
+
+//		printf("what is n: %d\n", n);
+
 		if (n > 0)
 			ret += n;
 		else
 			return (-1);		// better way of doing this ????
 	}
 
+//	printf("parse flgas post loop i: %d\n", i);
+
 //	printf("flag parsing test 2, format: [%c]\n", format[ret]);
+
+//	printf("flag parsing width gotten: %zu\n", p->width);
 
 	return (ret);
 }
@@ -70,11 +77,15 @@ int			ft_get_precision(char *format, t_param *p, va_list ap)
 	{
 		tmp = va_arg(ap, int);
 		p->precision = tmp < 0 ? 0 : tmp;
+//		p->flag |= (1 << 5);
 		++ret;
 	}
 	else
 		p->precision = (tmp = ft_latoi(&format[ret], &ret)) < 0 ? 0 : tmp;
 //	printf("precision parsing test 2\n");
+
+	p->flag |= (1 << 5);
+
 	return (ret);
 }
 
@@ -83,7 +94,7 @@ int			ft_get_width(char *format, t_param *p, va_list ap)
 	int		tmp;
 	int		ret;
 
-	printf("get width:format %c\n", *format);
+//	printf("get width:format %c\n", *format);
 	
 	ret = 0;
 	if (format[ret] == '*')
@@ -96,6 +107,10 @@ int			ft_get_width(char *format, t_param *p, va_list ap)
 		p->width = (tmp = ft_latoi(&format[ret], &ret)) < 0 ? 0 : tmp;
 	else
 		return (-1);
+//	printf("get width: %zu\n", p->width);
+
+	p->flag |= (1 << 6);
+
 	return (ret);
 }
 

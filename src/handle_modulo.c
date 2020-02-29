@@ -26,17 +26,23 @@ int		ft_handle_modulo(char **str, t_param *p)
 	{
 		c = ' ';
 		if (p->flag & F_MINU)
+		{
 			post = ft_fill_with(c, p->width - 1);
-		else if (p->flag & F_ZERO)
-			c = '0';
-		pre = ft_fill_with(c, p->width - 1);
+//			printf("theres a -\n");
+		}
+		else
+		{
+			if (p->flag & F_ZERO)
+				c = '0';
+			pre = ft_fill_with(c, p->width - 1);
+		}
 	}
 	else if (p->flag & F_SPAC)
 		pre = ft_fstrjoin(" ", pre);
 
 	*str = ft_fstrjoin(ft_fstrjoin(pre, "%"), post);
 
-	printf("modulo test 1, width: %zu, str |%s|\n", p->width, *str);
+//	printf("modulo test 1, width: %zu, str |%s|\n", p->width, *str);
 
 	// free shit like pre and post ????
 	

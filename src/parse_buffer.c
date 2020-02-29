@@ -29,8 +29,12 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 	if (format[ret++] != '%')
 		return (-1);
 
-		// protect ????
-	ret += ft_flag_parsing(&format[ret], &p, ap);
+		// seems to help a little...
+	if ((i = ft_flag_parsing(&format[ret], &p, ap)) == -1)
+		return (-1);
+
+	ret += i;
+
 	
 	if ((i = ft_findchar("diuoxXbBcspNn%", format[ret])) >= 0)
 		p.spec = format[ret];
@@ -62,6 +66,18 @@ int		ft_field_parsing(char *format, va_list ap, char **tmp)
 //	printf("parse buff i %d\n", i);
 //	printf("parse buff ret: %d\n", (i == -1) ? -1 : i + ret);
 
+
+	// this fucks some things up...
+/*
+	if (p.precision == 0)
+	{
+//		printf("testing, i: %d ret: %d\n", i, ret);
+		ft_scott_free(tmp);
+		*tmp = ft_strdup("");
+//		return (ret);		// supposed to keep going
+	}
+
+*/
 	return ((i == -1) ? -1 : i + ret);
 }
 
