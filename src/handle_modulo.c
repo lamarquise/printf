@@ -36,7 +36,9 @@ int		ft_handle_modulo(char **str, t_param *p)
 
 	*str = ft_fstrjoin(ft_fstrjoin(pre, "%"), post);
 
-//	printf("modulo test 1, str |%s|\n", *str);
+	printf("modulo test 1, width: %zu, str |%s|\n", p->width, *str);
+
+	// free shit like pre and post ????
 	
 	return (1);		// 1 ???
 }

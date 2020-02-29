@@ -45,7 +45,7 @@ int		ft_printf(const char *format, ...)
 	else
 	{
 		ft_putnbr(ret);		// leave else for now
-		
+		ft_putchar('\n');		
 		// FREE EVERYTHING ???? like the list and stuff ????
 
 	}

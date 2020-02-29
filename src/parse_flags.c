@@ -82,6 +82,8 @@ int			ft_get_width(char *format, t_param *p, va_list ap)
 {
 	int		tmp;
 	int		ret;
+
+	printf("get width:format %c\n", *format);
 	
 	ret = 0;
 	if (format[ret] == '*')

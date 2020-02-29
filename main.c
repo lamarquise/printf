@@ -27,6 +27,9 @@ int		main(int ac, char **av)
 
 	ft_printf("test bina: |%B|\n", c);
 
+	ft_printf("modulo: |%%|, |%5%|, |%-5%|\n");
+
+
 //	ft_printf("test n: |%N|\n");
 
 	ft_printf("testing precision: |%.10d|\n", b);
