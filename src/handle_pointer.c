@@ -19,6 +19,8 @@ int			ft_handle_pointer(va_list ap, char **str, t_param *p)
 	char	*tmp;
 	void	*nb;
 	size_t	len;
+	size_t	plen;
+	size_t	wlen;
 
 	// 0x0 is address null
 
@@ -32,19 +34,43 @@ int			ft_handle_pointer(va_list ap, char **str, t_param *p)
 //	printf("pointer test 3 ptr: |%p|\n", tmp);
 
 
-	tmp = ft_any_base_convert((long)nb, "0123456789abcdef");		// what happens if pointer is NULL ??? it should make 0 to then make 0x0
+	tmp = ft_any_base_convert((long)nb, "0123456789abcdef");
+
+	len = ft_fstrlen(tmp);
+
+	// handle if null pointer ????
 
 	// more flags ???
 
+
+	if (p->flag & F_PREC && p->precision == 0)
+	{
+		tmp = ft_strdup("");
+		len = 0;
+	}
+	
+
+	plen = (p->precision <= len ? 0 : p->precision - len);
+
+	if (plen)
+	{
+		tmp = ft_fstrjoin(ft_fill_with('0', plen), tmp);
+	}
+
+
 	tmp = ft_fstrjoin("0x", tmp);	// handle freeing...	// that can't possibly be
 	len = ft_fstrlen(tmp);									// freed ...
+	wlen = (p->width <= len ? 0 : p->width - len);
 	
-	if (p->width > len)
+	if (wlen)
 	{
-		if (p->flag & 7)
-			tmp = ft_fstrjoin(tmp, ft_fill_with(' ', p->width - len));
+		if (p->flag & F_MINU)
+		{
+			tmp = ft_fstrjoin(tmp, ft_fill_with(' ', wlen));
+//			printf("is minu\n");
+		}
 		else
-			tmp = ft_fstrjoin(ft_fill_with(' ', p->width - len), tmp);
+			tmp = ft_fstrjoin(ft_fill_with(' ', wlen), tmp);
 	}
 //	printf("pointer test 2, tmp: |%s|\n", tmp);
 

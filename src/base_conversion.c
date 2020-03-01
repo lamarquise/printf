@@ -60,13 +60,11 @@ int			ft_base_check(char *base)
 	return (ret > 1 ? ret : -1);
 }
 						// more than a long ???			// should work ????
-char		*ft_any_base_convert(long nb, char *base)
+char		*ft_any_base_convert(long long nb, char *base)
 {
-	int		i;
 	int		size;
 	char	*ret;
 
-	i = 0;
 	ret = NULL;
 	if ((size = ft_base_check(base)) == -1)
 		return (NULL);

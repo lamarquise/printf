@@ -42,8 +42,8 @@ int		main(int ac, char **av)
 //	ft_printf("test n: |%N| again |%N|\n");
 //	printf("test n: |%N| again |%N|\n");
 
-//	ft_printf("test poin: |%20p|\n", &b);
-//	printf("OG pointer: |%20p|\n", &b);
+	ft_printf("test poin: |%-20p|\n", &b);
+	printf("OG pointer: |%-20p|\n", &b);
 
 //	ft_printf("test modu: |%%|\n");
 
@@ -61,8 +61,8 @@ int		main(int ac, char **av)
 //	printf("[OG the start, |%10.s|\n", NULL);
 //	ft_printf("[the start, |%10.s|\n", NULL);
 
-	printf("|%010.4d|\n", a);
-	ft_printf("|%010.4d|\n", a);
+//	printf("|%lx|\n", 4294967295);
+//	ft_printf("|%x|\n", 4294967295);
 	
 
 

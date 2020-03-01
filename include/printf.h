@@ -129,7 +129,7 @@ void		ft_scott_free(char **str);
 	// Base Convert
 char		*ft_add_char(char, char **str);
 int			ft_base_check(char *base);
-char		*ft_any_base_convert(long nb, char *base);
+char		*ft_any_base_convert(long long nb, char *base);
 
 
 

@@ -40,12 +40,13 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 
 
 
-	if (p->spec == 'c')
-	{
+	if (p->spec == 'c')		// actually way more complicated, may need to handle
+	{						// printing the int value with \x00 or whatever
 //		printf("found a c\n");
-		if (!(tmp = ft_memalloc(sizeof(char) * 1)))
+		if (!(tmp = ft_memalloc(sizeof(char) * 2)))
 			return (-1);
-		*tmp = (char)va_arg(ap, int);	// seems to work
+		tmp[0] = (char)va_arg(ap, int);	// seems to work
+		tmp[1] = '\0';	// useful ???
 		len = 1;
 //		printf("tmp: %c\n", *tmp);
 	}
@@ -75,7 +76,7 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 			tmp = ft_strdup("");	// was *str...
 			len = 0;
 //			return (1);
-		}	
+		}
 		else if ((plen = (p->precision < len ? p->precision : 0)) > 0)
 		{
 			tmp = ft_substr(tmp, 0, plen);

@@ -95,7 +95,7 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	else if (p->spec == 'x' || p->spec == 'X')		// do a thing where i standardize x and X to just x but remember if it's maj, same for u and U ???
 //		(ft_strchr(p->spec, "xX") != NULL)		// kick ass idea
 	{
-		num = va_arg(ap, int);
+		num = va_arg(ap, long long);
 //		printf("is a hex, num: %d\n", num);
 		if (p->spec == 'x')
 			tmp = ft_any_base_convert((long)num, "0123456789abcdef");
@@ -106,9 +106,9 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	}
 	else if (p->spec == 'b' || p->spec == 'B')		// add binary here ???		// could put in seperate file ???
 	{
-		if (p->spec == 'b')
+		if (p->spec == 'B')
 			post = va_arg(ap, char*);	// can not free post, not sure why, ok so can't free because its a arg passed to func, so don't worry, just set to NULL...
-		else if (p->spec == 'B')	// binary
+		else if (p->spec == 'b')	// binary
 			post = ft_strdup("01");
 		num = va_arg(ap, int);
 		if (!(tmp = ft_any_base_convert(num, post)))		// should do this more and securiser in parse_buffer too
@@ -148,11 +148,19 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	// '#' 0x in front of hex numbers
 
 
-	wlen = (p->width <= len ? 0 : p->width - len);
+
+
+
+	if (p->flag & F_PREC && p->precision == 0)
+	{
+		tmp = ft_strdup("");
+		len = 0;
+	}
 
 
 		// precision does not take + or - into acount
 	plen = (p->precision <= (len + neg) ? 0 : p->precision - (len + neg));
+	wlen = (p->width <= len ? 0 : p->width - len);
 
 
 	// how to adapt this middle out system to other specs, like the unsigned ones ???? 
@@ -168,11 +176,11 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		else if (p->spec == 'o')
 			pre = ft_fstrjoin("0", pre);
 	}
-	if (p->flag & F_PLUS)	// was 4 theres a + or its negative
+/*	if (p->flag & F_PLUS)	// was 4 theres a + or its negative
 	{
 		pre = ft_fstrjoin(neg < 0 ? "-" : "+", pre);
 	}
-
+*/
 	// if width and prec but width bigger than prec, we do spaces then 0s
 	// but if no prec then only 0s if '0' flag...
 
@@ -185,11 +193,18 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 		post = ft_fill_with(c, wlen - plen - i);
 		if (!(p->flag & F_MINU))
 		{
+			if (c != '0' && p->flag & F_PLUS)		// if 0 add after join else before
+			{
+				pre = ft_fstrjoin(neg < 0 ? "-" : "+", pre);
+				p->flag &= (0 << 2);
+			}
 			pre = ft_fstrjoin(post, pre);
 			ft_scott_free(&post);
 		}
 	}
-	else if (p->flag & F_SPAC)
+	if (p->flag & F_PLUS)
+		pre = ft_fstrjoin(neg < 0 ? "-" : "+", pre);
+	if (p->flag & F_SPAC && wlen <= plen)
 	{
 		pre = ft_fstrjoin(" ", pre);
 	}
