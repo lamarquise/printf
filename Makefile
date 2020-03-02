@@ -6,7 +6,7 @@
 #    By: erlazo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/27 15:37:26 by erlazo            #+#    #+#              #
-#    Updated: 2020/02/28 19:06:42 by erlazo           ###   ########.fr        #
+#    Updated: 2020/03/02 21:34:58 by erlazo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ FILES =		ft_printf.c \
 			base_conversion.c \
 			display.c \
 			extra.c \
+			more_extra.c \
 
 IFILES = printf.h
 NAME = libftprintf.a

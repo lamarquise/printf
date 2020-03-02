@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 20:05:43 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/28 19:23:16 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/02 21:33:23 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 	size_t	len;
 	size_t	plen;
 	size_t	wlen;
-	size_t	i;
 
 	char	c;
-	char	*pre;
-	char	*post;
+	char	**pre;
+	char	**post;
 
-//	printf("handle str test 1\n");
+	printf("handle str test 1\n");
 
-	pre = NULL;
-	post = NULL;
+	pre = malloc(sizeof(char*));
+	post = malloc(sizeof(char*));
 
 	tmp = NULL;
 	len = 0;
-//	plen = 0;
+	plen = 0;
+	wlen = 0;
 
 //	if (p->precision == 0)
 //		return (-1);		// should i maybe do this in parse flags ????
@@ -64,7 +64,7 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 
 //		return (1);
 	}
-//	printf("test 2\n");
+	printf("test 2\n");
 
 
 
@@ -90,73 +90,33 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 //	else
 		wlen = (p->width <= len ? 0 : p->width - len);
 
-//	printf("wlen: %zu\n", wlen);
-
-//	if (!(*str = ft_memalloc(sizeof(char) * (wlen + len + 1))))
-//		return (-1);
-
-	// would be less efficient but more legible with a fstrjoin()...
-
-	// trying the jopin way...
-
-
-//	if (plen)	// ie not 0
-//		tmp = ft_substr(tmp, 0, plen);		// that's it i think...
-
 	c = ' ';
 	if (wlen)
 	{
 		if (p->flag & F_MINU)
-			post = ft_fill_with(c, wlen);
+			*post = ft_fill_with(c, wlen);
 		else
 		{
 			if (p->flag & F_ZERO)
 				c = '0';
-			pre = ft_fill_with(c, wlen);
+			*pre = ft_fill_with(c, wlen);
 		}
 	}
 	else if (p->flag & F_SPAC)
-	{
-		pre = ft_fill_with(c, 1);
-	}
+		*pre = ft_fill_with(c, 1);
 
-	*str = ft_fstrjoin(pre, ft_fstrjoin(tmp, post));
+	str = ft_fstrjoin(pre, ft_fstrjoin(&tmp, post));
 		// will need to manage freeing...
 
-	i = 0;
-/*
+	
 
-	i = 0;
-//		printf("made it into there is a width\n");
-	if (wlen && p->flag & F_MINU)
-	{
-		while (*tmp)
-			(*str)[i] = *tmp++;
-		while (i < wlen + len)
-			(*str)[i++] = ' ';
-		(*str)[i] = '\0';	
-	}
-	else if (wlen && p->flag & F_ZERO)
-	{
-//		printf("made it into there is a 0\n");
-		while (i < wlen)
-			(*str)[i++] = '0';
-		while (i < wlen + len)
-			(*str)[i++] = *tmp++;
-		(*str)[i] = '\0';
-	}
-	else // width or no
-	{
-		while (i < wlen)
-			(*str)[i++] = ' ';
-		while (*tmp)
-			(*str)[i++] = *tmp++;
-		(*str)[i] = '\0';
-//		printf("wlen and str: |%s|\n", *str);
-	}
-*/
+	len += wlen;
 
-//	printf("handle str test 3, str: %s\n", *str);
+//	printf("pre: |%s|, post: |%s|\n", pre, post);
 
-	return (1);
+//	printf("handle str test 3, str: |%s| size: %zu", *str, len);
+
+//	printf("len: %zu\n", len);
+
+	return (len);		// ????
 }

@@ -21,13 +21,21 @@ int		main(int ac, char **av)
 //	printf("testing main 1\n");
 
 
+//	printf("OG: |%-*.*s|\n", -7, -3, "ahey");
+	ft_printf("mine: |%-*.*s|\n", -7, -9, "ahey");
+
+//	printf("%s\n", "ahey   ");
+	ft_printf("%s\n", "ahey   ");
+
+
+
 //	ft_printf("[a number: |%d| a number: |%d|\n]", a, b);
 
-//	printf("%s", "\x98\xA0\n");
+//	ft_printf("%s", "\xE2\x98\xA0\n");
 
 //	ft_printf("test bina: |%B|\n", c);
 
-//	ft_printf("left justify: |%-5d|\n", a);
+	ft_printf("left justify: |%-5d|\n", a);
 //	ft_printf("no left justify: |%5d|\n", a);
 
 //	ft_printf("%%");
@@ -37,13 +45,21 @@ int		main(int ac, char **av)
 
 //	ft_printf("test n: |%N|\n");
 
-//	ft_printf("testing precision: |%.10d|\n", b);
+//	ft_printf("testing precision: |%.8d|\n", b);
+
+//	printf("|%-5c|\n", 0);
+	ft_printf("|%-5c|\n", 0);
+
+
 
 //	ft_printf("test n: |%N| again |%N|\n");
 //	printf("test n: |%N| again |%N|\n");
 
-	ft_printf("test poin: |%-20p|\n", &b);
-	printf("OG pointer: |%-20p|\n", &b);
+//	printf("print c :|%c|\n", 0);
+//	ft_printf("ftprint c :|%c|\n", 0);
+
+//	ft_printf("test poin: |%-20p|\n", &b);
+//	printf("OG pointer: |%-20p|\n", &b);
 
 //	ft_printf("test modu: |%%|\n");
 

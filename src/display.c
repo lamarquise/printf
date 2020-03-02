@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 17:57:48 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/28 19:23:19 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/02 20:33:12 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ int		ft_display_del(int fd, t_pfelem **lst)
 		{
 */	//		printf("[lst cont: |%s|\n]", (*lst)->content);
 
-			len = ft_fstrlen((*lst)->content);
-			write(fd, (*lst)->content, len);
-			c += len;
-			ret += len;
+//			len = ft_fstrlen((*lst)->content);
+			printf("display size: %d\n", (*lst)->size);
+
+			write(fd, (*lst)->content, (*lst)->size);
+			c += (*lst)->size;
+			ret += (*lst)->size;
 //		}
 		tmp = (*lst)->next;
 		free((*lst)->content);

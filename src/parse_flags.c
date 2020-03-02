@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:25:48 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/28 19:12:50 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/02 18:06:15 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,15 @@ int			ft_get_precision(char *format, t_param *p, va_list ap)
 	if (format[ret] == '*')
 	{
 		tmp = va_arg(ap, int);
-		p->precision = tmp < 0 ? 0 : tmp;
-//		p->flag |= (1 << 5);
 		++ret;
 	}
 	else
-		p->precision = (tmp = ft_latoi(&format[ret], &ret)) < 0 ? 0 : tmp;
-//	printf("precision parsing test 2\n");
-
-	p->flag |= (1 << 5);
-
+		tmp = ft_latoi(&format[ret], &ret);		// don't think i need to worry about ret being dif if tmp is neg...
+	if (tmp < 0)		// if neg i ignore ???
+		tmp = 0;
+	else
+		p->flag |= (1 << 5);	
+	p->precision = tmp;
 	return (ret);
 }
 
@@ -100,24 +99,28 @@ int			ft_get_width(char *format, t_param *p, va_list ap)
 	if (format[ret] == '*')
 	{
 		tmp = va_arg(ap, int);
-		p->width = tmp < 0 ? 0 : tmp;
 		++ret;
 	}
 	else if (format[ret] >= '1' && format[ret] <= '9')
-		p->width = (tmp = ft_latoi(&format[ret], &ret)) < 0 ? 0 : tmp;
+		tmp = ft_latoi(&format[ret], &ret);
 	else
 		return (-1);
 //	printf("get width: %zu\n", p->width);
-
+	if (tmp < 0)
+	{
+		tmp = -tmp;
+		p->flag |= (1 << 3);
+	}
+	p->width = tmp;
 	p->flag |= (1 << 6);
-
 	return (ret);
 }
-
-
 	// needs lots of work....
 
 	// 1:l 2:ll 3:h 6:hh
+
+
+	// my solution is declare everything as long long, hten cast if necessary
 
 int			ft_get_size(char *format, t_param *p)
 {
@@ -134,9 +137,36 @@ int			ft_get_size(char *format, t_param *p)
 
 
 	ret = 0;
-	while ((i = ft_findchar("hl", format[ret])) >= 0)
+	while ((i = ft_findchar("hlzj", format[ret])) >= 0)
 	{
-		p->size += i;			// store in end of p->flag ????
+		if (i == 0)
+		{
+			if (p->size & C_H)
+			{
+				p->size &= (0 << 0);
+				p->size |= (1 << 1);
+			}
+			else
+				p->size |= (1 << 0);
+//			++ret;
+		}
+		else if (i == 1)
+		{
+			if (p->size & C_L)
+			{
+				p->size &= (0 << 2);
+				p->size |= (1 << 3);
+			}
+			else
+				p->size |= (1 << 2);
+//			++ret;
+		}
+		else if (i == 2)
+			p->size |= (1 << 4);
+		else if (i == 3)
+			p->size |= (1 << 5);
+		else
+			return (-1);
 		++ret;
 	}
 	return (ret); 

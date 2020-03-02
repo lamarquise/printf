@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 17:51:45 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/26 14:57:22 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/02 21:27:21 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@
 
 int			ft_handle_pointer(va_list ap, char **str, t_param *p)
 {
-	char	*tmp;
+	char	**tmp;
+	char	**pre;
 	void	*nb;
 	size_t	len;
 	size_t	plen;
 	size_t	wlen;
+
+	pre = malloc(sizeof(char*));
+	tmp = malloc(sizeof(char*));
 
 	// 0x0 is address null
 
@@ -34,9 +38,9 @@ int			ft_handle_pointer(va_list ap, char **str, t_param *p)
 //	printf("pointer test 3 ptr: |%p|\n", tmp);
 
 
-	tmp = ft_any_base_convert((long)nb, "0123456789abcdef");
+	*tmp = ft_any_base_convert((long)nb, "0123456789abcdef");
 
-	len = ft_fstrlen(tmp);
+	len = ft_fstrlen(*tmp);
 
 	// handle if null pointer ????
 
@@ -45,7 +49,7 @@ int			ft_handle_pointer(va_list ap, char **str, t_param *p)
 
 	if (p->flag & F_PREC && p->precision == 0)
 	{
-		tmp = ft_strdup("");
+		*tmp = ft_strdup("");
 		len = 0;
 	}
 	
@@ -54,27 +58,37 @@ int			ft_handle_pointer(va_list ap, char **str, t_param *p)
 
 	if (plen)
 	{
-		tmp = ft_fstrjoin(ft_fill_with('0', plen), tmp);
+		*pre = ft_fill_with('0', plen);
+		tmp = ft_fstrjoin(pre, tmp);
 	}
 
 
-	tmp = ft_fstrjoin("0x", tmp);	// handle freeing...	// that can't possibly be
-	len = ft_fstrlen(tmp);									// freed ...
+	tmp = ft_fstrjoin(ft_fstrdup("0x", 2), tmp);	// handle freeing...	// that can't possibly be
+	len = ft_fstrlen(*tmp);									// freed ...
 	wlen = (p->width <= len ? 0 : p->width - len);
 	
 	if (wlen)
 	{
 		if (p->flag & F_MINU)
 		{
-			tmp = ft_fstrjoin(tmp, ft_fill_with(' ', wlen));
+			*pre = ft_fill_with(' ', wlen);
+			tmp = ft_fstrjoin(tmp, pre);
 //			printf("is minu\n");
 		}
 		else
-			tmp = ft_fstrjoin(ft_fill_with(' ', wlen), tmp);
+		{
+			*pre = ft_fill_with(' ', wlen);
+			tmp = ft_fstrjoin(pre, tmp);
+		}
 	}
 //	printf("pointer test 2, tmp: |%s|\n", tmp);
 
-	*str = tmp;		// make this better... more elegant...
-
-	return (1);
+	str = tmp;		// make this better... more elegant...
+	return (ft_fstrlen(*str));
 }
+
+
+
+
+
+

@@ -6,130 +6,11 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 19:56:08 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/28 19:11:02 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/02 21:28:15 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
-
-
-	// This file is gonna need some work...
-
-
-	// need to figure out how to get + or - to be joined to front of 0s if
-	// there are any but not before spaces
-
-	// also, same as for handle_str()
-	// need to get precision == 0 working, and prolly also if a null sent...
-
-
-/*
-something		ft_size_stuff()
-{
-
-
-	va_arg(ap, int);
-	va_arg(ap, long);
-	va_arg(ap, long long);
-	va_arg(ap, short);
-	va_arg(ap, short short);
-	va_arg(ap, size_t);		// zu is that what that is ?????
-	
-
-
-}
-*/
-
-int				ft_handle_int(va_list ap, char **str, t_param *p)
-{
-	char		*tmp;
-	char		*pre;
-	char		*post;
-	char		c;
-	long long	num;		// just make it a long long ???? size_t ????
-	size_t		len;
-	size_t		wlen;
-	size_t		plen;
-	size_t		i;
-
-	int			neg;
-
-	tmp = NULL;
-	pre = NULL;
-	post = NULL;
-	len = 0;		// usefull ???
-
-	i = 0;
-	num = 0;
-
-	neg = 0;
-
-//	printf("handle int test 1\n");
-
-
-	
-	
-
-
-	if (p->spec == 'd' || p->spec == 'i')	// regular ints i think
-	{
-		num = va_arg(ap, int);		// may need to change this to cast as not an int if l or ll or h or ....	// same for all following....
-
-		if (num < 0)
-		{
-			neg = -1;
-			num = - num;
-		}
-		tmp = ft_itoa(num);		// special itoa ???
-
-		len = ft_fstrlen(tmp) - neg;
-//		printf("handle int test 2 its an int\n");
-
-	}
-	else if (p->spec == 'u')		// could manage this by storring if there is a majuscule or nah with bitwise or something
-	{				// this is basically the same as 'd' or 'i', use a func table to get same result without all ifs ????
-		num = va_arg(ap, unsigned int);		// not num, dif var ???
-		tmp = ft_itoa(num);
-		len = ft_fstrlen(tmp);
-	}
-	else if (p->spec == 'x' || p->spec == 'X')		// do a thing where i standardize x and X to just x but remember if it's maj, same for u and U ???
-//		(ft_strchr(p->spec, "xX") != NULL)		// kick ass idea
-	{
-		num = va_arg(ap, long long);
-//		printf("is a hex, num: %d\n", num);
-		if (p->spec == 'x')
-			tmp = ft_any_base_convert((long)num, "0123456789abcdef");
-		else
-			tmp = ft_any_base_convert((long)num, "0123456789ABCDEF");
-		len = ft_fstrlen(tmp);
-//		printf("its a hex, tmp: |%s|\n", tmp);
-	}
-	else if (p->spec == 'b' || p->spec == 'B')		// add binary here ???		// could put in seperate file ???
-	{
-		if (p->spec == 'B')
-			post = va_arg(ap, char*);	// can not free post, not sure why, ok so can't free because its a arg passed to func, so don't worry, just set to NULL...
-		else if (p->spec == 'b')	// binary
-			post = ft_strdup("01");
-		num = va_arg(ap, int);
-		if (!(tmp = ft_any_base_convert(num, post)))		// should do this more and securiser in parse_buffer too
-			return (-1);
-		len = ft_fstrlen(tmp);
-		if (p->spec == 'B')
-			free(post);			// do this better ????
-		post = NULL;
-	}
-	else if (p->spec == 'o')		// unsigned ocatal
-	{
-		num = va_arg(ap, int);
-		tmp = ft_any_base_convert((long)num, "01234567");
-		len = ft_fstrlen(tmp);
-	}
-
-//	printf("handle int test 3\n");
-
-	if (neg < 0)		// if it's neg same as if flag + so set to 1
-		p->flag |= (1 << 2);// is 4 equivalent to (1 << 3) ?????? no idea, but i hope so...
-
 
 	// "0#+- .123456789*hljz"
 	
@@ -147,75 +28,223 @@ int				ft_handle_int(va_list ap, char **str, t_param *p)
 	// '+' sign in front of ints
 	// '#' 0x in front of hex numbers
 
+	// This file is gonna need some work...
 
 
 
 
-	if (p->flag & F_PREC && p->precision == 0)
+
+
+
+
+
+
+long long				ft_cast_d(long long num, t_param *p)		// works for %d and %i
+{
+	if (p->size & C_H)
+		num = (short)num;
+	else if (p->size & C_HH)
+		num = (signed char)num;
+	else if (p->size & C_L)
+		num = (long)num;
+	else if (p->size & C_LL)
+		num = (long long)num;
+	else if (p->size & C_J)
+		num = (intmax_t)num;
+	else if (p->size & C_Z)
+		num = (size_t)num;
+	else
+		num = (int)num;
+	return (num);
+}
+
+unsigned long long		ft_cast_u(unsigned long long num, t_param *p)		// works for %uoxX
+{
+	if (p->size & C_H)
+		num = (unsigned short)num;
+	else if (p->size & C_HH)
+		num = (unsigned char)num;
+	else if (p->size & C_L)
+		num = (unsigned long)num;
+	else if (p->size & C_LL)
+		num = (unsigned long long)num;		// will this work ???	may need to split handle int...
+	else if (p->size & C_J)
+		num = (uintmax_t)num;
+	else if (p->size & C_Z)
+		num = (size_t)num;
+	else
+		num = (unsigned int)num;
+	return (num);
+}
+
+int						ft_handle_uint(va_list ap, char **str, t_param *p)
+{
+	unsigned long long	num;
+	size_t				len;
+	char				*tmp;
+
+
+	tmp = NULL;
+	len = 0;
+	if (p->spec == 'u')
+	{
+		num = va_arg(ap, unsigned long long);		// not num, dif var ???
+		num = ft_cast_u(num, p);
+		tmp = ft_itoa(num);
+		len = ft_fstrlen(tmp);
+	}
+	else if (p->spec == 'x' || p->spec == 'X')
+	{
+		num = va_arg(ap, unsigned long long);		// will this work...
+		num = ft_cast_u(num, p);
+//		printf("is a hex, num: %d\n", num);
+		if (p->spec == 'x')
+			tmp = ft_any_base_convert((long)num, "0123456789abcdef");
+		else
+			tmp = ft_any_base_convert((long)num, "0123456789ABCDEF");
+		len = ft_fstrlen(tmp);
+//		printf("its a hex, tmp: |%s|\n", tmp);
+	}
+	else if (p->spec == 'o')		// unsigned ocatal
+	{
+		num = va_arg(ap, unsigned long long);
+		num = ft_cast_u(num, p);
+		tmp = ft_any_base_convert((long)num, "01234567");		// more than a long ???
+		len = ft_fstrlen(tmp);
+	}
+
+	str = ft_gen_arg_str(p, &tmp, len, 0);
+	return (ft_fstrlen(*str));
+}
+
+int					ft_handle_int(va_list ap, char **str, t_param *p)
+{
+	char		*tmp;
+	char		*base;
+	long long	num;		// just make it a long long ???? size_t ????
+	size_t		len;
+	int			neg;
+
+	tmp = NULL;
+	base = NULL;
+	len = 0;
+
+	num = 0;
+	neg = 0;
+
+//	printf("handle int test 1\n");	
+
+	if (p->spec == 'd' || p->spec == 'i')
+	{
+		num = va_arg(ap, long long);
+		num = ft_cast_d(num, p);		// do the va_arg in the cast func ????
+		if (num < 0)
+		{
+			neg = -1;
+			num = - num;
+		}
+		tmp = ft_itoa(num);		// special itoa ???		litoa ????
+
+		len = ft_fstrlen(tmp) - neg;
+//		printf("handle int test 2 its an int\n");
+	}
+	else if (p->spec == 'b' || p->spec == 'B')
+	{
+		if (p->spec == 'B')
+			base = va_arg(ap, char*);	// can not free post, not sure why, ok so can't free because its a arg passed to func, so don't worry, just set to NULL...
+		else if (p->spec == 'b')	// binary
+			base = ft_strdup("01");
+		num = va_arg(ap, long long);		// not an int ????
+		num = ft_cast_d(num, p);
+		if (!(tmp = ft_any_base_convert(num, base)))		// should do this more and securiser in parse_buffer too
+			return (-1);
+		len = ft_fstrlen(tmp);
+		if (p->spec == 'B')
+			free(base);			// do this better ????
+		base = NULL;
+	}
+
+//	printf("handle int test 3\n");
+
+	if (neg < 0)		// if it's neg same as if flag + so set to 1
+		p->flag |= (1 << 2);
+
+/*	if (p->flag & F_PREC && p->precision == 0)
 	{
 		tmp = ft_strdup("");
 		len = 0;
 	}
+*/
+//	printf("handle int tmp: |%s|\n", tmp);
+
+	str = ft_gen_arg_str(p, &tmp, len, neg);
+	return (ft_fstrlen(*str));
+}
 
 
-		// precision does not take + or - into acount
+char				**ft_gen_arg_str(t_param *p, char **tmp, size_t len, int neg)
+{
+	char	c;
+	int		plen;
+	int		wlen;
+	char	**pre;
+	char	**post;
+
+	pre = malloc(sizeof(char*));
+	post = malloc(sizeof(char*));
+
+	if (p->flag & F_PREC && p->precision == 0)
+	{
+		*tmp = ft_strdup("");
+		len = 0;
+	}
+
+
+
 	plen = (p->precision <= (len + neg) ? 0 : p->precision - (len + neg));
 	wlen = (p->width <= len ? 0 : p->width - len);
-
-
-	// how to adapt this middle out system to other specs, like the unsigned ones ???? 
-
 	if (plen)
-		pre = ft_fill_with('0', plen);
+		*pre = ft_fill_with('0', plen);
 	if (p->flag & F_HASH)
 	{
 		if (p->spec == 'x')
-			pre = ft_fstrjoin("0x", pre);
+			pre = ft_fstrjoin(ft_fstrdup("0x", 2), pre);
 		else if (p->spec == 'X')
-			pre = ft_fstrjoin("0X", pre);
+			pre = ft_fstrjoin(ft_fstrdup("0x", 2), pre);
 		else if (p->spec == 'o')
-			pre = ft_fstrjoin("0", pre);
+			pre = ft_fstrjoin(ft_fstrdup("0", 1), pre);
 	}
-/*	if (p->flag & F_PLUS)	// was 4 theres a + or its negative
+	if (wlen > plen)
 	{
-		pre = ft_fstrjoin(neg < 0 ? "-" : "+", pre);
-	}
-*/
-	// if width and prec but width bigger than prec, we do spaces then 0s
-	// but if no prec then only 0s if '0' flag...
-
-	if (wlen > plen)	// if - then ignor 0 meaning will put spaces on right, else puts 0s on left
-	{
-//		printf("wlen > plen\n");
 		c = ' ';
 		if (p->flag & F_ZERO && !(p->flag & F_MINU) && !(p->flag & F_PREC))
 			c = '0';
-		post = ft_fill_with(c, wlen - plen - i);
+		*post = ft_fill_with(c, wlen - plen);
 		if (!(p->flag & F_MINU))
 		{
-			if (c != '0' && p->flag & F_PLUS)		// if 0 add after join else before
+			if (c != '0' && p->flag & F_PLUS)
 			{
-				pre = ft_fstrjoin(neg < 0 ? "-" : "+", pre);
+				pre = ft_fstrjoin(neg < 0 ? ft_fstrdup("-", 1) : ft_fstrdup("+", 1), pre);
 				p->flag &= (0 << 2);
 			}
 			pre = ft_fstrjoin(post, pre);
-			ft_scott_free(&post);
+//			ft_scott_free(&post);
 		}
 	}
 	if (p->flag & F_PLUS)
-		pre = ft_fstrjoin(neg < 0 ? "-" : "+", pre);
+		pre = ft_fstrjoin(neg < 0 ? ft_fstrdup("-", 1) : ft_fstrdup("+", 1), pre);
 	if (p->flag & F_SPAC && wlen <= plen)
-	{
-		pre = ft_fstrjoin(" ", pre);
-	}
+		pre = ft_fstrjoin(ft_fstrdup(" ", 1), pre);
 
-//	printf("handle int: pre |%s|, tmp |%s|, post |%s|\n", pre, tmp, post);
-	
-	*str = ft_fstrjoin(ft_fstrjoin(pre, tmp), post);
+	char	**str;
 
-//	printf("handle int test 4, str: |%s|\n", *str);
+	str = ft_fstrjoin(ft_fstrjoin(pre, tmp), post);
 
-	return (1);
+//	printf("gen arg str: |%s|\n", str);
+
+	return (str);
+
+
+//	return (ft_fstrjoin(ft_fstrjoin(pre, tmp), post));
 }
-
 

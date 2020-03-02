@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 14:48:29 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/27 15:45:24 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/02 19:11:30 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ int			ft_base_check(char *base)
 //	printf("base check 1\n");
 	return (ret > 1 ? ret : -1);
 }
-						// more than a long ???			// should work ????
-char		*ft_any_base_convert(long long nb, char *base)
+						// must always be positive number...
+char		*ft_any_base_convert(unsigned long long nb, char *base)
 {
 	int		size;
 	char	*ret;
@@ -68,12 +68,12 @@ char		*ft_any_base_convert(long long nb, char *base)
 	ret = NULL;
 	if ((size = ft_base_check(base)) == -1)
 		return (NULL);
-	while (nb >= size)
+	while (nb >= (unsigned int)size)
 	{
 //		printf("ret in base conv: |%s|\n", ret);
 		ret = ft_add_char(base[nb % size], &ret);		// is this the right order ??
 //		printf("ret in base 2\n");						// double check...
-		nb /= size;
+		nb /= (unsigned int)size;
 	}
 	ret = ft_add_char(base[nb % size], &ret);		// do i need to do it one last time...
 //	printf("base convert, ret: |%s|\n", ret);
