@@ -22,22 +22,17 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 	size_t	wlen;
 
 	char	c;
-	char	**pre;
-	char	**post;
+	char	*pre;
+	char	*post;
 
-	printf("handle str test 1\n");
+//	printf("handle str test 1\n");
 
-	pre = malloc(sizeof(char*));
-	post = malloc(sizeof(char*));
-
+	pre = NULL;
+	post = NULL;
 	tmp = NULL;
 	len = 0;
 	plen = 0;
 	wlen = 0;
-
-//	if (p->precision == 0)
-//		return (-1);		// should i maybe do this in parse flags ????
-
 
 
 	if (p->spec == 'c')		// actually way more complicated, may need to handle
@@ -46,25 +41,25 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 		if (!(tmp = ft_memalloc(sizeof(char) * 2)))
 			return (-1);
 		tmp[0] = (char)va_arg(ap, int);	// seems to work
-		tmp[1] = '\0';	// useful ???
+//		tmp[1] = '\0';	// useful ???
 		len = 1;
 //		printf("tmp: %c\n", *tmp);
 	}
 	else if (p->spec == 's')
 	{
-		tmp = va_arg(ap, char*);
+		tmp = ft_fstrdup(va_arg(ap, char*));
 		len = ft_fstrlen(tmp);
 	}
 
 	if (!tmp)
 	{
-		tmp = ft_strdup("(null)");
+		tmp = ft_fstrdup("(null)");
 		p->flag |= (1 << 7);	// after width
 		len = 6;	// ???		// seems good i guess...
 
 //		return (1);
 	}
-	printf("test 2\n");
+//	printf("test 2\n");
 
 
 
@@ -72,14 +67,18 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 	{
 		if (p->precision == 0)
 		{
-//			ft_scott_free(&tmp);
-			tmp = ft_strdup("");	// was *str...
+			ft_scott_free(&tmp);
+			tmp = ft_fstrdup("");	// was *str...
 			len = 0;
 //			return (1);
 		}
 		else if ((plen = (p->precision < len ? p->precision : 0)) > 0)
 		{
-			tmp = ft_substr(tmp, 0, plen);
+//			ft_scott_free(&tmp);
+			pre = ft_substr(tmp, 0, plen);
+			ft_scott_free(&tmp);
+			tmp = pre;
+			pre = NULL;
 			len = plen;
 		}
 		// free things ????
@@ -94,19 +93,22 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 	if (wlen)
 	{
 		if (p->flag & F_MINU)
-			*post = ft_fill_with(c, wlen);
+			post = ft_fill_with(c, wlen);
 		else
 		{
 			if (p->flag & F_ZERO)
 				c = '0';
-			*pre = ft_fill_with(c, wlen);
+			pre = ft_fill_with(c, wlen);
 		}
 	}
 	else if (p->flag & F_SPAC)
-		*pre = ft_fill_with(c, 1);
+		pre = ft_fill_with(c, 1);
 
-	str = ft_fstrjoin(pre, ft_fstrjoin(&tmp, post));
-		// will need to manage freeing...
+	*str = ft_fstrjoin(&tmp, &post);
+	
+//	printf("handle str test 2, str: |%s|\n", *str);
+
+	*str = ft_fstrjoin(&pre, str);
 
 	
 
@@ -114,7 +116,7 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 
 //	printf("pre: |%s|, post: |%s|\n", pre, post);
 
-//	printf("handle str test 3, str: |%s| size: %zu", *str, len);
+//	printf("handle str test 3, str: |%s| size: %zu\n", *str, len);
 
 //	printf("len: %zu\n", len);
 

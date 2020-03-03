@@ -46,7 +46,7 @@ int		ft_display_del(int fd, t_pfelem **lst)
 */	//		printf("[lst cont: |%s|\n]", (*lst)->content);
 
 //			len = ft_fstrlen((*lst)->content);
-			printf("display size: %d\n", (*lst)->size);
+//			printf("display size: %d\n", (*lst)->size);
 
 			write(fd, (*lst)->content, (*lst)->size);
 			c += (*lst)->size;

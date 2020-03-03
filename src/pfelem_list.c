@@ -19,6 +19,9 @@ t_pfelem	*new_pfelem(char *str, int size)
 {
 	t_pfelem	*new;
 
+//	printf("new elem 1\n");
+
+
 	if (!str)
 		return (NULL);
 	if (!(new = (t_pfelem*)ft_memalloc(sizeof(t_pfelem))))
@@ -26,6 +29,9 @@ t_pfelem	*new_pfelem(char *str, int size)
 	new->content = str;
 	new->size = size;
 	new->next = NULL;
+
+//	printf("new elem 2\n");
+	
 	return (new);
 }
 
@@ -33,7 +39,7 @@ int		pflist_append(t_pfelem **lst, t_pfelem *new)
 {
 	t_pfelem	*tmp;
 
-	printf("new content: [%s]\n", new->content);
+//	printf("new content: [%s]\n", new->content);
 
 	if (!lst || !new)
 		return (-1);
@@ -48,7 +54,7 @@ int		pflist_append(t_pfelem **lst, t_pfelem *new)
 	tmp->next = new;
 	new->next = NULL;		// necessary???
 
-	printf("append list test 2\n");
+//	printf("append list test 2\n");
 	return (1);
 }
 
@@ -61,10 +67,19 @@ t_pfelem	*ft_buf_to_elem(char *str, int size)
 
 	if (!(cp = (char*)ft_memalloc(sizeof(char) * (size + 1))))
 		return (NULL);
-	new = new_pfelem(ft_strcpy(cp, str), size);	// something more secure ???
+
+//	printf("buf to elem test 2\n");
+
+	cp = ft_fstrncpy(cp, str, size);
+
+//	printf("buf to elem test 3\n");
+	new = new_pfelem(cp, size);
+
+
+//	new = new_pfelem(ft_strcpy(cp, str), size);	// something more secure ???
 
 	// could actually scott free str here...
 
-//	printf("buf to elem test 2, str: %s\n", str);
+//	printf("buf to elem test 4, str: %s\n", str);
 	return (new);
 }

@@ -113,7 +113,7 @@ int						ft_handle_uint(va_list ap, char **str, t_param *p)
 		len = ft_fstrlen(tmp);
 	}
 
-	str = ft_gen_arg_str(p, &tmp, len, 0);
+	*str = ft_gen_arg_str(p, &tmp, len, 0);
 	return (ft_fstrlen(*str));
 }
 
@@ -153,7 +153,7 @@ int					ft_handle_int(va_list ap, char **str, t_param *p)
 		if (p->spec == 'B')
 			base = va_arg(ap, char*);	// can not free post, not sure why, ok so can't free because its a arg passed to func, so don't worry, just set to NULL...
 		else if (p->spec == 'b')	// binary
-			base = ft_strdup("01");
+			base = ft_fstrdup("01");
 		num = va_arg(ap, long long);		// not an int ????
 		num = ft_cast_d(num, p);
 		if (!(tmp = ft_any_base_convert(num, base)))		// should do this more and securiser in parse_buffer too
@@ -177,74 +177,81 @@ int					ft_handle_int(va_list ap, char **str, t_param *p)
 */
 //	printf("handle int tmp: |%s|\n", tmp);
 
-	str = ft_gen_arg_str(p, &tmp, len, neg);
+	*str = ft_gen_arg_str(p, &tmp, len, neg);
 	return (ft_fstrlen(*str));
 }
 
 
-char				**ft_gen_arg_str(t_param *p, char **tmp, size_t len, int neg)
+		// Gonna need to be shorter
+
+char				*ft_gen_arg_str(t_param *p, char **tmp, size_t len, int neg)
 {
 	char	c;
 	int		plen;
 	int		wlen;
-	char	**pre;
-	char	**post;
+	char	*pre;
+	char	*mid;
+	char	*post;
 
-	pre = malloc(sizeof(char*));
-	post = malloc(sizeof(char*));
+	pre = NULL;
+	mid = NULL;
+	post = NULL;
 
 	if (p->flag & F_PREC && p->precision == 0)
 	{
-		*tmp = ft_strdup("");
+		if (*tmp)
+			ft_scott_free(tmp);
+		*tmp = ft_fstrdup("");
 		len = 0;
 	}
-
-
 
 	plen = (p->precision <= (len + neg) ? 0 : p->precision - (len + neg));
 	wlen = (p->width <= len ? 0 : p->width - len);
 	if (plen)
-		*pre = ft_fill_with('0', plen);
+		pre = ft_fill_with('0', plen);
 	if (p->flag & F_HASH)
 	{
 		if (p->spec == 'x')
-			pre = ft_fstrjoin(ft_fstrdup("0x", 2), pre);
+			mid = ft_fstrdup("0x");
 		else if (p->spec == 'X')
-			pre = ft_fstrjoin(ft_fstrdup("0x", 2), pre);
+			mid = ft_fstrdup("0x");
 		else if (p->spec == 'o')
-			pre = ft_fstrjoin(ft_fstrdup("0", 1), pre);
+			mid = ft_fstrdup("0");
+		if (mid)
+			pre = ft_fstrjoin(&mid, &pre);
 	}
 	if (wlen > plen)
 	{
 		c = ' ';
 		if (p->flag & F_ZERO && !(p->flag & F_MINU) && !(p->flag & F_PREC))
 			c = '0';
-		*post = ft_fill_with(c, wlen - plen);
+		post = ft_fill_with(c, wlen - plen);
 		if (!(p->flag & F_MINU))
 		{
 			if (c != '0' && p->flag & F_PLUS)
 			{
-				pre = ft_fstrjoin(neg < 0 ? ft_fstrdup("-", 1) : ft_fstrdup("+", 1), pre);
+				mid = neg < 0 ? ft_fstrdup("-") : ft_fstrdup("+");
+				pre = ft_fstrjoin(&mid, &pre);
 				p->flag &= (0 << 2);
 			}
-			pre = ft_fstrjoin(post, pre);
-//			ft_scott_free(&post);
+			pre = ft_fstrjoin(&post, &pre);
 		}
 	}
 	if (p->flag & F_PLUS)
-		pre = ft_fstrjoin(neg < 0 ? ft_fstrdup("-", 1) : ft_fstrdup("+", 1), pre);
+	{
+		mid = neg < 0 ? ft_fstrdup("-") : ft_fstrdup("+");
+		pre = ft_fstrjoin(&mid, &pre);
+	}
 	if (p->flag & F_SPAC && wlen <= plen)
-		pre = ft_fstrjoin(ft_fstrdup(" ", 1), pre);
-
-	char	**str;
-
-	str = ft_fstrjoin(ft_fstrjoin(pre, tmp), post);
+	{
+		mid = ft_fstrdup(" ");
+		pre = ft_fstrjoin(&mid, &pre);
+	}
+	pre = ft_fstrjoin(&pre, tmp);
+	pre = ft_fstrjoin(&pre, &post);
 
 //	printf("gen arg str: |%s|\n", str);
-
-	return (str);
-
-
+	return (pre);		//ret tmp instead ???
 //	return (ft_fstrjoin(ft_fstrjoin(pre, tmp), post));
 }
 

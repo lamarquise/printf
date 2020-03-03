@@ -67,47 +67,75 @@ size_t	ft_fstrlen(const char *s)
 {
 	size_t a;
 
+//	printf("fstrlen\n");
+
 	a = 0;
 	if (s)
 	{
 		while (s[a])
 			++a;
 	}
+//	printf("fstrlen 2\n");
 	return (a);
 }
 
-char	**ft_fstrjoin(char **s1, char **s2)/*, int l1, int l2)*/
+char	*ft_fstrjoin(char **s1, char **s2)/*, int l1, int l2)*/
 {
 	int		a;
-	char	**ret;
+	int		b;
+	int		c;
+	char	*ret;
 
 //	l1 = 0;
 //	l2 = 0;
 
-	printf("strjoin 1\n");
+//	printf("strjoin 1, s1: |%s| s2: |%s|\n", *s1, *s2);
 
 
-	if (!(ret = malloc(sizeof(char*))))
+//	if (!(ret = malloc(sizeof(char*))))
+//		return (NULL);
+
+//	printf("strjoin 1.5\n");
+
+//	if ((!s1 || !*s1) && (!s2 || !*s2))
+	if (!*s1 && !*s2)
 		return (NULL);
-	if ((!s1 || !*s1)  && (!s2 || !*s2))
-		return (NULL);
+//	printf("strjoin 2\n");
 	a = ft_fstrlen(*s1) + ft_fstrlen(*s2) + 1;
-	if (!(*ret = (char*)ft_memalloc(sizeof(char) * a)))
+//	printf("strjoin 3\n");
+
+	if (!(ret = ft_memalloc(sizeof(char) * a)))
 		return (NULL);
 	a = 0;
-	while (*s1 && **s1)
+	b = 0;
+	c = 0;
+//	printf("strjoin 7\n");
+	while (*s1 && (*s1)[b])
+		(ret)[a++] = (*s1)[b++];
+	while (*s2 && (*s2)[c])
+		(ret)[a++] = (*s2)[c++];
+//	printf("strjoin 8\n");
+	if (s1 && *s1 && **s1)
+	{
+		ft_scott_free(s1);
+//		printf("in here, s1: |%s|\n", *s1);
+//		free(*s1);
+//		printf("still here\n");
+	}
+//	printf("strjoin 8.5\n");
+	if (s2 && *s2 && **s2)
+		ft_scott_free(s2);
+//		free(*s2);
+//	printf("strjoin 9, ret: |%s|\n", ret);
+	
+
+
+/*	while (*s1 && **s1)
 		(*ret)[a++] = *(*s1)++;
 	while (*s2 && **s2)
 		(*ret)[a++] = *(*s2)++;
 	(*ret)[a] = '\0';
-	printf("strjoin 2\n");
-	if (s1 && *s1 && **s1)
-		free(*s1);
-	if (s2 && *s2 && **s2)
-		free(*s2);
-	printf("strjoin 3\n");
-	
-	return (ret);
+*/	return (ret);
 }
 
 

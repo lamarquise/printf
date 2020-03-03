@@ -7,11 +7,11 @@ int		main(int ac, char **av)
 	int		a;
 	char	*str;
 	int		b;
-	int		c;
+	long long		c;
 
 	b = 12345;
 	a = 15;
-	c = 3;
+	c = 39485928374590234;
 	if (ac < 0)
 		return (0);
 
@@ -22,11 +22,14 @@ int		main(int ac, char **av)
 
 
 //	printf("OG: |%-*.*s|\n", -7, -3, "ahey");
-	ft_printf("mine: |%-*.*s|\n", -7, -9, "ahey");
+//	ft_printf("mine: |%-*.*s|\n", -7, -9, "ahey");
 
 //	printf("%s\n", "ahey   ");
-	ft_printf("%s\n", "ahey   ");
+//	ft_printf("%s|\n", "ahey   ");
 
+
+//	printf("a number: %lld\n", c);
+//	ft_printf("a number: %lld\n", c);
 
 
 //	ft_printf("[a number: |%d| a number: |%d|\n]", a, b);
@@ -35,7 +38,7 @@ int		main(int ac, char **av)
 
 //	ft_printf("test bina: |%B|\n", c);
 
-	ft_printf("left justify: |%-5d|\n", a);
+//	ft_printf("left justify: |%-5d|\n", a);
 //	ft_printf("no left justify: |%5d|\n", a);
 
 //	ft_printf("%%");
@@ -48,7 +51,9 @@ int		main(int ac, char **av)
 //	ft_printf("testing precision: |%.8d|\n", b);
 
 //	printf("|%-5c|\n", 0);
-	ft_printf("|%-5c|\n", 0);
+//	ft_printf("|%-5c|\n", 0);
+	printf("OG: |%.5s|\n", "hi there");
+	ft_printf("|%.5s|\n", "hi there");
 
 
 

@@ -16,33 +16,37 @@
 
 int		ft_handle_modulo(char **str, t_param *p)
 {
-	char	**pre;
-	char	**post;
+	char	*pre;
+	char	*post;
 	char	c;
 
-	pre = malloc(sizeof(char*));
-	post = malloc(sizeof(char*));
+	pre = NULL;
+	post = NULL;
 	if (p->width > 1)
 	{
 		c = ' ';
 		if (p->flag & F_MINU)
 		{
-			*post = ft_fill_with(c, p->width - 1);
+			post = ft_fill_with(c, p->width - 1);
 //			printf("theres a -\n");
 		}
 		else
 		{
 			if (p->flag & F_ZERO)
 				c = '0';
-			*pre = ft_fill_with(c, p->width - 1);
+			pre = ft_fill_with(c, p->width - 1);
 		}
 	}
 	else if (p->flag & F_SPAC)
-		pre = ft_fstrjoin(ft_fstrdup(" ", 1), pre);
-
-
+	{
+		post = ft_fstrdup(" ");
+		pre = ft_fstrjoin(&post, &pre);
+	}
 			// can make % == str...
-	str = ft_fstrjoin(ft_fstrjoin(pre, ft_fstrdup("%", 1)), post);
+
+	*str = ft_fstrdup("%");
+	pre = ft_fstrjoin(&pre, str);
+	*str = ft_fstrjoin(&pre, &post);
 
 //	printf("modulo test 1, width: %zu, str |%s|\n", p->width, *str);
 

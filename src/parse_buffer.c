@@ -27,7 +27,7 @@ int		ft_field_parsing(char *format, va_list ap, char **str, int *i)
 	p.precision = 0;
 	if (format[ret++] != '%')
 		return (-1);
-	printf("field parsing\n");
+//	printf("field parsing\n");
 
 		// seems to help a little...
 	if ((*i = ft_flag_parsing(&format[ret], &p, ap)) == -1)
@@ -41,7 +41,7 @@ int		ft_field_parsing(char *format, va_list ap, char **str, int *i)
 	else
 		return (-1);
 
-	printf("field parsing i: %d\n", *i);
+//	printf("field parsing i: %d\n", *i);
 	if (*i <= 3)
 		*i = ft_handle_int(ap, str, &p);
 	else if (*i <= 7)
@@ -62,7 +62,7 @@ int		ft_field_parsing(char *format, va_list ap, char **str, int *i)
 */	else if (*i == 13)
 		*i = ft_handle_modulo(str, &p);
 
-	printf("field parsing test end\n");
+//	printf("field parsing test end\n");
 
 //	printf("parse buff i %d\n", i);
 //	printf("parse buff ret: %d\n", (i == -1) ? -1 : i + ret);

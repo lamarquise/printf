@@ -121,7 +121,7 @@ int					ft_handle_modulo(char **str, t_param *p);
 int					ft_handle_pointer(va_list ap, char **str, t_param *p);
 
 
-char				**ft_gen_arg_str(t_param *p, char **tmp, size_t len, int neg);
+char				*ft_gen_arg_str(t_param *p, char **tmp, size_t len, int neg);
 
 
 
@@ -132,15 +132,15 @@ int					ft_display_del(int fd, t_pfelem **lst);
 	// Extra
 int					ft_latoi(char *str, int *len);
 //char				*ft_fstrjoin(char *s1, char *s2);
-char				**ft_fstrjoin(char **s1, char **s2);
+char				*ft_fstrjoin(char **s1, char **s2);
 size_t				ft_fstrlen(const char *s);
 char				*ft_fill_with(char this, size_t len);
 void				ft_scott_free(char **str);
 
 
 	// More Extra
-char				**ft_fstrdup(char *str, int size);
-
+char				*ft_fstrdup(char *str);
+char				*ft_fstrncpy(char *dst, char *src, int size);
 
 	// Base Convert
 char				*ft_add_char(char, char **str);
