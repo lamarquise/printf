@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 20:53:21 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/02 21:18:31 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/03 20:57:10 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char		*ft_fstrdup(char *str)
 }
 
 		// different return ???
-
 char		*ft_fstrncpy(char *dst, char *src, int size)
 {
 	int		a;
@@ -48,3 +47,29 @@ char		*ft_fstrncpy(char *dst, char *src, int size)
 	return (dst);
 }
 
+		// assuming positive n
+char		*ft_pos_itoa(unsigned long long n)
+{
+	unsigned long long	nb;
+	char				*ret;
+	int					len;
+
+	nb = n;
+	len = 1;
+	while (nb >= 10)
+	{
+		nb /= 10;
+		++len;
+	}
+	if (!(ret = ft_memalloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	ret[len--] = '\0';
+	nb = n;
+	while (len >= 0)
+	{
+		ret[len] = nb % 10 + 48;
+		nb /= 10;
+		--len;
+	}
+	return (ret);
+}

@@ -9,5 +9,9 @@ testl
 tests
 testl.dSYM
 pft_2019/
-pft_2019/
 .DS_Store
+ft_test_printf.out
+result_copy.txt
+result_ori.txt
+results.log
+Tests

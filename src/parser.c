@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:29:21 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/02 21:34:14 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/03 15:43:10 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,20 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 				if (!(str = ft_memalloc(sizeof(char) * (i - c + 1))))
 					return (-2);
 				ft_memcpy(str, &format[c], i - c);
-				if (!pflist_append(lst, ft_buf_to_elem(str, i - c)))
-					return (-3);
+				if (!ft_pflist_append(lst, ft_buf_to_elem(str, i - c)))
+					return (ft_scott_free(&str));
 //				printf("hq spec test 2\n");
 				ft_scott_free(&str);
 			}
 			if ((c = ft_field_parsing(&format[i], ap, &str, &m)) == -1)
-				return (-4);
+				return (ft_scott_free(&str));
 			i += c;
-			
-//			c = i;
 //			printf("HQ spec 3,str: |%s|\n", str);
 //			printf("HQ spec 3,c: %d i: %d\n", c, i);
-			if (!pflist_append(lst, ft_buf_to_elem(str, m)))
-				return (-5);
+			if (!ft_pflist_append(lst, ft_buf_to_elem(str, m)))
+				return (ft_scott_free(&str));
 			c = i;
-//			ft_scott_free(&str);
+			ft_scott_free(&str);
 //			printf("HQ end spec 4, i: %d, c: %d\n", i, c);
 		}
 		else
@@ -62,10 +60,9 @@ int     	ft_hq(char *format, va_list ap, t_pfelem **lst)
 //			printf("HQ no Spec, c: %d\n", c);
 			i = ft_fstrlen(format);
 			if (!(str = ft_memalloc(sizeof(char) * (i - c + 1))))
-				return (-6);
-//			str = ft_memcpy(str, &format[c], i - c);
-			if (!pflist_append(lst, ft_buf_to_elem(ft_memcpy(str, &format[c], i - c), i - c)))
-				return (-7);
+				return (-3);
+			if (!ft_pflist_append(lst, ft_buf_to_elem(ft_memcpy(str, &format[c], i - c), i - c)))
+				return (ft_scott_free(&str));
 			ft_scott_free(&str);
 		}
 	}

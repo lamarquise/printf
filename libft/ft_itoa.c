@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 20:29:27 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/27 17:39:17 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/03 15:52:39 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char			*ft_itoa(long long n)
 		++len;
 	}
 	if (!(ret = (char*)malloc(sizeof(char) * (len + 1))))
-		return (0);
+		return (NULL);
 	ret[0] = '-';
 	ret[len--] = '\0';
 	nb = is_pos(n);

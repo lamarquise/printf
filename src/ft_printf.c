@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:29:04 by erlazo            #+#    #+#             */
-/*   Updated: 2020/02/28 19:10:40 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/03 18:35:29 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ int		ft_printf(const char *format, ...)
 		ret = ft_display_del(1, &lst);
 	else
 	{
-		ft_putnbr(ret);		// leave else for now
+		ft_putnbr(ret);
 		ft_putchar('\n');		
 		// FREE EVERYTHING ???? like the list and stuff ????
-
+		ret = ft_pflist_del_all(&lst);
+		ft_putnbr(ret);
+		ft_putchar('\n');		
 	}
 	va_end(ap);
 	return (ret);

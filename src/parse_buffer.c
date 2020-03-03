@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:33:24 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/02 21:31:22 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/03 21:41:15 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,27 @@ int		ft_field_parsing(char *format, va_list ap, char **str, int *i)
 
 	*i = 0;
 	ret = 0;
-	
-	p.flag = 0;		// else where ????
+	p.flag = 0;
 	p.width = 0;
 	p.precision = 0;
+	p.size = 0;
 	if (format[ret++] != '%')
 		return (-1);
 //	printf("field parsing\n");
-
-		// seems to help a little...
 	if ((*i = ft_flag_parsing(&format[ret], &p, ap)) == -1)
-		return (-1);
-
+		return (-2);
 	ret += *i;
-
-	
 	if ((*i = ft_findchar("dibBuoxXcspNn%", format[ret])) >= 0)
 		p.spec = format[ret];
 	else
-		return (-1);
-
+		return (-3);
 //	printf("field parsing i: %d\n", *i);
 	if (*i <= 3)
 		*i = ft_handle_int(ap, str, &p);
 	else if (*i <= 7)
 		*i = ft_handle_uint(ap, str, &p);
+	else if (*i <= 8)
+		*i = ft_handle_char(ap, str, &p);
 	else if (*i <= 9)
 		*i = ft_handle_str(ap, str, &p);
 	else if (*i == 10)
@@ -66,9 +62,6 @@ int		ft_field_parsing(char *format, va_list ap, char **str, int *i)
 
 //	printf("parse buff i %d\n", i);
 //	printf("parse buff ret: %d\n", (i == -1) ? -1 : i + ret);
-
-
-
-	return ((*i <= -1) ? -1 : 1 + ret);
+	return ((*i <= -1) ? -4 : 1 + ret);
 }
 

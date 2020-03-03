@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:13:46 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/02 20:57:36 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/03 21:41:17 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <stdarg.h>
 //# include <unistd.h>
 # include "libft.h"
+
+# include <limits.h>
 
 
 
@@ -42,7 +44,7 @@
 # define F_SPAC			0x10
 # define F_PREC			0x20
 # define F_WIDT			0x40
-# define F_NULL			0x80
+# define F_NULL			0x80		// null or 0 ???
 
 // others ???
 
@@ -103,10 +105,10 @@ int					ft_get_size(char *format, t_param *p);
 
 
 	// List stuff
-t_pfelem			*new_pfelem(char *str, int size);
-int					pflist_append(t_pfelem **lst, t_pfelem *new);
+t_pfelem			*ft_new_pfelem(char *str, int size);
+int					ft_pflist_append(t_pfelem **lst, t_pfelem *new);
 t_pfelem			*ft_buf_to_elem(char *str, int size);
-
+int					ft_pflist_del_all(t_pfelem **lst);
 
 	// Casting functions
 long long			ft_cast_d(long long num, t_param *p);
@@ -117,12 +119,13 @@ unsigned long long	ft_cast_u(unsigned long long num, t_param *p);
 int					ft_handle_int(va_list ap, char **str, t_param *param);
 int					ft_handle_uint(va_list ap, char **str, t_param *p);
 int					ft_handle_str(va_list ap, char **str, t_param *param);
+int					ft_handle_char(va_list ap, char **str, t_param *p);
 int					ft_handle_modulo(char **str, t_param *p);
 int					ft_handle_pointer(va_list ap, char **str, t_param *p);
 
 
-char				*ft_gen_arg_str(t_param *p, char **tmp, size_t len, int neg);
-
+char				*ft_gen_arg_str_i(t_param *p, char **tmp, size_t len, int neg);
+char				*ft_gen_arg_str_s(t_param *p, char **tmp, size_t len);
 
 
 	// Display
@@ -131,16 +134,16 @@ int					ft_display_del(int fd, t_pfelem **lst);
 
 	// Extra
 int					ft_latoi(char *str, int *len);
-//char				*ft_fstrjoin(char *s1, char *s2);
 char				*ft_fstrjoin(char **s1, char **s2);
 size_t				ft_fstrlen(const char *s);
 char				*ft_fill_with(char this, size_t len);
-void				ft_scott_free(char **str);
+int					ft_scott_free(char **str);
 
 
 	// More Extra
 char				*ft_fstrdup(char *str);
 char				*ft_fstrncpy(char *dst, char *src, int size);
+char				*ft_pos_itoa(unsigned long long n);
 
 	// Base Convert
 char				*ft_add_char(char, char **str);

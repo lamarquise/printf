@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 14:48:29 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/02 19:11:30 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/03 17:13:11 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,9 @@ char		*ft_add_char(char c, char **str)
 	tmp[i] = c;
 	while (*str && (*str)[i])
 	{
-//		printf("while in add char\n");
 		tmp[i + 1] = (*str)[i];
 		++i;
 	}
-//	printf("made it to add char 3\n");
 	tmp[i + 1] = '\0';
 	if (str && *str)
 		ft_scott_free(str);
@@ -56,7 +54,6 @@ int			ft_base_check(char *base)
 		}
 		++ret;
 	}
-//	printf("base check 1\n");
 	return (ret > 1 ? ret : -1);
 }
 						// must always be positive number...
@@ -70,13 +67,10 @@ char		*ft_any_base_convert(unsigned long long nb, char *base)
 		return (NULL);
 	while (nb >= (unsigned int)size)
 	{
-//		printf("ret in base conv: |%s|\n", ret);
-		ret = ft_add_char(base[nb % size], &ret);		// is this the right order ??
-//		printf("ret in base 2\n");						// double check...
-		nb /= (unsigned int)size;
+		ret = ft_add_char(base[nb % size], &ret);
+		nb /= size;
 	}
-	ret = ft_add_char(base[nb % size], &ret);		// do i need to do it one last time...
-//	printf("base convert, ret: |%s|\n", ret);
+	ret = ft_add_char(base[nb % size], &ret);
 	return (ret);
 }
 

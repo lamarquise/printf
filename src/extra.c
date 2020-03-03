@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 18:49:08 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/02 21:31:10 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/03/03 19:10:57 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,18 @@ int		ft_latoi(char *str, int *len)
 	return (ret * neg);
 }
 
-void	ft_scott_free(char **str)
+int		ft_scott_free(char **str)
 {
+//	printf("start scott\n");
 	ft_bzero(*str, ft_fstrlen(*str));
+//	printf("mid scott\n");
+	
 	free(*str);
 	*str = NULL;
+//	printf("end scott\n");
+	
+
+	return (-1);
 }
 
 char	*ft_fill_with(char this, size_t len)
@@ -67,37 +74,28 @@ size_t	ft_fstrlen(const char *s)
 {
 	size_t a;
 
-//	printf("fstrlen\n");
-
 	a = 0;
 	if (s)
 	{
 		while (s[a])
 			++a;
 	}
-//	printf("fstrlen 2\n");
 	return (a);
 }
 
-char	*ft_fstrjoin(char **s1, char **s2)/*, int l1, int l2)*/
+char	*ft_fstrjoin(char **s1, char **s2)
 {
 	int		a;
 	int		b;
 	int		c;
 	char	*ret;
 
-//	l1 = 0;
-//	l2 = 0;
 
 //	printf("strjoin 1, s1: |%s| s2: |%s|\n", *s1, *s2);
 
-
-//	if (!(ret = malloc(sizeof(char*))))
-//		return (NULL);
-
 //	printf("strjoin 1.5\n");
 
-//	if ((!s1 || !*s1) && (!s2 || !*s2))
+//	if ((!s1 || !*s1) && (!s2 || !*s2))		// better ???
 	if (!*s1 && !*s2)
 		return (NULL);
 //	printf("strjoin 2\n");
@@ -115,27 +113,23 @@ char	*ft_fstrjoin(char **s1, char **s2)/*, int l1, int l2)*/
 	while (*s2 && (*s2)[c])
 		(ret)[a++] = (*s2)[c++];
 //	printf("strjoin 8\n");
-	if (s1 && *s1 && **s1)
+	if (s1 && *s1 )//&& **s1)		// i think this solved my problem...
 	{
+//		printf("in free 1, s1: |%s|\n", *s1);
 		ft_scott_free(s1);
 //		printf("in here, s1: |%s|\n", *s1);
 //		free(*s1);
-//		printf("still here\n");
 	}
 //	printf("strjoin 8.5\n");
-	if (s2 && *s2 && **s2)
+	if (s2 && *s2 )//&& **s2)
+	{
+//		printf("in free 2, s2: |%s|\n", *s2);
 		ft_scott_free(s2);
+	}
 //		free(*s2);
 //	printf("strjoin 9, ret: |%s|\n", ret);
 	
-
-
-/*	while (*s1 && **s1)
-		(*ret)[a++] = *(*s1)++;
-	while (*s2 && **s2)
-		(*ret)[a++] = *(*s2)++;
-	(*ret)[a] = '\0';
-*/	return (ret);
+	return (ret);
 }
 
 
