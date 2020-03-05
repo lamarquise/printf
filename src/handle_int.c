@@ -10,6 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
+		// Needs to be made shorter
+		// Remove the few remaining redundancies, like in ft_cast's ?
+		// Change ft_cast's ???
+		// Get the binary print size to depend on size, ie int vs long or
+		// whatever
+
+
 #include "printf.h"
 
 	// "0#+- .123456789*hljz"
@@ -33,49 +41,49 @@
 
 
 
-/*
 
-long long				ft_cast_d(long long num, t_param *p)		// works for %d and %i
+
+long long				ft_cast_d(va_list ap, t_param *p)		// works for %d and %i
 {
+	long long	num;
+
 	if (p->size & C_H)
-		num = (short)num;
+		num = va_arg(ap, int);	// short
 	else if (p->size & C_HH)
-		num = (signed char)num;
+		num = va_arg(ap, int);	// signed char
 	else if (p->size & C_L)
-		num = (long)num;
+		num = va_arg(ap, long int);
 	else if (p->size & C_LL)
-		num = (long long)num;
+		num = va_arg(ap, long long int);
 	else if (p->size & C_J)
-		num = (intmax_t)num;
+		num = va_arg(ap, intmax_t);
 	else if (p->size & C_Z)
-		num = (size_t)num;
+		num = va_arg(ap, size_t);
 	else
-		num = (int)num;
+		num = va_arg(ap, int);
 	return (num);
 }
 
-unsigned long long		ft_cast_u(unsigned long long num, t_param *p)		// works for %uoxX
+unsigned long long		ft_cast_u(va_list ap, t_param *p)		// works for %uoxX
 {
+	unsigned long long	num;
+
 	if (p->size & C_H)
-		num = (unsigned short)num;
+		num = va_arg(ap, int);	// unsigned short	// make it unsigned instead ?
 	else if (p->size & C_HH)
-		num = (unsigned char)num;
+		num = va_arg(ap, int);	// unsigned char
 	else if (p->size & C_L)
-		num = (unsigned long)num;
+		num = va_arg(ap, unsigned long);
 	else if (p->size & C_LL)
-		num = (unsigned long long)num;		// will this work ???	may need to split handle int...
+		num = va_arg(ap, unsigned long long);		// will this work ???	may need to split handle int...
 	else if (p->size & C_J)
-		num = (uintmax_t)num;
+		num = va_arg(ap, uintmax_t);
 	else if (p->size & C_Z)
-		num = (size_t)num;
+		num = va_arg(ap, size_t);
 	else
-		num = (unsigned int)num;
+		num = va_arg(ap, unsigned int);
 	return (num);
 }
-
-
-*/
-
 
 int						ft_handle_uint(va_list ap, char **str, t_param *p)
 {
@@ -93,9 +101,7 @@ int						ft_handle_uint(va_list ap, char **str, t_param *p)
 	num = 1;				// did not help at all...
 	if (p->spec == 'u')
 	{
-		num = va_arg(ap, unsigned long long);
-//		num = ft_cast_u(num, p);
-//		num = ft_cast_u(va_arg(ap, unsigned long long), p);
+		num = ft_cast_u(ap, p);
 
 //		printf("num: %llu\n", num);		
 
@@ -105,30 +111,25 @@ int						ft_handle_uint(va_list ap, char **str, t_param *p)
 	}
 	else if (p->spec == 'x' || p->spec == 'X')
 	{
-		num = va_arg(ap, unsigned long);
-		printf("OG num: %lu\n", num);
+//		printf("OG num: %lu\n", num);
 //		if (num < 0)
 //			num = 4294967295 + num + 1;
 
-//		num = ft_cast_u(num, p);
-//		num = ft_cast_u(va_arg(ap, unsigned long long), p);
-
+		num = ft_cast_u(ap, p);
 		if (p->spec == 'x')
 			tmp = ft_any_base_convert(num, "0123456789abcdef");
 		else
 			tmp = ft_any_base_convert(num, "0123456789ABCDEF");
 
-		printf("OG: tmp |%s|\n", tmp);
+//		printf("OG: tmp |%s|\n", tmp);
 		
 		len = ft_fstrlen(tmp);
 //		printf("its a hex, tmp: |%s|\n", tmp);
 	}
 	else if (p->spec == 'o')		// unsigned ocatal
 	{
-		num = va_arg(ap, unsigned long long);
-//		num = ft_cast_u(num, p);
-//		num = ft_cast_u(va_arg(ap, unsigned long long), p);
-		tmp = ft_any_base_convert(num, "01234567");		// more than a long ???
+		num = ft_cast_u(ap, p);
+		tmp = ft_any_base_convert(num, "01234567");
 		len = ft_fstrlen(tmp);
 	}
 	if (num == 0)
@@ -157,18 +158,15 @@ int					ft_handle_int(va_list ap, char **str, t_param *p)
 
 	if (p->spec == 'd' || p->spec == 'i')
 	{
-		num = va_arg(ap, long long);
-//		num = ft_cast_d(num, p);		// do the va_arg in the cast func ????
-//		num = ft_cast_d(va_arg(ap, long long), p);
+		num = ft_cast_d(ap, p);
 		if (num == 0)
-			p->flag |= (1 << 7);		// will it work ????
+			p->flag |= (1 << 7);
 		if (num < 0)
 		{
 			neg = -1;
 			num = -num;		// is it a problem for long long max or min ???
 		}
 		tmp = ft_pos_itoa(num);
-//		tmp = ft_itoa(num);		// special itoa ???
 		len = ft_fstrlen(tmp) - neg;
 //		printf("handle int test 2 its an int\n");
 	}
@@ -178,9 +176,7 @@ int					ft_handle_int(va_list ap, char **str, t_param *p)
 			base = ft_fstrdup(va_arg(ap, char*));	// can not free post, not sure why, ok so can't free because its a arg passed to func, so don't worry, just set to NULL...
 		else if (p->spec == 'b')	// binary
 			base = ft_fstrdup("01");
-		num = va_arg(ap, long long);		// not an int ????
-//		num = ft_cast_d(num, p);
-//		num = ft_cast_d(va_arg(ap, long long), p);
+		num = ft_cast_d(ap, p);
 		if (!(tmp = ft_any_base_convert(num, base)))		// should do this more and securiser in parse_buffer too
 			return (-1);
 		len = ft_fstrlen(tmp);
@@ -194,12 +190,6 @@ int					ft_handle_int(va_list ap, char **str, t_param *p)
 	if (neg < 0)		// if it's neg same as if flag + so set to 1
 		p->flag |= (1 << 2);
 
-/*	if (p->flag & F_PREC && p->precision == 0)
-	{
-		tmp = ft_strdup("");
-		len = 0;
-	}
-*/
 //	printf("handle int tmp: |%s|\n", tmp);
 
 	*str = ft_gen_arg_str_i(p, &tmp, len, neg);
@@ -222,9 +212,9 @@ char				*ft_gen_arg_str_i(t_param *p, char **tmp, size_t len, int neg)
 	mid = NULL;
 	post = NULL;
 
-	printf("width: %zu, prec: %zu\n", p->width, p->precision);
+//	printf("width: %zu, prec: %zu\n", p->width, p->precision);
 
-	printf("tmp: |%s|\n", *tmp);
+//	printf("tmp: |%s|\n", *tmp);
 
 
 	if (p->flag & F_NULL && p->flag & F_PREC && p->precision == 0)

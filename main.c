@@ -4,6 +4,8 @@
 
 int		main(int ac, char **av)
 {
+	int		ret1;
+	int		ret2;
 	int		a;
 	int		imin;
 	int		imax;
@@ -14,6 +16,8 @@ int		main(int ac, char **av)
 	long long		llmin;
 	unsigned long long	ullmax;
 
+	ret1 = 0;
+	ret2 = 0;
 	llmax = 0;
 	llmin = 0;
 	ullmax = 0;
@@ -31,6 +35,21 @@ int		main(int ac, char **av)
 
 	if (ac == 2)
 		str = av[1];
+
+//	ret1 = printf(
+//	printf("\nret1: %d\n", ret1);
+//	ret2 = ft_printf(
+//	printf("\nret2: %d\n", ret2);
+
+
+//	ret1 = printf("sWrHOY%0.*ixOB%*c%0.1i%i1Y4cs", -3, -52610042, -6, '\0', 0, 0);
+//	printf("\nret1: %d\n", ret1);
+//	ret2 = ft_printf("sWrHOY%0.*ixOB%*c%0.1i%i1Y4cs", -3, -52610042, -6, '\0', 0, 0);
+//	printf("\nret2: %d\n", ret2);
+
+
+
+//	ft_printf("number|%d| |%ld| |%lld| |%d| |%zu| |%ld| |%d| |%ld| |%lld| |%d| |%zu| |%ld|\n", b, (long)b, (long long)c, a, (size_t)b, (long)a, b, (long)b, (long long)c, a, (size_t)b, (long)a);
 
 
 //	printf("|%c%c%c%c%c%c%c%c%c%c%c%c%c|\n", 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52);
@@ -52,10 +71,10 @@ int		main(int ac, char **av)
 //	printf("%0.*x%sf9%15.*u%.5x\n", 9, 2147483647, "", -9, 0, -2147483647);
 //	ft_printf("%0.*x%sf9%15.*u%.5x\n", 9, 2147483647, "", -9, 0, -2147483647);
 
-	printf("%0*.3X", -1, 0);
-	printf("\n");
-	ft_printf("%0*.3X", -1, 0);
-	printf("\n");
+//	printf("%0*.3X", -1, 0);
+//	printf("\n");
+//	ft_printf("%0*.3X", -1, 0);
+//	printf("\n");
 
 //	printf("OG testing c: |%05s|\n", "hi");
 //	ft_printf("testing c: |%05c|\n", 53);

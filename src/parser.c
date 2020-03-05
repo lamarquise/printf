@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+	// Needs to be shorter
+	// double check securities and frees
+
 #include "printf.h"
 
 	// this will have to be shorter...

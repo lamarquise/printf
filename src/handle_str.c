@@ -10,7 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// seems to do the right things but needs to be shorter. more concise ?
+	// needs to be shorter. more concise ?
+	// add a ft_cast like for ints  ????
+	// double check the return for str, and char why not
+
 
 #include "printf.h"
 
@@ -59,6 +62,8 @@ int				ft_handle_char(va_list ap, char **str, t_param *p)
 	return (len + wlen + plen);
 }
 
+	// double check the return...
+
 int				ft_handle_str(va_list ap, char **str, t_param *p)
 {
 	char	*tmp;
@@ -79,73 +84,8 @@ int				ft_handle_str(va_list ap, char **str, t_param *p)
 		tmp = ft_fstrdup("(null)");
 		p->flag |= (1 << 7);	// after width
 		len = 6;	// ???		// seems good i guess...
-
-//		return (1);
 	}
 //	printf("test 2\n");
-
-/*
-	if (p->flag & F_PREC)
-	{
-		if (p->precision == 0)
-		{
-			ft_scott_free(&tmp);
-			tmp = ft_fstrdup("");	// was *str...
-			len = 0;
-//			return (1);
-		}
-		else if ((plen = (p->precision < len ? p->precision : 0)) > 0)
-		{
-//			ft_scott_free(&tmp);
-			pre = ft_substr(tmp, 0, plen);
-			ft_scott_free(&tmp);
-			tmp = pre;
-			pre = NULL;
-			len = plen;
-		}
-		// free things ????
-	}
-
-*/
-
-//	if (p->flag & F_NULL)
-//		wlen = p->width;
-//	else
-
-
-/*
-	wlen = (p->width <= len ? 0 : p->width - len);
-
-	c = ' ';
-	if (wlen)
-	{
-		if (p->flag & F_MINU)
-			post = ft_fill_with(c, wlen);
-		else
-		{
-			if (p->flag & F_ZERO)
-				c = '0';
-			pre = ft_fill_with(c, wlen);
-		}
-	}
-	else if (p->flag & F_SPAC)
-		pre = ft_fill_with(c, 1);
-
-	*str = ft_fstrjoin(&tmp, &post);
-	
-//	printf("handle str test 2, str: |%s|\n", *str);
-
-	*str = ft_fstrjoin(&pre, str);
-
-	
-
-	len += wlen;
-*/
-//	printf("pre: |%s|, post: |%s|\n", pre, post);
-
-//	printf("handle str test 3, str: |%s| size: %zu\n", *str, len);
-
-//	printf("len: %zu\n", len);
 
 	*str = ft_gen_arg_str_s(p, &tmp, len);
 

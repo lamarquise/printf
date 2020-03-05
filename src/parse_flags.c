@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// get size needs work, secure ???
+	// Needs to be shorter
+	// redundantly secure ???	
 
 #include "printf.h"
 
@@ -35,7 +36,7 @@ int			ft_flag_parsing(char *format, t_param *p, va_list ap)
 		if (i <= 4)
 		{
 //			printf("is a flag\n");
-			p->flag |= (1 << i); // also fucking clever.... this or the HEX defines ???? need both ???
+			p->flag |= (1 << i);
 			n = 1;
 //			printf("flag parsing, i = %d\n", i);
 		}
@@ -115,13 +116,12 @@ int			ft_get_width(char *format, t_param *p, va_list ap)
 	p->flag |= (1 << 6);
 	return (ret);
 }
-	// needs lots of work....
 
-	// 1:l 2:ll 3:h 6:hh
-
+	// 1:l 2:ll 3:h 6:hh	// clever but didn't really do the doubling tthing
 
 	// my solution is declare everything as long long, hten cast if necessary
 
+	// Shorten ???
 int			ft_get_size(char *format, t_param *p)
 {
 	int		ret;

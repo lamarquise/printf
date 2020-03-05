@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// need to double check a few things and see about more security
+	// Double check securities
 
 #include "printf.h"
 

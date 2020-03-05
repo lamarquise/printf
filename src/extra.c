@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+		// double check strjoin freeing
+		// remove comments...
+
 #include "printf.h"
 
 int		ft_latoi(char *str, int *len)
@@ -42,15 +45,9 @@ int		ft_latoi(char *str, int *len)
 
 int		ft_scott_free(char **str)
 {
-//	printf("start scott\n");
 	ft_bzero(*str, ft_fstrlen(*str));
-//	printf("mid scott\n");
-	
 	free(*str);
 	*str = NULL;
-//	printf("end scott\n");
-	
-
 	return (-1);
 }
 
@@ -83,6 +80,8 @@ size_t	ft_fstrlen(const char *s)
 	return (a);
 }
 
+	// double check that free is fine
+
 char	*ft_fstrjoin(char **s1, char **s2)
 {
 	int		a;
@@ -113,12 +112,11 @@ char	*ft_fstrjoin(char **s1, char **s2)
 	while (*s2 && (*s2)[c])
 		(ret)[a++] = (*s2)[c++];
 //	printf("strjoin 8\n");
-	if (s1 && *s1 )//&& **s1)		// i think this solved my problem...
+	if (s1 && *s1 )//&& **s1)		// i think this solved my problem... but is it secure ???
 	{
 //		printf("in free 1, s1: |%s|\n", *s1);
 		ft_scott_free(s1);
 //		printf("in here, s1: |%s|\n", *s1);
-//		free(*s1);
 	}
 //	printf("strjoin 8.5\n");
 	if (s2 && *s2 )//&& **s2)
@@ -126,7 +124,6 @@ char	*ft_fstrjoin(char **s1, char **s2)
 //		printf("in free 2, s2: |%s|\n", *s2);
 		ft_scott_free(s2);
 	}
-//		free(*s2);
 //	printf("strjoin 9, ret: |%s|\n", ret);
 	
 	return (ret);

@@ -10,7 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// the else ????
+	// Readme, update it, start by doing that
+	// Check for leaks !!! Even for errors
+	// the else ???? Should it be there ???
+
+	// properly comment my .h
+	// take the extra.c's and more_extra.c's and add them to standard libft ???
 
 #include "printf.h"
 

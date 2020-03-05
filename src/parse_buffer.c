@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+	// needs to be much shorter...
+	// fix %n or is it %N
+
 #include "printf.h"
 
 	// shorten... n ???

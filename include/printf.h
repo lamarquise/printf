@@ -111,8 +111,8 @@ t_pfelem			*ft_buf_to_elem(char *str, int size);
 int					ft_pflist_del_all(t_pfelem **lst);
 
 	// Casting functions
-long long			ft_cast_d(long long num, t_param *p);
-unsigned long long	ft_cast_u(unsigned long long num, t_param *p);
+long long			ft_cast_d(va_list ap, t_param *p);
+unsigned long long	ft_cast_u(va_list ap, t_param *p);
 
 
 	// Handler functions

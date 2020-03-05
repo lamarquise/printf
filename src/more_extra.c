@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+	// where does ft_fstrncpy() get called ??? do i still need it ???
+
 #include "printf.h"
 
 char		*ft_fstrdup(char *str)

@@ -10,7 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// protection ??? all flags ???
+	// do i need to add protections ???
+	// are there other flags to mange
+	// does it need a ft_cast ???
+
 
 #include "printf.h"
 

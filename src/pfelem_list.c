@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+	// seems good 
+
 #include "printf.h"
 
 t_pfelem	*ft_new_pfelem(char *str, int size)
