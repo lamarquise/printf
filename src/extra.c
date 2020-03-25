@@ -89,43 +89,22 @@ char	*ft_fstrjoin(char **s1, char **s2)
 	int		c;
 	char	*ret;
 
-
-//	printf("strjoin 1, s1: |%s| s2: |%s|\n", *s1, *s2);
-
-//	printf("strjoin 1.5\n");
-
-//	if ((!s1 || !*s1) && (!s2 || !*s2))		// better ???
 	if (!*s1 && !*s2)
 		return (NULL);
-//	printf("strjoin 2\n");
 	a = ft_fstrlen(*s1) + ft_fstrlen(*s2) + 1;
-//	printf("strjoin 3\n");
-
 	if (!(ret = ft_memalloc(sizeof(char) * a)))
 		return (NULL);
 	a = 0;
 	b = 0;
 	c = 0;
-//	printf("strjoin 7\n");
 	while (*s1 && (*s1)[b])
 		(ret)[a++] = (*s1)[b++];
 	while (*s2 && (*s2)[c])
 		(ret)[a++] = (*s2)[c++];
-//	printf("strjoin 8\n");
-	if (s1 && *s1 )//&& **s1)		// i think this solved my problem... but is it secure ???
-	{
-//		printf("in free 1, s1: |%s|\n", *s1);
+	if (s1 && *s1 )
 		ft_scott_free(s1);
-//		printf("in here, s1: |%s|\n", *s1);
-	}
-//	printf("strjoin 8.5\n");
-	if (s2 && *s2 )//&& **s2)
-	{
-//		printf("in free 2, s2: |%s|\n", *s2);
+	if (s2 && *s2 )
 		ft_scott_free(s2);
-	}
-//	printf("strjoin 9, ret: |%s|\n", ret);
-	
 	return (ret);
 }
 

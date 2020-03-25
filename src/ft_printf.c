@@ -16,8 +16,30 @@
 
 	// properly comment my .h
 	// take the extra.c's and more_extra.c's and add them to standard libft ???
+	// 0b is like 0x except for binary... implement that
+
+
 
 #include "printf.h"
+/*
+char	*ft_cprintf(const char *format, ...)
+{
+	int			ret;
+	char		*str;
+	va_list		ap;
+	t_pfelem	*lst;
+
+	str = NULL;
+	lst = NULL;
+	va_start(ap, format);
+	if ((ret = ft_hq((char*)format, ap, &lst)) == 1)
+		ret = ft_display_del(fd, &lst);	// something else that joins all
+	else								// into ret
+		ft_putnbr(ret);		// for now
+	va_end(ap);
+	return (ret);
+}
+*/
 
 int		ft_fdprintf(int fd, const char *format, ...)
 {

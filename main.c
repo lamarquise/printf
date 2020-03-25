@@ -36,6 +36,10 @@ int		main(int ac, char **av)
 	if (ac == 2)
 		str = av[1];
 
+
+	ft_printf("%-05\n");
+
+
 //	ret1 = printf(
 //	printf("\nret1: %d\n", ret1);
 //	ret2 = ft_printf(
@@ -146,6 +150,5 @@ int		main(int ac, char **av)
 
 //	system("leaks test");
 	return (0);
-
 }
 
