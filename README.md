@@ -1,20 +1,51 @@
 
+#Design Doc:
 
-	README NEEDS TO BE UPDATED !!!!!!!
+##Printf, What does it do?
+Essencially it's a function that when called will produce a formated string out of 
+the inputs. The Formating is limited in scope but handles a surprisingly large number
+of permutations.
+
+
+
+##How does the function work?
+	The ft_printf() function is called with a number of parameters. These are a string
+(usually in "" quotes) and the variabes (defined either in the function call
+or before) that will in some way modify the string. This string is the ultimate product.
+
+	So what does the algorythm that handles the string and it's parameters look like?
+
+
+Collect the params
+parcours the string until specifier
+cut up into linked list
+treat specifier and flags
+puts final product into an elem of linked list type
+elem is attached to linked list
+linked list is parcouru and printed assuming there were no errors
+it can be printed in dif places depending on which version of printf was called.
+
+There are more details in the "Deal with specefiers and flags" part of this algo... 
+
+
+
 
 
 Ft_Printf.c
 
 ft_printf():
 Simple and straight forward, it inits a few variables, the linked list,
-and does some basic checks before calling the first bulky func.
+and does some basic checks before calling the first beefy func.
 
 
 
 Pfelem_List.c
 
-new_pfelem():
+ft_new_pfelem():
 Creates a new element of t_pfelem structure type.
+
+ft_plist_append():
+
 
 pfelem_append():
 Appends a list of t_pfelem type, does not create its own new elem, that
@@ -23,6 +54,9 @@ is passed as a param. Easier to send a **lst rather than *lst.
 ft_buf_to_elem():
 Takes a string (sourced from *format) and creates a new elem containing
 that str.
+
+ft_pflist_del_all():
+
 
 
 
