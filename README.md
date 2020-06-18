@@ -1,14 +1,14 @@
 
-#Design Doc:
+# Design Doc:
 
-##Printf, What does it do?
+## Printf, What does it do?
 Essencially it's a function that when called will produce a formated string out of 
 the inputs. The Formating is limited in scope but handles a surprisingly large number
 of permutations.
 
 
 
-##How does the function work?
+## How does the function work?
 	The ft_printf() function is called with a number of parameters. These are a string
 (usually in "" quotes) and the variabes (defined either in the function call
 or before) that will in some way modify the string. This string is the ultimate product.
