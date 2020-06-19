@@ -9,11 +9,11 @@ of permutations.
 
 
 ## How does the function work?
-	The ft_printf() function is called with a number of parameters. These are a string
+The ft_printf() function is called with a number of parameters. These are a string
 (usually in "" quotes) and the variabes (defined either in the function call
 or before) that will in some way modify the string. This string is the ultimate product.
 
-	So what does the algorythm that handles the string and it's parameters look like?
+So what does the algorythm that handles the string and it's parameters look like?
 
 
 Collect the params
@@ -31,7 +31,7 @@ There are more details in the "Deal with specefiers and flags" part of this algo
 
 
 
-Ft_Printf.c
+### Ft_Printf.c
 
 ft_printf():
 Simple and straight forward, it inits a few variables, the linked list,
@@ -39,7 +39,7 @@ and does some basic checks before calling the first beefy func.
 
 
 
-Pfelem_List.c
+### Pfelem_List.c
 
 ft_new_pfelem():
 Creates a new element of t_pfelem structure type.
@@ -60,7 +60,7 @@ ft_pflist_del_all():
 
 
 
-Parser.c
+### Parser.c
 
 ft_HQ():
 Does the majority of the work of going though *format, includes a loop
@@ -69,7 +69,7 @@ linked list.
 
 
 
-Parse_Buffer.c
+### Parse_Buffer.c
 
 ft_field_parsing():
 Called from ft_HQ(), this function takes *format after a % has been reached,
@@ -80,7 +80,7 @@ been read after a %.
 
 
 
-Parse_Flags.c
+### Parse_Flags.c
 
 ft_flag_parsing():
 Called from ft_field_parsing() to recover all but the specifiers, uses
@@ -100,9 +100,9 @@ it stores them yet...
 
 
 
-HANDLER FUNCTIONS
+## HANDLER FUNCTIONS
 
-Handle_Int.c
+### Handle_Int.c
 
 ft_handle_int():
 Called from ft_field_parsing() after the flags, width, precision and size have
@@ -115,26 +115,26 @@ back). Uses a special ft_fstrjoin() and ft_fill_with(), for this.
 Finally it sets the final result = *str.
 
 
-Handle_Str.c
+### Handle_Str.c
 
 ft_handle_str():
 Called from ft_field_parsing(), very similar to ft_handle_int(), it handles
 ( cs ) specifiers, basically the same structure for dealing with flags.
 
 
-Handle_Pointer.c
+### Handle_Pointer.c
 
 ft_handle_pointer():
 Called from ft_field_parsing(), very similar to ft_handle_int(), handles ( p )
 
 
-Handle_Modulo.c
+### Handle_Modulo.c
 
 ft_handle_modulo():
 Called from ft_field_parsing(), very similar to ft_handle_int(), handles ( % )
 
 
-Base_Conversion.c
+### Base_Conversion.c
 
 ft_add_char():
 Basically a strjoin() but prefixes a single char to a *str, mallocs a new str
@@ -150,7 +150,7 @@ Called in ft_handle_int() for multiple specifiers, converts any int to a given
 base, returning a *str.
 
 
-Display.c
+### Display.c
 
 ft_display_del():
 Called from ft_printf() once the whole *format has been processed successfully,
@@ -160,7 +160,7 @@ It also handles the ( N ) specifier, counting the number of char printed and
 displaying that number should an element containing only '\0' be come accross.
 
 
-Extra.c
+### Extra.c
 
 ft_latoi():
 Called from Parse_Flags.c, it is a regular atoi which also counts the string
