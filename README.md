@@ -1,5 +1,5 @@
 
-# Design Doc:
+# Design Doc
 
 ## Printf, What does it do?
 Essencially it's a function that when called will produce a formated string out of 

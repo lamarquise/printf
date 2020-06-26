@@ -90,12 +90,17 @@ typedef struct		s_buf			// obsolete unless i decide to use the buffer thing
 
 //typedef int		(*t_ftc)(t_buf*, va_list, t_param*);
 
+/*
+**	Printf.c
+*/
 
 int					ft_printf(const char *format, ...);
 int					ft_fdprintf(int fd, const char *format, ...);
 
+/*
+**	Parsing		// do i want the const ???
+*/
 
-	// Parsing		// do i want the const ???
 int					ft_hq(char *format, va_list ap, t_pfelem **lst);
 int					ft_field_parsing(char *format, va_list ap, char **str, int *read);
 int					ft_flag_parsing(char *format, t_param *p, va_list ap);
@@ -103,19 +108,26 @@ int					ft_get_precision(char *format, t_param *p, va_list ap);
 int					ft_get_width(char *format, t_param *p, va_list ap);
 int					ft_get_size(char *format, t_param *p);
 
+/*
+**	List stuff
+*/
 
-	// List stuff
 t_pfelem			*ft_new_pfelem(char *str, int size);
 int					ft_pflist_append(t_pfelem **lst, t_pfelem *new);
 t_pfelem			*ft_buf_to_elem(char *str, int size);
 int					ft_pflist_del_all(t_pfelem **lst);
 
-	// Casting functions
+/*
+**	Casting functions
+*/
+
 long long			ft_cast_d(va_list ap, t_param *p);
 unsigned long long	ft_cast_u(va_list ap, t_param *p);
 
+/*
+**	Handler functions
+*/
 
-	// Handler functions
 int					ft_handle_int(va_list ap, char **str, t_param *param);
 int					ft_handle_uint(va_list ap, char **str, t_param *p);
 int					ft_handle_str(va_list ap, char **str, t_param *param);
@@ -127,25 +139,34 @@ int					ft_handle_pointer(va_list ap, char **str, t_param *p);
 char				*ft_gen_arg_str_i(t_param *p, char **tmp, size_t len, int neg);
 char				*ft_gen_arg_str_s(t_param *p, char **tmp, size_t len);
 
+/*
+**	Display
+*/
 
-	// Display
 int					ft_display_del(int fd, t_pfelem **lst);
 
+/*
+**	Extra
+*/
 
-	// Extra
 int					ft_latoi(char *str, int *len);
 char				*ft_fstrjoin(char **s1, char **s2);
 size_t				ft_fstrlen(const char *s);
 char				*ft_fill_with(char this, size_t len);
 int					ft_scott_free(char **str);
 
+/*
+**	More Extra
+*/
 
-	// More Extra
 char				*ft_fstrdup(char *str);
 char				*ft_fstrncpy(char *dst, char *src, int size);
 char				*ft_pos_itoa(unsigned long long n);
 
-	// Base Convert
+/*
+**	Base Convert
+*/
+
 char				*ft_add_char(char, char **str);
 int					ft_base_check(char *base);
 char				*ft_any_base_convert(unsigned long long nb, char *base);

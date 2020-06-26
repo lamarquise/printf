@@ -37,7 +37,13 @@ int		main(int ac, char **av)
 		str = av[1];
 
 
-	ft_printf("%-05\n");
+	ft_printf("this is the first test\n");
+
+	ft_printf("%s the second test\n", "this is");
+
+
+
+//	ft_printf("%-05\n");
 
 
 //	ret1 = printf(

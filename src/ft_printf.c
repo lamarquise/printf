@@ -10,16 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// Readme, update it, start by doing that
-	// Check for leaks !!! Even for errors
-	// the else ???? Should it be there ???
-
-	// properly comment my .h
-	// take the extra.c's and more_extra.c's and add them to standard libft ???
-	// 0b is like 0x except for binary... implement that
-
-
-
 #include "printf.h"
 /*
 char	*ft_cprintf(const char *format, ...)
