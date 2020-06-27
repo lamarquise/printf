@@ -14,6 +14,18 @@
 
 #include "printf.h"
 
+	// tmp ? could be useful to have around...
+	// would need to be made more secure
+int			ft_print_lst(t_pfelem **lst)
+{
+	while (*lst)
+	{
+		write(1, (*lst)->content, (*lst)->size);
+		*lst = (*lst)->next;
+	}
+	return (1);
+}
+
 t_pfelem	*ft_new_pfelem(char *str, int size)
 {
 	t_pfelem	*new;

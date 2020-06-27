@@ -10,61 +10,65 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
+	// need to rename cuz there isn't a buffer any more...
+
 	// needs to be much shorter...
 	// fix %n or is it %N
 
 #include "printf.h"
 
-	// shorten... n ???
+	// You need m to be sent cuz it returns len of str
 
-int		ft_field_parsing(char *format, va_list ap, char **str, int *i)
+int		ft_field_parsing(char *format, va_list ap, char **str, int *m)
 {
 	int		ret;
 	t_param	p;
 
-	*i = 0;
+	*m = 0;
 	ret = 0;
-	p.flag = 0;
+	p.flag = 0;			// do this stuff elsewhere ?
 	p.width = 0;
 	p.precision = 0;
 	p.size = 0;
 	if (format[ret++] != '%')
 		return (-1);
 //	printf("field parsing\n");
-	if ((*i = ft_flag_parsing(&format[ret], &p, ap)) == -1)
+	if ((*m = ft_flag_parsing(&format[ret], &p, ap)) == -1)
 		return (-2);
-	ret += *i;
-	if ((*i = ft_findchar("dibBuoxXcspNn%", format[ret])) >= 0)
+	ret += *m;
+	if ((*m = ft_findchar("dibBuoxXcspNn%", format[ret])) >= 0)
 		p.spec = format[ret];
 	else
 		return (-3);
-//	printf("field parsing i: %d\n", *i);
-	if (*i <= 3)
-		*i = ft_handle_int(ap, str, &p);
-	else if (*i <= 7)
-		*i = ft_handle_uint(ap, str, &p);
-	else if (*i <= 8)
-		*i = ft_handle_char(ap, str, &p);
-	else if (*i <= 9)
-		*i = ft_handle_str(ap, str, &p);
-	else if (*i == 10)
-		*i = ft_handle_pointer(ap, str, &p);
-	else if (*i == 11)		// assuming no flags, is that correct ????
+//	printf("field parsing n: %d\n", n);
+	if (*m <= 3)
+		*m = ft_handle_int(ap, str, &p);
+	else if (*m <= 7)
+		*m = ft_handle_uint(ap, str, &p);
+	else if (*m <= 8)
+		*m = ft_handle_char(ap, str, &p);
+	else if (*m <= 9)
+		*m = ft_handle_str(ap, str, &p);
+	else if (*m == 10)
+		*m = ft_handle_pointer(ap, str, &p);
+	else if (*m == 11)		// assuming no flags, is that correct ????
 	{
 		*str = ft_strdup("");
-		*i = 1;
+		*m = 1;
 	}
-/*	else if (*i == 12)
+/*	else if (n == 12)
 	{
 		*str = va_arg(ap, void*);
 	}
-*/	else if (*i == 13)
-		*i = ft_handle_modulo(str, &p);
+*/	else if (*m == 13)
+		*m = ft_handle_modulo(str, &p);
+	// do i need an else here? as a catch all ?
 
 //	printf("field parsing test end\n");
 
-//	printf("parse buff i %d\n", i);
-//	printf("parse buff ret: %d\n", (i == -1) ? -1 : i + ret);
-	return ((*i <= -1) ? -4 : 1 + ret);
+//	printf("parse buff n= %d, ret=%d, str:|%s|\n", *m, ret, *str);
+//	printf("parse buff ret: %d\n", (n == -1) ? -1 : n + ret);
+	return ((*m <= -1) ? -4 : 1 + ret);
 }
 

@@ -102,7 +102,7 @@ int					ft_fdprintf(int fd, const char *format, ...);
 */
 
 int					ft_hq(char *format, va_list ap, t_pfelem **lst);
-int					ft_field_parsing(char *format, va_list ap, char **str, int *read);
+int					ft_field_parsing(char *format, va_list ap, char **str, int *m);
 int					ft_flag_parsing(char *format, t_param *p, va_list ap);
 int					ft_get_precision(char *format, t_param *p, va_list ap);
 int					ft_get_width(char *format, t_param *p, va_list ap);
@@ -112,6 +112,7 @@ int					ft_get_size(char *format, t_param *p);
 **	List stuff
 */
 
+int					ft_print_lst(t_pfelem **lst);
 t_pfelem			*ft_new_pfelem(char *str, int size);
 int					ft_pflist_append(t_pfelem **lst, t_pfelem *new);
 t_pfelem			*ft_buf_to_elem(char *str, int size);
