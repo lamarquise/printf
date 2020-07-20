@@ -10,9 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// Double check securities
-
 #include "printf.h"
+
+
+	// what if insead i did a single huge allocation and put everything to the
+	// right end and added towards the left. then chop off the front for the
+	// return ... would that be more efficient ?
 
 char		*ft_add_char(char c, char **str)
 {
@@ -32,7 +35,7 @@ char		*ft_add_char(char c, char **str)
 		++i;
 	}
 	tmp[i + 1] = '\0';
-	if (str && *str)
+	if (str && *str)		// redundant if ?
 		ft_scott_free(str);
 	return (tmp);
 }
@@ -43,6 +46,8 @@ int			ft_base_check(char *base)
 	int		ret;
 
 	ret = 0;
+	if (!base)			// want so doesnt seg fault below
+		return (-1);
 	while (base[ret])
 	{
 		i = ret + 1;
@@ -56,7 +61,8 @@ int			ft_base_check(char *base)
 	}
 	return (ret > 1 ? ret : -1);
 }
-						// must always be positive number...
+
+	// better way of doing add_char, like only 1 appel ?
 char		*ft_any_base_convert(unsigned long long nb, char *base)
 {
 	int		size;
@@ -65,12 +71,14 @@ char		*ft_any_base_convert(unsigned long long nb, char *base)
 	ret = NULL;
 	if ((size = ft_base_check(base)) == -1)
 		return (NULL);
-	while (nb >= (unsigned int)size)
+	while (nb >= (unsigned int)size)	// better cast ?
 	{
-		ret = ft_add_char(base[nb % size], &ret);
+		if (!(ret = ft_add_char(base[nb % size], &ret)))
+			return (ft_scott_free(&ret) == -1 ? NULL : NULL);		//ghetto af
 		nb /= size;
 	}
-	ret = ft_add_char(base[nb % size], &ret);
+	if (!(ret = ft_add_char(base[nb % size], &ret)))
+		return (ft_scott_free(&ret) == -1 ? NULL : NULL);	// kinda janky...
 	return (ret);
 }
 

@@ -10,73 +10,55 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// Needs to be shorter
+	// pretty close, like not much needs to be shortend
 	// redundantly secure ???	
 
 #include "printf.h"
 
-int			ft_flag_parsing(char *format, t_param *p, va_list ap)
+	// break into 2 funcs ?
+	// needs to be 2 lines shorter
+int			ft_flag_parsing(char *format, t_param *p, va_list *ap)
 {
 	int		i;
+	int		prev;
 	int		n;
 	int		ret;
 
 	i = 0;
+	prev = 0;
 	ret = 0;
-		// secure around format not being over ???
-
-//	printf("flag parsing test 1\n");
-
 	while ((i = ft_findchar("0#+- .123456789*hljz", format[ret])) >= 0)
 	{
-//		printf("is a flag parsing test 1, format: [%c]\n", format[ret]);
-
-//		printf("parse flags i: %d\n", i);
+		if ((prev >= 5 && (i < 5 && i > 0)) || (prev >= 16 && i < 16))
+			return (-8);
 		n = 0;
-		if (i <= 4)
-		{
-//			printf("is a flag\n");
+		if (i <= 4 && ++n == 1)		// this is cheap
 			p->flag |= (1 << i);
-			n = 1;
-//			printf("flag parsing, i = %d\n", i);
-		}
 		else if (i == 5)
 			n = ft_get_precision(&format[ret], p, ap);
 		else if (i <= 15)	// cuz numbers and 0
 			n = ft_get_width(&format[ret], p, ap);
 		else
 			n = ft_get_size(&format[ret], p);
-
-//		printf("what is n: %d\n", n);
-
-		if (n > 0)
-			ret += n;
-		else
-			return (-1);		// better way of doing this ????
+		if (n < 1)
+			return (-8);
+		ret += n;
+		prev = i;
 	}
-
-//	printf("parse flgas post loop i: %d\n", i);
-
-//	printf("flag parsing test 2, format: [%c]\n", format[ret]);
-
-//	printf("flag parsing width gotten: %zu\n", p->width);
-
 	return (ret);
 }
 
-int			ft_get_precision(char *format, t_param *p, va_list ap)
+int			ft_get_precision(char *format, t_param *p, va_list *ap)
 {
 	int		tmp;
 	int		ret;
-
-//	printf("precision parsing test 1, format: |%c|\n", *format);
 
 	ret = 0;
 	if (format[ret++] != '.')
 		return (-1);
 	if (format[ret] == '*')
 	{
-		tmp = va_arg(ap, int);
+		tmp = va_arg(*ap, int);
 		++ret;
 	}
 	else
@@ -89,24 +71,21 @@ int			ft_get_precision(char *format, t_param *p, va_list ap)
 	return (ret);
 }
 
-int			ft_get_width(char *format, t_param *p, va_list ap)
+int			ft_get_width(char *format, t_param *p, va_list *ap)
 {
 	int		tmp;
 	int		ret;
 
-//	printf("get width:format %c\n", *format);
-	
 	ret = 0;
 	if (format[ret] == '*')
 	{
-		tmp = va_arg(ap, int);
+		tmp = va_arg(*ap, int);
 		++ret;
 	}
 	else if (format[ret] >= '1' && format[ret] <= '9')
 		tmp = ft_latoi(&format[ret], &ret);
 	else
 		return (-1);
-//	printf("get width: %zu\n", p->width);
 	if (tmp < 0)
 	{
 		tmp = -tmp;
@@ -135,6 +114,8 @@ int			ft_get_size(char *format, t_param *p)
 	// j is intmax_t
 	// z is size_t
 
+	// do i handle intmax? size_t?
+
 
 	ret = 0;
 	while ((i = ft_findchar("hlzj", format[ret])) >= 0)
@@ -159,7 +140,7 @@ int			ft_get_size(char *format, t_param *p)
 			}
 			else
 				p->size |= (1 << 2);
-//			++ret;
+//			++ret;		// why are these commented? why not necessary???
 		}
 		else if (i == 2)
 			p->size |= (1 << 4);

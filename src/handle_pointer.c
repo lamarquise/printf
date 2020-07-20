@@ -13,81 +13,73 @@
 	// do i need to add protections ???
 	// are there other flags to mange
 	// does it need a ft_cast ???
+	// secure
 
 
 #include "printf.h"
 
-int			ft_handle_pointer(va_list ap, char **str, t_param *p)
+	// more secure ?
+
+int			ft_handle_pointer_prec(char **str, t_param *p, size_t *len)
 {
-	char	*tmp;
 	char	*pre;
-	void	*nb;
-	size_t	len;
 	size_t	plen;
+
+	pre = NULL;
+	if (p->flag & F_PREC && p->precision == 0 && !ft_prec_is_zero(str, len))
+		return (-1);
+	plen = (p->precision <= *len ? 0 : p->precision - *len);
+	if (plen)
+	{
+		if (!(pre = ft_fill_with('0', plen))
+		|| !(*str = ft_fstrjoin(&pre, str)))
+			return (-1);
+	}
+//	printf("str: |%s|\n", *str);
+	return (1);
+}
+
+	// yeeted nb and tmp
+	// handle if null pointer ????
+	// more flags ???
+	// 0x0 is address null
+
+int			ft_handle_pointer(va_list *ap, char **str, t_param *p)
+{
+	char	*pre;
+	size_t	len;
+//	size_t	plen;
 	size_t	wlen;
 
 	pre = NULL;
-	tmp = NULL;
+	if (!(*str = ft_any_base_convert((long)va_arg(*ap, void*), "0123456789abcdef")))
+		return (-1);
+	len = ft_fstrlen(*str);
 
-	// 0x0 is address null
-
-	// petite protection ???		// necessary ????
-
-//	printf("pointer test 1\n");
-
-	nb = va_arg(ap, void*);
-//	printf("pointer test 2\n");
-
-//	printf("pointer test 3 ptr: |%p|\n", tmp);
+	if (!ft_handle_pointer_prec(str, p, &len))
+		return (-1);
 
 
-	tmp = ft_any_base_convert((long)nb, "0123456789abcdef");
-
-	len = ft_fstrlen(tmp);
-
-	// handle if null pointer ????
-
-	// more flags ???
-
-
-	if (p->flag & F_PREC && p->precision == 0)
-	{
-		tmp = ft_fstrdup("");
-		len = 0;
-	}
-	
-
-	plen = (p->precision <= len ? 0 : p->precision - len);
-
-	if (plen)
-	{
-		pre = ft_fill_with('0', plen);
-		tmp = ft_fstrjoin(&pre, &tmp);
-	}
-
-
-	pre = ft_fstrdup("0x");
-	tmp = ft_fstrjoin(&pre, &tmp);
-	len = ft_fstrlen(tmp);
-	wlen = (p->width <= len ? 0 : p->width - len);
-	
+	if (!(pre = ft_fstrdup("0x")) || !(*str = ft_fstrjoin(&pre, str)))
+		return (ft_scott_free(str));	// too secure ?	// also free pre ?
+	len = ft_fstrlen(*str);
+	wlen = (p->width <= len ? 0 : p->width - len);	
 	if (wlen)
 	{
 		if (p->flag & F_MINU)
 		{
-			pre = ft_fill_with(' ', wlen);
-			tmp = ft_fstrjoin(&tmp, &pre);
-//			printf("is minu\n");
+			if (!(pre = ft_fill_with(' ', wlen))
+			|| !(*str = ft_fstrjoin(str, &pre)))
+				return (-1); // or scott_free ?
 		}
 		else
-		{
-			pre = ft_fill_with(' ', wlen);
-			tmp = ft_fstrjoin(&pre, &tmp);
+		{ 
+			if (!(pre = ft_fill_with(' ', wlen))
+				|| !(*str = ft_fstrjoin(&pre, str)))
+				return (-1); // or scott_free ?
+//			printf("here ?\n");
 		}
 	}
-//	printf("pointer test 2, tmp: |%s|\n", tmp);
-
-	*str = tmp;		// make this better... more elegant...
 	return (ft_fstrlen(*str));
 }
 

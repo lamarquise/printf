@@ -12,18 +12,23 @@
 
 CC = gcc
 FILES =		ft_printf.c \
-			parser.c \
-			parse_buffer.c \
+			parsing_main.c \
+			parse_spec.c \
 			parse_flags.c \
-			pfelem_list.c \
 			handle_int.c \
 			handle_str.c \
 			handle_modulo.c \
 			handle_pointer.c \
+			gen_arg_str.c \
+			pfelem_list.c \
 			base_conversion.c \
+			major_extra.c \
+			minor_extra.c \
 			display.c \
-			extra.c \
-			more_extra.c \
+
+NEWFILES =	\
+
+OLDFILES =	\
 
 IFILES = printf.h
 NAME = libftprintf.a
@@ -35,12 +40,17 @@ LIBFTINC = $(LIBFTDIR)
 CFLAGS = -Wall -Wextra -Werror -I$(IDIR) -I$(LIBFTINC)
 
 SRCS = $(addprefix $(SDIR), $(FILES))
+NEWSRCS = $(addprefix $(SDIR), $(NEWFILES))
+OLDSRCS = $(addprefix $(SDIR), $(OLDFILES))
 INCS = $(addprefix $(IDIR), $(IFILES))
 
 ODIR = obj/
 OBJ_NAME = $(FILES:.c=.o)
+NEWOBJ_NAME = $(NEWFILES:.c=.o)
+OLDOBJ_NAME = $(OLDFILES:.c=.o)
 OBJS = $(addprefix $(ODIR),$(OBJ_NAME))
-
+NEWOBJS = $(addprefix $(ODIR),$(NEWOBJ_NAME))
+OLDOBJS = $(addprefix $(ODIR),$(OLDOBJ_NAME))
 
 all: $(NAME)
 
@@ -68,6 +78,20 @@ fclean: clean
 
 re: fclean all
 
+
+
+new: $(OBJS) $(NEWOBJS) $(LIBFT) $(IDIR)
+	cp $(LIBFT) $@
+	ar rsc $@ $(OBJS) $(NEWOBJS)
+	printf "$(_GREEN)\r\33[2K\r$(NAME) created  😎\n$(_END)"
+
+old: $(OBJS) $(OLDOBJS) $(LIBFT) $(IDIR)
+	cp $(LIBFT) $@
+	ar rsc $@ $(OBJS) $(OLDOBJS)
+	printf "$(_GREEN)\r\33[2K\r$(NAME) created  😎\n$(_END)"
+
+
+
 test: all
 	gcc $(CFLAGS) -L. -lftprintf ./main.c -o test
 	echo "$(_CYAN)Test ready  😬$(_END)"
@@ -81,8 +105,16 @@ tests: all
 	echo "$(_CYAN)Fsanitize Test ready  😬$(_END)"
 
 tclean: fclean
-	rm -rf testl.dSYM tests.dSYM test tests testl
+	rm -rf testl.dSYM tests.dSYM test tests testl old new
 	echo "$(_RED)Test files deleted  😱$(_END)"
+
+ntest: new
+	gcc $(CFLAGS) -L. -lftprintf ./main.c -o test
+	echo "$(_CYAN)Test ready  😬$(_END)"
+
+otest: old
+	gcc $(CFLAGS) -L. -lftprintf ./main.c -o test
+	echo "$(_CYAN)Test ready  😬$(_END)"
 
 .PHONY: all clean fclean re
 

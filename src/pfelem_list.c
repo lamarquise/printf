@@ -10,21 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// seems good 
-
 #include "printf.h"
-
-	// tmp ? could be useful to have around...
-	// would need to be made more secure
-int			ft_print_lst(t_pfelem **lst)
-{
-	while (*lst)
-	{
-		write(1, (*lst)->content, (*lst)->size);
-		*lst = (*lst)->next;
-	}
-	return (1);
-}
 
 t_pfelem	*ft_new_pfelem(char *str, int size)
 {
@@ -45,7 +31,7 @@ int		ft_pflist_append(t_pfelem **lst, t_pfelem *new)
 	t_pfelem	*tmp;
 
 	if (!lst || !new)
-		return (0);
+		return (-1);
 	if (!(*lst))
 	{
 		*lst = new;
@@ -59,7 +45,7 @@ int		ft_pflist_append(t_pfelem **lst, t_pfelem *new)
 	return (1);
 }
 
-t_pfelem	*ft_buf_to_elem(char *str, int size)
+t_pfelem	*ft_str_to_elem(char *str, int size)
 {
 	t_pfelem	*new;
 	char		*cp;
@@ -68,8 +54,10 @@ t_pfelem	*ft_buf_to_elem(char *str, int size)
 		return (NULL);
 	if (!(cp = (char*)ft_memalloc(sizeof(char) * (size + 1))))
 		return (NULL);
+//	if (!(new = ft_new_pfelem(NULL, size)))			// Testing error cases.
 	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, size), size)))
-		return (NULL);
+		return (ft_scott_free(&cp) == -1 ? NULL : NULL);
+//		return (NULL);
 	return (new);
 }
 
@@ -78,9 +66,9 @@ int			ft_pflist_del_all(t_pfelem **lst)
 	t_pfelem	*tmp;
 
 	if (!lst)
-		return (0);		// -1 ???
+		return (-1);	// make better ???
 	if (!*lst)
-		return (-1);			// dif ret here or in ft_priuntf...
+		return (-1);
 	tmp = *lst;
 	while (*lst)
 	{

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   more_extra.c                                       :+:      :+:    :+:   */
+/*   minor_extra.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,14 +10,53 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// where does ft_fstrncpy() get called ??? do i still need it ???
+// where does ft_fstrncpy() get called ??? do i still need it ???
 
 #include "printf.h"
 
-char		*ft_fstrdup(char *str)
+size_t	ft_fstrlen(const char *s)
+{
+	size_t	a;
+
+	a = 0;
+	if (s)
+	{
+		while (s[a])
+			++a;
+	}
+	return (a);
+}
+
+// would it be better to secure in scott_free ???
+int		ft_scott_free(char **str)
+{
+	//	if (*str) // or something like that...
+	ft_bzero(*str, ft_fstrlen(*str));
+	free(*str);
+	*str = NULL;
+	return (-1);
+}
+
+char	*ft_fill_with(char this, size_t len)
+{
+	char	*ret;
+	size_t	i;
+
+	if (!this || len < 1)
+		return (NULL);
+	if (!(ret = ft_memalloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	i = 0;
+	while (i < len)
+		ret[i++] = this;
+	ret[i] = '\0';
+	return (ret);
+}
+
+char	*ft_fstrdup(char *str)
 {
 	char 	*ret;
-	int		a;
+	int	a;
 
 	if (!str)
 		return (NULL);
@@ -35,10 +74,10 @@ char		*ft_fstrdup(char *str)
 	return (ret);
 }
 
-		// different return ???
-char		*ft_fstrncpy(char *dst, char *src, int size)
+// different return ???
+char	*ft_fstrncpy(char *dst, char *src, int size)
 {
-	int		a;
+	int	a;
 
 	a = 0;
 	if (!dst || !src)
@@ -47,31 +86,4 @@ char		*ft_fstrncpy(char *dst, char *src, int size)
 		dst[a++] = *src++;
 	dst[a] = '\0';
 	return (dst);
-}
-
-		// assuming positive n
-char		*ft_pos_itoa(unsigned long long n)
-{
-	unsigned long long	nb;
-	char				*ret;
-	int					len;
-
-	nb = n;
-	len = 1;
-	while (nb >= 10)
-	{
-		nb /= 10;
-		++len;
-	}
-	if (!(ret = ft_memalloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	ret[len--] = '\0';
-	nb = n;
-	while (len >= 0)
-	{
-		ret[len] = nb % 10 + 48;
-		nb /= 10;
-		--len;
-	}
-	return (ret);
 }

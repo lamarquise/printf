@@ -11,6 +11,7 @@ int		main(int ac, char **av)
 	int		imax;
 	char	*str;
 	int		b;
+	long	m;
 	long long		c;
 	long long		llmax;
 	long long		llmin;
@@ -27,9 +28,10 @@ int		main(int ac, char **av)
 //	llmin = -9223372036854775808;
 	imin = -2147483648;
 	imax = 2147483647;
-	b = 12345;
-	a = 15;
-	c = 39485928374590234;
+	a = 17;
+	b = 15437;
+	m = 938427;
+	c = -394859289238473452;
 	if (ac < 0)
 		return (0);
 
@@ -37,38 +39,60 @@ int		main(int ac, char **av)
 		str = av[1];
 
 
-	ft_printf("this is the first test\n");
+//	ft_printf("this is the first test\n");
+//	ft_printf("%s the second test\n", "this is");
 
-	ft_printf("%s the second test\n", "this is");
+//	ft_printf("me: |%B|\n", a);
+//	printf("OG: |%#X|\n", a);
+//	ft_printf("unsigned: |%lu|\n", (long)c);
+//	printf("OG unsigned: |%lu|\n", (long)c);
+
+
+/*
+	ft_printf("not sure what this is: |%b|\n", a);
+	ft_printf("no idea what this is: |%B|\n", a, "ab");
+
+
+	ft_printf("reg: |%d|\n", a);		
+	ft_printf("hex: |%x|\n", a);
+	ft_printf("HEX: |%X|\n", a);
+	ft_printf("oct: |%o|\n", a);
+	ft_printf("bin: |%b|\n", a);
+	printf("OG hex: |%x|\n", a);
+	printf("OG HEX: |%X|\n", a);
+	printf("OG oct: |%o|\n", a);
+*/
+
+	char	*line = "Hi there";
+	char	let = 'h';
+/*	wchar_t	*wct;
+
+	wct = ft_memalloc(sizeof(wchar_t) * 4);
+	wct[0] = 'h';
+	wct[1] = 'e';
+	wct[2] = 'l';
+	wct[3] = '\0';
+*/	
+	(void)line;
+	(void)let;
+
+	printf("OG test: |%12s|\n", line);
+	ft_printf("%12s|\n", line);
+	
+//	printf("OG test: |%-13p|\n", line);
+//	ft_printf("test: |%-13p|\n", line);
+	
+
 
 
 
 //	ft_printf("%-05\n");
 
-
-//	ret1 = printf(
-//	printf("\nret1: %d\n", ret1);
-//	ret2 = ft_printf(
-//	printf("\nret2: %d\n", ret2);
-
-
-//	ret1 = printf("sWrHOY%0.*ixOB%*c%0.1i%i1Y4cs", -3, -52610042, -6, '\0', 0, 0);
-//	printf("\nret1: %d\n", ret1);
-//	ret2 = ft_printf("sWrHOY%0.*ixOB%*c%0.1i%i1Y4cs", -3, -52610042, -6, '\0', 0, 0);
-//	printf("\nret2: %d\n", ret2);
-
-
-
-//	ft_printf("number|%d| |%ld| |%lld| |%d| |%zu| |%ld| |%d| |%ld| |%lld| |%d| |%zu| |%ld|\n", b, (long)b, (long long)c, a, (size_t)b, (long)a, b, (long)b, (long long)c, a, (size_t)b, (long)a);
-
-
 //	printf("|%c%c%c%c%c%c%c%c%c%c%c%c%c|\n", 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52);
 //	ft_printf("|%c%c%c%c%c%c%c%c%c%c%c%c%c|\n", 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52);
 
-
 //	printf("%-*.5u%1.5s%-5.0X%-18d%0.3X%-c%-ca4wRrX6zy\n", 1, -2147483647, "", -2147483647, -2147483647, -1696667795, 'g', 'd');
 //	ft_printf("%-*.5u%1.5s%-5.0X%-18d%0.3X%-c%-ca4wRrX6zy\n", 1, -2147483647, "", -2147483647, -2147483647, -1696667795, 'g', 'd');
-
 
 //	ft_putnbr(printf("kXF%-.0u%-X%-*s%0.*x", -2147483647, 0, 10, NULL, -2, -2091222346));
 //	ft_putchar('\n');
@@ -122,16 +146,6 @@ int		main(int ac, char **av)
 //	printf("int : %.d\n", 0);
 //	ft_printf("int : %.d\n", 0);
 
-
-//	printf("%.0dXAL%-cz5u%17c%0d%0*xIl \n", 2147483647, '\0', '\0', 0, -7, 0);
-//	ft_printf("%.0dXAL%-cz5u%17c%0d%0*xIl \n", 2147483647, '\0', '\0', 0, -7, 0);
-	
-//	printf("%.0X%01X%-*.*xdCw4acu1L7pL6\n", -2147483647, -2147483647, 9, -1, 0);
-//	ft_printf("%.0X%01X%-*.*xdCw4acu1L7pL6\n", -2147483647, -2147483647, 9, -1, 0);
-
-
-
-
 //	ft_printf("left justify: |%-5d|\n", a);
 //	ft_printf("test poin: |%-20p|\n", &b);
 //	ft_printf("test unsi: |%u|\n", b);
@@ -141,17 +155,12 @@ int		main(int ac, char **av)
 
 //	ft_printf("test base: |%B|\n", "0123456789abcdef", b);
 
-
-
 //	ft_printf("test n: |%N| again |%N|\n");
 //	printf("test n: |%N| again |%N|\n");
-
 
 //	printf("|%lx|\n", 4294967295);
 //	ft_printf("|%x|\n", 4294967295);
 	
-
-
 
 
 //	system("leaks test");

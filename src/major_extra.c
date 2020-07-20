@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   extra.c                                            :+:      :+:    :+:   */
+/*   major_extra.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,12 +10,38 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-		// double check strjoin freeing
-		// remove comments...
+// double check strjoin freeing
+// remove comments...
 
 #include "printf.h"
 
-int		ft_latoi(char *str, int *len)
+char		*ft_pos_itoa(unsigned long long n)
+{
+	unsigned long long	nb;
+	char				*ret;
+	int					len;
+
+	nb = n;
+	len = 1;
+	while (nb >= 10)
+	{
+		nb /= 10;
+		++len;
+	}
+	if (!(ret = ft_memalloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	ret[len--] = '\0';
+	nb = n;
+	while (len >= 0)
+	{
+		ret[len] = nb % 10 + 48;
+		nb /= 10;
+		--len;
+	}
+	return (ret);
+}
+
+int			ft_latoi(char *str, int *len)
 {
 	int		a;
 	int		neg;
@@ -43,46 +69,9 @@ int		ft_latoi(char *str, int *len)
 	return (ret * neg);
 }
 
-int		ft_scott_free(char **str)
-{
-	ft_bzero(*str, ft_fstrlen(*str));
-	free(*str);
-	*str = NULL;
-	return (-1);
-}
+// double check that free is fine
 
-char	*ft_fill_with(char this, size_t len)
-{
-	char	*ret;
-	size_t	i;
-
-	if (!this || len < 1)
-		return (NULL);
-	if (!(ret = ft_memalloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	i = 0;
-	while (i < len)
-		ret[i++] = this;
-	ret[i] = '\0';
-	return (ret);
-}
-
-size_t	ft_fstrlen(const char *s)
-{
-	size_t a;
-
-	a = 0;
-	if (s)
-	{
-		while (s[a])
-			++a;
-	}
-	return (a);
-}
-
-	// double check that free is fine
-
-char	*ft_fstrjoin(char **s1, char **s2)
+char		*ft_fstrjoin(char **s1, char **s2)
 {
 	int		a;
 	int		b;
@@ -108,8 +97,33 @@ char	*ft_fstrjoin(char **s1, char **s2)
 	return (ret);
 }
 
+// is it secure ?
 
+char	*ft_triple_join(char *pre, char *mid, char *post)
+{
+	char	*ret;
+	int		len;
 
+	if (!pre || !mid || !post)
+		return (NULL);
+	len = ft_fstrlen(pre) + ft_fstrlen(mid) + ft_fstrlen(post) + 1;
+	if (!(ret = ft_memalloc(sizeof(char) * len)))
+		return (NULL);
+	len = 0;
+	while (*pre)
+	{
+		ret[len++] = *pre++;
+	}
+	while (*mid)
+	{
+		ret[len++] = *mid++;
+	}
+	while (*post)
+	{
+		ret[len++] = *post++;
+	}
+	return (ret);
+}
 
 
 

@@ -10,49 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// other flags ???
-	// protect cuz why not ???
-
+	// secure ???
+	// space is not a valid flag for %, now we know
 
 #include "printf.h"
 
 int		ft_handle_modulo(char **str, t_param *p)
 {
-	char	*pre;
-	char	*post;
+	char	*add;
 	char	c;
 
-	pre = NULL;
-	post = NULL;
+	add = NULL;
+	if (!(*str = ft_fstrdup("%")))
+		return (-1);
 	if (p->width > 1)
 	{
 		c = ' ';
 		if (p->flag & F_MINU)
 		{
-			post = ft_fill_with(c, p->width - 1);
-//			printf("theres a -\n");
+			if (!(add = ft_fill_with(c, p->width - 1))
+				|| !(*str = ft_fstrjoin(str, &add)))
+				return (-1);
 		}
 		else
 		{
 			if (p->flag & F_ZERO)
 				c = '0';
-			pre = ft_fill_with(c, p->width - 1);
+			if (!(add = ft_fill_with(c, p->width - 1))
+				|| !(*str = ft_fstrjoin(&add, str)))
+				return (-1);
 		}
 	}
-	else if (p->flag & F_SPAC)
-	{
-		post = ft_fstrdup(" ");
-		pre = ft_fstrjoin(&post, &pre);
-	}
-			// can make % == str...
-
-	*str = ft_fstrdup("%");
-	pre = ft_fstrjoin(&pre, str);
-	*str = ft_fstrjoin(&pre, &post);
-
-//	printf("modulo test 1, width: %zu, str |%s|\n", p->width, *str);
-
-	// free shit like pre and post ????
-	
-	return (p->width > 0 ? p->width : 1);		// 1 ???
+	return (p->width > 0 ? p->width : 1);		// 1 ???	// this was fucking it up
 }
