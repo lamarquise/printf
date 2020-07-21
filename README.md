@@ -66,6 +66,39 @@ say what happens when you have multiple at the same time (give examples?)
 -- then ill do all the handlers.
 __
 
+### Options
+
+##### Specefiers
+d: A signed decimal integer, subject to size modifications
+i: Essencially the same as %d. (Seems to be depricated, but mine works).
+B: Signed base converted integer, base is specified by additional va list
+arg, can be any valid symbols.
+b: Unsigned binary integer, subject to size modifications.
+u: Unsigned decimal integer, subject to size modifications.
+o: Unsigned ocatal integer, subject to size modifications.
+x: Lowercase unsigned hexadecimal integer, subject to size modifications.
+X: Uppercase unsigned hexadecimal integer, subject to size modifications.
+c: Single Character.
+s: String of Characters.
+p: Pointer address.
+N: ?
+n: Stores number of characters written at the integer addess passed as arg.
+%: Writes a single % modulo.
+
+##### Flags
+0: Left-padding is '0's rather than ' ', applies to numbers and characters.
+'#': Prepends a designation of base type to standard bases, oct, hex, bin.
++: Prepends any number with its respective sign, '+' or '-'.
+-: Left Justifies result, padding cannot be '0's, only spaces.
+Space: Prepends a space before everything else, except in case where '+'
+flag is called.
+
+##### Width, Precision and Size
+Width and Precision can be specified either in the format string or as seperate
+arguments passed through va list. If they are passed through va list they may
+also contain the '-' flag which will be treated as though it were in the format
+string.
+
 
 ### Parsing
 
@@ -102,7 +135,7 @@ it reaches a char that isn't a flag, precision, width or size (in that order).
 
 
 
-
+### Handlers
 
 
 ##### Handle Int
@@ -127,6 +160,14 @@ seems i have fixed a lot...
 
 Ok so i have a define for when the num passed is 0 (not sure why)
 Ok the very specific case where num = 0 and prec = 0 you display nothing for the number
+
+
+%+4d if d smaller in len than 4, and positive, you should end up with 4 char printed in total: space + 2 numbers
+(this is not tested but PFT)
+Ok here's something weird, where there's a neg number but no '+' flag and there is a space, it is ignored as though there were a '+' flag...
+Solution: neg still 0 if pos and -1 if neg number, but not factored into len imediately. Instead, we calculate plen relative to the len
+which represents the number of digits only, then we add 1 if there is a sign, + or -. This new len is used to calculate wlen and everything else.
+The main diference is that we now treat pos num with + flag the same as neg num.
 
 
 
@@ -156,16 +197,13 @@ One quirk of Handle str, because it is supposed to print (null) if it is passed
 NULL, it needs to be able to distinguish between a function fucking up and
 being passed NULL from the get go...
 
-
 ##### On how handle char works (lives in handle str.c)
 Ok so here is the bit that's really quite tricky. In the even you get a -
 and a width > 1 and a precision == 0, then you should print only as many
 spaces as the width, but i'm not sure i can do that with out the plen var...
 
 
-Now what goes on in each of the files and functions
-
-
+### Everything Else
 
 ##### Base Conversions
 The three Base Conversion functions are capable of taking a positive number
@@ -211,7 +249,6 @@ displaying that number should an element containing only '\0' be come accross.
 
 
 ##### Major Extra
-
 ft pos itoa():
 A regular itoa but only handles positive numbers so can be an unsigned long
 long, the largest number.
@@ -220,6 +257,9 @@ ft latoi(): Len Atoi
 Called from Parse Flags.c, it is a regular atoi which also counts the string
 size of the number it is converting from a string to an int, this number is
 stored in an int passed as a param.
+OK basically: it returns an int like the regular atoi, a number that was a
+string, but the length of that string is stored in a pointer to an int that
+was passed to latoi as an argument.
 
 ft fstrjoin():
 A secure version of strjoin(), can take either pointers sent in param being
@@ -230,7 +270,6 @@ Joins 3 strings together, fewer allocations than 2 fstrjoin, does not free
 not currently in use
 
 ##### Minor Extra
-
 ft fstrlen():
 A secure version of strlen(), can take a NULL pointer passed in parameter.
 

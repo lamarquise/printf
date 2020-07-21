@@ -46,7 +46,7 @@ int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)
 		*str = ft_strdup("");
 		*m = 1;
 	}
-/*	else if (n == 12)
+/*	else if (*m == 12)
 	{
 		*str = va_arg(ap, void*);
 	}

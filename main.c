@@ -28,7 +28,7 @@ int		main(int ac, char **av)
 //	llmin = -9223372036854775808;
 	imin = -2147483648;
 	imax = 2147483647;
-	a = 17;
+	a = -17;
 	b = 15437;
 	m = 938427;
 	c = -394859289238473452;
@@ -42,8 +42,8 @@ int		main(int ac, char **av)
 //	ft_printf("this is the first test\n");
 //	ft_printf("%s the second test\n", "this is");
 
-//	ft_printf("me: |%B|\n", a);
-//	printf("OG: |%#X|\n", a);
+	ft_printf("me: |%lb|\n", m);
+	printf("OG: |%+6.3d|\n", a);
 //	ft_printf("unsigned: |%lu|\n", (long)c);
 //	printf("OG unsigned: |%lu|\n", (long)c);
 
@@ -76,8 +76,9 @@ int		main(int ac, char **av)
 	(void)line;
 	(void)let;
 
-	printf("OG test: |%12s|\n", line);
-	ft_printf("%12s|\n", line);
+//	printf("OG test: a was: %d, |%n|\n", a, &a);
+//	printf("number in int: %d\n", a);
+//	ft_printf("my test: |%+12s|\n", line);
 	
 //	printf("OG test: |%-13p|\n", line);
 //	ft_printf("test: |%-13p|\n", line);

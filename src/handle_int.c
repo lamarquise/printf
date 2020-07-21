@@ -150,7 +150,8 @@ int					ft_handle_int(va_list *ap, char **str, t_param *p)
 		else if (p->spec == 'B' && !(*str = ft_any_base_convert(num, va_arg(*ap, char*))))
 			return (-2);
 	}
-	len = ft_fstrlen(*str) - neg;
+//	len = ft_fstrlen(*str) + (p->flag & F_PLUS ? 1 : 0);	// was - neg
+	len = ft_fstrlen(*str);	// was - neg
 	if (!(*str = ft_gen_arg_str_i(p, str, len, neg)))	// secure now ?
 		return (-1);		// is there a case where result is NULL correctly ????
 	return (ft_fstrlen(*str));
@@ -172,12 +173,12 @@ char				*ft_gen_arg_str_i(t_param *p, char **tmp, size_t len, int neg)
 	mid = NULL;
 	post = NULL;
 
-//	printf("width: %zu, prec: %zu\n", p->width, p->precision);
 
-//	printf("tmp: |%s|\n", *tmp);
+	plen = (p->precision <= len ? 0 : p->precision - len);
+	len += (p->flag & F_PLUS ? 1 : 0);
 
-	plen = (p->precision <= (len + neg) ? 0 : p->precision - (len + neg));
 	wlen = (p->width <= len ? 0 : p->width - len);
+//	printf("len:%zu,wlen:%d,plen:%d,wid:%zu,prec:%zu\n",len,wlen,plen,p->width,p->precision);
 	if (plen)
 		pre = ft_fill_with('0', plen);
 	if (p->flag & F_HASH && !ft_add_hash(&pre, p))	// Handles Hash
@@ -192,13 +193,14 @@ char				*ft_gen_arg_str_i(t_param *p, char **tmp, size_t len, int neg)
 		{
 			if (c != '0' && p->flag & F_PLUS)
 			{
-				mid = neg < 0 ? ft_fstrdup("-") : ft_fstrdup("+");
-				pre = ft_fstrjoin(&mid, &pre);
+				mid = neg < 0 ? ft_fstrdup("-") : ft_fstrdup("+");	// was more efficient
+				pre = ft_fstrjoin(&mid, &pre);	// to just swap out a char, but...
+//				post[wlen - plen - 1] = neg < 0 ? '-' : '+'; // sadly didn't work
 				p->flag &= (0 << 2);
 			}
 			pre = ft_fstrjoin(&post, &pre);
 		}
-		if (p->flag & F_SPAC)
+		if (p->flag & F_SPAC && !(p->flag & F_PLUS))
 			pre[0] = ' ';
 	}
 	if (p->flag & F_PLUS)
@@ -206,7 +208,7 @@ char				*ft_gen_arg_str_i(t_param *p, char **tmp, size_t len, int neg)
 		mid = neg < 0 ? ft_fstrdup("-") : ft_fstrdup("+");
 		pre = ft_fstrjoin(&mid, &pre);
 	}
-	if (p->flag & F_SPAC && wlen <= plen)
+	else if (p->flag & F_SPAC && wlen <= plen)	// else cuz no ' ' if '+'m
 	{
 		mid = ft_fstrdup(" ");
 		pre = ft_fstrjoin(&mid, &pre);
