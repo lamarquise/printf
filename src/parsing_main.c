@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:29:21 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/03 15:43:10 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/07/22 15:54:18 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,7 @@ int     	ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst)
 			i += c;							// can not use m here, is that a good idea?
 			if (ft_pflist_append(lst, ft_str_to_elem(str, m)) == -1) // -1 necessary
 //			if (ft_pflist_append(lst, NULL) == -1)	// testing error cases.
-			{
-				printf("test hq\n");
 				return (ft_scott_free(&str));
-			}
 			c = i;
 //			printf("test1\n");
 //			ft_print_lst(lst);

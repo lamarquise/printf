@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 18:49:08 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/03 19:10:57 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/07/22 19:07:47 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			ft_latoi(char *str, int *len)
 	return (ret * neg);
 }
 
-// double check that free is fine
+// since we expect to free in function, have to free in case of error too.
 
 char		*ft_fstrjoin(char **s1, char **s2)
 {
@@ -81,8 +81,12 @@ char		*ft_fstrjoin(char **s1, char **s2)
 	if (!*s1 && !*s2)
 		return (NULL);
 	a = ft_fstrlen(*s1) + ft_fstrlen(*s2) + 1;
-	if (!(ret = ft_memalloc(sizeof(char) * a)))
+	if (!(ret = ft_memalloc(sizeof(char) * a)))	// was a
+	{
+		ft_scott_free(s1);
+		ft_scott_free(s2);
 		return (NULL);
+	}
 	a = 0;
 	b = 0;
 	c = 0;
@@ -90,14 +94,13 @@ char		*ft_fstrjoin(char **s1, char **s2)
 		(ret)[a++] = (*s1)[b++];
 	while (*s2 && (*s2)[c])
 		(ret)[a++] = (*s2)[c++];
-	if (s1 && *s1 )
-		ft_scott_free(s1);
-	if (s2 && *s2 )
-		ft_scott_free(s2);
+	ft_scott_free(s1);
+	ft_scott_free(s2);
 	return (ret);
 }
 
 // is it secure ?
+// still unused...
 
 char	*ft_triple_join(char *pre, char *mid, char *post)
 {

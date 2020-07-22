@@ -42,8 +42,8 @@ int		main(int ac, char **av)
 //	ft_printf("this is the first test\n");
 //	ft_printf("%s the second test\n", "this is");
 
-	ft_printf("me: |%lb|\n", m);
-	printf("OG: |%+6.3d|\n", a);
+//	ft_printf("me: |%d|\n", a);
+//	printf("OG: |%d|\n", a);
 //	ft_printf("unsigned: |%lu|\n", (long)c);
 //	printf("OG unsigned: |%lu|\n", (long)c);
 
@@ -80,8 +80,8 @@ int		main(int ac, char **av)
 //	printf("number in int: %d\n", a);
 //	ft_printf("my test: |%+12s|\n", line);
 	
-//	printf("OG test: |%-13p|\n", line);
-//	ft_printf("test: |%-13p|\n", line);
+//	printf("OG test: |% s|\n", NULL);
+	ft_printf("my test: |%s|\n", NULL);
 	
 
 

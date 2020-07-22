@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 19:56:08 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/03 21:41:19 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/07/22 19:07:30 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int						ft_handle_uint(va_list *ap, char **str, t_param *p)
 	unsigned long	num;
 	size_t			len;
 
+	if (!ap || !str || !p)
+		return (-1);
 	if ((num = ft_cast_u(ap, p)) == 0 && p->flag & F_PREC && p->precision == 0)
 	{
 		*str = ft_fstrdup("");
@@ -132,6 +134,9 @@ int					ft_handle_int(va_list *ap, char **str, t_param *p)
 	long long	num;
 	size_t		len;
 	int			neg;
+
+	if (!ap || !str || !p)
+		return (-1);
 
 	base = NULL;	// extrememly necessary, might not be necessary if i had 
 	neg = 0;

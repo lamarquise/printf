@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 18:33:24 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/03 21:41:15 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/07/22 19:07:32 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)
 */	else if (*m == 13)
 		*m = ft_handle_modulo(str, p);
 	// do i need an else here? as a catch all ?
-
 
 	return (1);		// how to use this better?
 					// could ret m ?

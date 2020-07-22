@@ -14,7 +14,7 @@ final product.
 
 So what does the algorythm that handles the string and it's parameters look like?
 
-##### Summary of the Overall Algorythm
+#### Summary of the Overall Algorythm
 Assuming the inputs are correct this is how the algorythm treats them.
 First the entirety of the inputs (a format string and acompanying optional variables)
 are passed to the main parsing function which is responsible for dividing the
@@ -38,7 +38,7 @@ Finally, once the entire format string has been processed and added to the linke
 list, and assuming it all went well, the linked list is sent by the root
 ft printf function to a display function which prints them on screen.
 
-##### A few things to note:
+#### A few things to note:
 Because the format string is processed in order, the linked list is by default
 in order, which is rather conveinient.
 Unlike the origional printf, this version does not make use of a buffer and
@@ -68,7 +68,7 @@ __
 
 ### Options
 
-##### Specefiers
+#### Specefiers
 d: A signed decimal integer, subject to size modifications
 i: Essencially the same as %d. (Seems to be depricated, but mine works).
 B: Signed base converted integer, base is specified by additional va list
@@ -85,7 +85,7 @@ N: ?
 n: Stores number of characters written at the integer addess passed as arg.
 %: Writes a single % modulo.
 
-##### Flags
+#### Flags
 0: Left-padding is '0's rather than ' ', applies to numbers and characters.
 '#': Prepends a designation of base type to standard bases, oct, hex, bin.
 +: Prepends any number with its respective sign, '+' or '-'.
@@ -93,7 +93,7 @@ n: Stores number of characters written at the integer addess passed as arg.
 Space: Prepends a space before everything else, except in case where '+'
 flag is called.
 
-##### Width, Precision and Size
+#### Width, Precision and Size
 Width and Precision can be specified either in the format string or as seperate
 arguments passed through va list. If they are passed through va list they may
 also contain the '-' flag which will be treated as though it were in the format
@@ -102,7 +102,7 @@ string.
 
 ### Parsing
 
-##### Parsing Main
+#### Parsing Main
 The crux of this algorythm, is distiguishing between % specefiers in the format 
 string and the filler chars (everything else). So we cycle through the format
 string looking for '%' with the findchar function, if we find one we remember
@@ -117,7 +117,7 @@ added to the linked list. Anything left over after no more % specs are found are
 handed to the same listify not spec function to be added to the linked list. If
 there are no % specs, everything is handed to the listify not spec function.
 
-##### Spec Parsing
+#### Spec Parsing
 Spec parsing mostly outsources work but it serves as a main switch or junction.
 First it initialized the param structure type variable, next it calls the flag
 parsing function, then it determins the % spec with findchar, which is send to
@@ -126,7 +126,7 @@ function. It returns the size of the % spec that was read from the format string
 but a string containing the processed results and the length of that result are
 communicated back to parsing hq using pointers.
 
-##### Flag Parsing (also includes width, precision and size parsing)
+#### Flag Parsing (also includes width, precision and size parsing)
 This may be the most elaborate of the parsing files but it's also the most
 'redundant'. Everything (format string starting immediately the % of the spec,
 the param structure, and the va arguments list) is passed to the flag parsing
@@ -138,7 +138,7 @@ it reaches a char that isn't a flag, precision, width or size (in that order).
 ### Handlers
 
 
-##### Handle Int
+#### Handle Int
 
 %0+15d is fine
 %0 15d is fine
@@ -179,33 +179,35 @@ If the base is invalide it's like the fuck you need a real base...
 
 
 
-Need a bit explaining how all the Handles work...
-
-
-##### Handle Pointer:
+#### Handle Pointer:
 Like most other specs, if prec is 0 becomes an empty string to which wid is
 applied the rest of the flags. (prec is zero() handles part of this).
 
-
-
-
-
-##### On how handle str works (incomplete)
+#### Handle Str
 If there is a space: '% s', then even if the string passed is null, a space
 is printed. Not actually sure if that is correct behavior, but seemed right...
 One quirk of Handle str, because it is supposed to print (null) if it is passed
 NULL, it needs to be able to distinguish between a function fucking up and
 being passed NULL from the get go...
+nstrdup i made handles this, it's not generic but it works and is secure.
 
-##### On how handle char works (lives in handle str.c)
+#### Handle Char (lives in handle str.c)
 Ok so here is the bit that's really quite tricky. In the even you get a -
 and a width > 1 and a precision == 0, then you should print only as many
-spaces as the width, but i'm not sure i can do that with out the plen var...
+spaces as the width, but i'm not sure i can do that without the plen var...
+Doesn't seem like it, gonna leave it as such...
+The Space flag is undefined in real printf, i define it as working as a normal space
+flag, but it gets overriden by '-' flag.
+
+#### Handle Modulo
+Space is not a valid flag, it has no effect, left untreated. Width can be any size.
+Is secure once again because of the fill with and fjoin combination.
+
 
 
 ### Everything Else
 
-##### Base Conversions
+#### Base Conversions
 The three Base Conversion functions are capable of taking a positive number
 as large as an unsigned long long, any base, checking that base and returning
 the converted number as an allocated string.
@@ -219,7 +221,7 @@ transfer them to a new string that has been allocated with 1 additional byte
 to accomodate the new char.
 
 
-##### Pfelem List
+#### Pfelem List
 ft new pfelem():
 creates a new var of type pf elem, and populates it with the
 arguments passed to it (a str and a size).
@@ -240,7 +242,7 @@ ft pflist del all():
 
 
 
-##### Display
+#### Display
 Called from ft printf() once the whole format has been processed successfully,
 it goes through the linked list that has been created to contain the strings
 and prints them before freeing the element of the linked list.
@@ -248,7 +250,7 @@ It also handles the ( N ) specifier, counting the number of char printed and
 displaying that number should an element containing only '\0' be come accross.
 
 
-##### Major Extra
+#### Major Extra
 ft pos itoa():
 A regular itoa but only handles positive numbers so can be an unsigned long
 long, the largest number.
@@ -263,13 +265,17 @@ was passed to latoi as an argument.
 
 ft fstrjoin():
 A secure version of strjoin(), can take either pointers sent in param being
-NULL. Not the same as in GNL, does not free anything...
+NULL. Not the same as in GNL.
+Ok so anything you send it will be freed, even if there is an error, which is
+rather handy. Thus if i call a fill with func and send the result to fjoin,
+even if the fjoin fails the fill with is free, so i don't need to handle that
+error case.
 
 ft triple join():
 Joins 3 strings together, fewer allocations than 2 fstrjoin, does not free
 not currently in use
 
-##### Minor Extra
+#### Minor Extra
 ft fstrlen():
 A secure version of strlen(), can take a NULL pointer passed in parameter.
 

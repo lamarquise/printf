@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 20:05:43 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/03 21:24:37 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/07/22 19:04:55 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@
 
 	// this is for those times when you need to verify with a number..
 	// add to lib ?
+	// Don't add to lib, the if (!og) ret(1) is my printf specific, good idea to have one like this in lib, but not this one.
 
-int				ft_nstrdup(char **cp, char *og)
+int				ft_nstrdup(char **cp, char *og)		// secure but gross
 {
 	int		a;
 
-//	return (-1);
-	if (!og || !cp)
+	ft_scott_free(cp);		// changed scott free to check str and *str (now also str)
+	if (!og)
+		return (1);
+	if (!cp)
 		return (-1);
-	if (*cp)
-		free(*cp);		// should work ?
 	a = 0;
 	while (og[a])
 		++a;
@@ -43,15 +44,14 @@ int				ft_nstrdup(char **cp, char *og)
 	return (1);
 }
 
-	// does - take precedent over space for char flags ?
-	// my algo has it being that way.
-
-int				ft_handle_char(va_list *ap, char **str, t_param *p)
+int				ft_handle_char(va_list *ap, char **str, t_param *p)	// Secure
 {
 	size_t	len;
 	size_t	plen;
-	size_t	wlen;		// char *tmp got cut
+	size_t	wlen;
 
+	if (!ap || !str || !p)
+		return (-1);
 	len = 1;
 	plen = 0;
 	if (p->flag & F_PREC && p->precision == 0)
@@ -70,41 +70,27 @@ int				ft_handle_char(va_list *ap, char **str, t_param *p)
 		return (-1);
 	if (len)
 		(*str)[wlen] = (char)va_arg(*ap, int);
-	if (!*str)			// necessary?
-		return (-1);
 	return (len + wlen + plen);
 }
 
 	// double check the return...
 
-int				ft_handle_str(va_list *ap, char **str, t_param *p)
+int				ft_handle_str(va_list *ap, char **str, t_param *p)	// Secure except Gen Arg
 {
 	size_t	len;
 
-	len = 0;		// unnecessary...
-	if (p->spec == 's')		// unnecessary
-	{
-//		if (!(*str = ft_fstrdup(va_arg(ap, char*))))
-//			return (-1);
-		if (!(ft_nstrdup(str, va_arg(*ap, char*))))
-			return (-1);
-/*		if (!(ft_nstrdup(str, ft_cast_s(ap, p, str))))
-			return (-1);
-		ft_cast_s(ap, p, str);	*/
-		len = ft_fstrlen(*str);
-	}
-
-//	printf("str: |%s|\n", *str);
-
+	if (!ap || !str || !p)
+		return (-1);
+	if (ft_nstrdup(str, va_arg(*ap, char*)) == -1)
+		return (-1);
+	len = ft_fstrlen(*str);
 	if (!*str)
 	{
-		
 		if (!(*str = ft_fstrdup("(null)")))
 			return (-1);
-		p->flag |= (1 << 7);	// after width
+		p->flag |= (1 << 7);
 		len = 6;
 	}
-//	printf("test 2\n");
 
 
 	int a;

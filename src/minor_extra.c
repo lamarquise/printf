@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 20:53:21 by erlazo            #+#    #+#             */
-/*   Updated: 2020/03/03 20:57:10 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/07/22 19:07:45 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include "printf.h"
 
-size_t	ft_fstrlen(const char *s)
+size_t	ft_fstrlen(const char *s)	// secure, returns 0 if NULL input
 {
 	size_t	a;
 
@@ -30,14 +30,16 @@ size_t	ft_fstrlen(const char *s)
 // would it be better to secure in scott_free ???
 int		ft_scott_free(char **str)
 {
-	//	if (*str) // or something like that...
-	ft_bzero(*str, ft_fstrlen(*str));
-	free(*str);
-	*str = NULL;
+	if (str && *str)			// this version seems fine
+	{
+		ft_bzero(*str, ft_fstrlen(*str));
+		free(*str);
+		*str = NULL;
+	}
 	return (-1);
 }
 
-char	*ft_fill_with(char this, size_t len)
+char	*ft_fill_with(char this, size_t len)	// secure
 {
 	char	*ret;
 	size_t	i;
@@ -53,7 +55,7 @@ char	*ft_fill_with(char this, size_t len)
 	return (ret);
 }
 
-char	*ft_fstrdup(char *str)
+char	*ft_fstrdup(char *str)		// secure.
 {
 	char 	*ret;
 	int	a;
