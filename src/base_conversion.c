@@ -6,7 +6,7 @@
 /*   By: erlazo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 14:48:29 by erlazo            #+#    #+#             */
-/*   Updated: 2020/07/22 17:20:09 by erlazo           ###   ########.fr       */
+/*   Updated: 2020/07/22 19:11:03 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ char		*ft_add_char(char c, char **str)
 		++i;
 	}
 	tmp[i + 1] = '\0';
-	if (str && *str)		// redundant if ?
-		ft_scott_free(str);
+	ft_scott_free(str);
 	return (tmp);
 }
 
