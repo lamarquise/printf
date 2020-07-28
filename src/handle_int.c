@@ -13,10 +13,6 @@
 
 		// Needs to be made shorter
 		// Remove the few remaining redundancies, like in ft_cast's ?
-		// Change ft_cast's ???
-		// Get the binary print size to depend on size, ie int vs long or
-		// whatever
-
 
 #include "printf.h"
 
@@ -31,81 +27,58 @@
 	// 0x of # does not count in precision but does in width...
 
 
-	// FLag options:
-	// '-' left justify
-	// '0' zeros not spaces			// ignored if there is a -
-	// ' ' a space sometimes ???
-	// '+' sign in front of ints
-	// '#' 0x in front of hex numbers
-
-	// This file is gonna need some work...
-
-
-
-
-	// I don't entirely understand why these cast funcs work...
-	// That said, based on some tests they work gangbusters so...
-	// However, do i need to keep num as a long long? i mean, seems a bit
-	// inefficent... although easier to code...
-
-
 long long				ft_cast_d(va_list *ap, t_param *p)		// works for %d and %i
 {
-	long long	num;			// redundant declaration ?
-		// do i have these declared because i need to have long long explicitly ?
 	if (p->size & C_H)
-		num = va_arg(*ap, int);	// short
+		return (va_arg(*ap, int));	// short
 	else if (p->size & C_HH)
-		num = va_arg(*ap, int);	// signed char
+		return (va_arg(*ap, int));	// signed char
 	else if (p->size & C_L)
-		num = va_arg(*ap, long int);
+		return (va_arg(*ap, long int));
 	else if (p->size & C_LL)
-		num = va_arg(*ap, long long int);
+		return (va_arg(*ap, long long int));
 	else if (p->size & C_J)
-		num = va_arg(*ap, intmax_t);
+		return (va_arg(*ap, intmax_t));
 	else if (p->size & C_Z)
-		num = va_arg(*ap, size_t);
+		return (va_arg(*ap, size_t));
 	else
-		num = va_arg(*ap, int);			// put the most common first ???
-	return (num);
+		return (va_arg(*ap, int));			// put the most common first ???
 }
 
+	// not secure ? i mean it just returns a number, how can it be secured?
+	// technically insecure, I know how i could secure it, but seems worse,
+	// and i check it like right before this appel...
 unsigned long long		ft_cast_u(va_list *ap, t_param *p)		// works for %uoxX
 {
-	unsigned long long	num;	// declaring here seems redundant...
-
 	if (p->size & C_H)
-		num = va_arg(*ap, int);	// unsigned short	// make it unsigned instead ?
+		return (va_arg(*ap, int));	// unsigned short	// make it unsigned instead ?
 	else if (p->size & C_HH)
-		num = va_arg(*ap, int);	// unsigned char
+		return (va_arg(*ap, int));	// unsigned char
 	else if (p->size & C_L)
-		num = va_arg(*ap, unsigned long);
+		return (va_arg(*ap, unsigned long));
 	else if (p->size & C_LL)
-		num = va_arg(*ap, unsigned long long);		// will this work ???	may need to split handle int...
+		return (va_arg(*ap, unsigned long long));		// will this work ???	may need to split handle int...
 	else if (p->size & C_J)
-		num = va_arg(*ap, uintmax_t);
+		return (va_arg(*ap, uintmax_t));
 	else if (p->size & C_Z)
-		num = va_arg(*ap, size_t);
+		return (va_arg(*ap, size_t));
 	else
-		num = va_arg(*ap, unsigned int);		// put the most common first ???
-	return (num);
+		return (va_arg(*ap, unsigned int));		// put the most common first ???
 }
 
-	// could send the base as a str to func so as to avoid the if forest
-	// but i would just have it elsewhere so might as well have it here
-	// where it works now, i think...
-
+	// Str is secure till it gets to gen_arg, in gen_arg str needs to be freed if
+	// anything fails
 int						ft_handle_uint(va_list *ap, char **str, t_param *p)
 {
 	unsigned long	num;
-	size_t			len;
 
 	if (!ap || !str || !p)
 		return (-1);
-	if ((num = ft_cast_u(ap, p)) == 0 && p->flag & F_PREC && p->precision == 0)
+	if ((num = ft_cast_u(ap, p)) == 0 && p->flag & F_PREC
+		&& p->precision == 0)
 	{
-		*str = ft_fstrdup("");
-		len = 0;				// could get rid of but would be slightly less efficient
+		if (!(*str = ft_fstrdup("")))		// secure but ought to be done better
+			return (-1);					// same below
 	}
 	else
 	{
@@ -118,30 +91,31 @@ int						ft_handle_uint(va_list *ap, char **str, t_param *p)
 		else if (p->spec == 'b' && !(*str = ft_any_base_convert(num, "01")))
 			return (-2);
 		else if (p->spec == 'o' && !(*str = ft_any_base_convert(num, "01234567")))
-			return (-2);	// scott_free something???
-		len = ft_fstrlen(*str);
+			return (-2);	// scott_free something???	// I don't think so...
 	}
-	*str = ft_gen_arg_str_i(p, str, len, 0);	// secure this shit
+	*str = ft_gen_arg_str_i(p, str, ft_fstrlen(*str), 0);	// secure this shit
 	return (ft_fstrlen(*str));
 }
 
-
-	// need to make it so when fuck up the convert base % syntax it doesn't segfault
+	// Secure except gen_arg ? like do it better
+	// also same problem as unsigned, gen_arg needs to free str if anything goes awry
 
 int					ft_handle_int(va_list *ap, char **str, t_param *p)
 {
 	char		*base;
 	long long	num;
-	size_t		len;
 	int			neg;
 
-	if (!ap || !str || !p)
+	if (!ap || !str || !p)	// free str just in case ? i think no
 		return (-1);
-
 	base = NULL;	// extrememly necessary, might not be necessary if i had 
 	neg = 0;
 	if ((num = ft_cast_d(ap, p)) == 0 && p->flag & F_PREC && p->precision == 0)
-		*str = ft_fstrdup("");
+	{
+//		printf("test\n");
+		if (!(*str = ft_fstrdup("")))
+			return (-1);
+	}
 	else
 	{
 		if (num < 0)
@@ -155,15 +129,14 @@ int					ft_handle_int(va_list *ap, char **str, t_param *p)
 		else if (p->spec == 'B' && !(*str = ft_any_base_convert(num, va_arg(*ap, char*))))
 			return (-2);
 	}
-//	len = ft_fstrlen(*str) + (p->flag & F_PLUS ? 1 : 0);	// was - neg
-	len = ft_fstrlen(*str);	// was - neg
-	if (!(*str = ft_gen_arg_str_i(p, str, len, neg)))	// secure now ?
+	if (!(*str = ft_gen_arg_str_i(p, str, ft_fstrlen(*str), neg)))	// len had - neg// secure now ?
 		return (-1);		// is there a case where result is NULL correctly ????
 	return (ft_fstrlen(*str));
 }
 
 
 		// Gonna need to be shorter
+		// free tmp if anything goes wrong
 
 char				*ft_gen_arg_str_i(t_param *p, char **tmp, size_t len, int neg)
 {

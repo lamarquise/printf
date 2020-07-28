@@ -58,14 +58,6 @@ The next sections will detail what all these options are, how they interact,
 what algorythms i use to produce particular outcomes, and what can be found in
 each of my files and functions.
 
-__
-This is the part where i list all the flags and specifiers and then go on to 
-say what happens when you have multiple at the same time (give examples?)
-
--- first ill talk about the parsing funcs, in order
--- then ill do all the handlers.
-__
-
 ### Options
 
 #### Specefiers
@@ -100,6 +92,31 @@ also contain the '-' flag which will be treated as though it were in the format
 string.
 
 
+
+
+##### Sizes
+l:	long, also wchar t
+ll:	long long
+h:	short int
+hh:	signed char
+j:	intmax t
+z:	size t
+
+How do I deal with the various sizes?
+Well first of all i distinguish between numbers and string-like entities. I also
+distinguish between unsigned and signed numbers. From these groupings I go about
+assigning specific "casts" according to the size flag. There are some specific
+things i don't handle, like wchar t for %ls and %lc, but besides that i handles
+all the main size flags in all permutations. As far as handling the "casting"
+portion of things, I took a very simple aproach. Everything is declared as the
+largest possible varible type, and the output from va arg list is cast to the
+correct size and stored in that oversized variable. That way evyerthing fits.
+Given the low number of variables passed in any given printf function call, I
+decided that a little overkill wasn't anything to worry about.
+
+
+
+
 ### Parsing
 
 #### Parsing Main
@@ -117,6 +134,10 @@ added to the linked list. Anything left over after no more % specs are found are
 handed to the same listify not spec function to be added to the linked list. If
 there are no % specs, everything is handed to the listify not spec function.
 
+m is the size of the thing that was created from the format str and specs/flags
+ret is c is the len of format that was read to get through 1 % thing.
+
+
 #### Spec Parsing
 Spec parsing mostly outsources work but it serves as a main switch or junction.
 First it initialized the param structure type variable, next it calls the flag
@@ -126,6 +147,11 @@ function. It returns the size of the % spec that was read from the format string
 but a string containing the processed results and the length of that result are
 communicated back to parsing hq using pointers.
 
+t param p is never malloc'd and nothign in it is either, and it never moves up
+the tree, only down branches, so it doesn't need to be freed, it will die as
+soon as it's instance of parse specs is complete.
+
+
 #### Flag Parsing (also includes width, precision and size parsing)
 This may be the most elaborate of the parsing files but it's also the most
 'redundant'. Everything (format string starting immediately the % of the spec,
@@ -133,12 +159,52 @@ the param structure, and the va arguments list) is passed to the flag parsing
 function. It uses a findchar in a while to loop through the format string until
 it reaches a char that isn't a flag, precision, width or size (in that order).
 
+Precision:
+
+
+Width:
+
+
+Size:
+Similarly to spec parsing, it cycles through the format string as long as it
+finds a valid size flag (using findchar). Because the results (it did or did not
+find a certain flag) are stored as bits of an int in the t params var, and they
+are set in this order: h, hh, l, ll, z, j; the setting of these bits is rather
+redundante and can be optimized for shorter code. Namely, doing math around the
+i indicator resulting from the findchar. It is fairly straight forward. First
+h, hh, l and ll are handled, because in the event an h is found, the correct bit
+must be switched on, but if another h is found, the single h bit is switched back
+off and the double h bit is switched on. Same applies to l and ll. j and z are
+more straight forward, they are or they aren't. The order and values as shown by
+the defines in the .h explain the factors and other math around i to make it all
+work as intended while not being completly explicit and thus redundant.
+
+Presently, i do not in any way test if multiple sizes have been switched on...
+
+
+
+
 
 
 ### Handlers
 
 
 #### Handle Int
+Handle int is split into 2 main functions, one for signed and the other for
+unsigned numbers. Each of these also have their own respective casting functions
+which handle the transfer from va arg list to an in memory variable. That switch
+occures with a if forest.
+
+Signed:
+
+
+Unsigned:
+The '+' flag works the way you would expect it to on an unsigned number. If the
+width is large enough, a '+' replaces a space or a '0', if the width is too small
+a '+' is added anyway increasing the len of the resulting string. This obviously
+doesn't apply to '-', for negative numbers the value wraps.
+
+
 
 %0+15d is fine
 %0 15d is fine
@@ -220,6 +286,15 @@ The add char functions is a little intensive, copies all current digits to
 transfer them to a new string that has been allocated with 1 additional byte
 to accomodate the new char.
 
+Ok so we changed some thigns a bit, the largrest possible string si the llmax
+in binary, which is 63 1's long, thus a 64 char string include the \0.
+Thus i allocate a string of 64, fill it back to front and then strdup the end
+starting from the furthest digit from the last position.
+EX: ..........11011010001010101\0
+Dup starts here
+
+
+
 
 #### Pfelem List
 ft new pfelem():
@@ -257,11 +332,19 @@ long, the largest number.
 
 ft latoi(): Len Atoi
 Called from Parse Flags.c, it is a regular atoi which also counts the string
-size of the number it is converting from a string to an int, this number is
-stored in an int passed as a param.
-OK basically: it returns an int like the regular atoi, a number that was a
-string, but the length of that string is stored in a pointer to an int that
-was passed to latoi as an argument.
+size of the number it is converting from a string to an int, the result is
+stored in a pointer to an int and it's length is the return value;
+For Security reasons:
+You pass it a pointer to the int that will hold the value of the string that
+is being atoi'ed; the result essencially. The return is the length of the int
+that has been created. This way, not the other way around (passing a pointer
+to an int that will contain the lenght of the result) because in the event
+of failure, this way we say the len is -1, which clearly is never a valid
+option if success.
+return (-8) if error because i do rlen += latoi and since rlen can already
+be > 0, i don't know how much to decrese by to have it be exactly -1, so
+way to big ret and <= -1 if check.
+
 
 ft fstrjoin():
 A secure version of strjoin(), can take either pointers sent in param being
@@ -270,10 +353,6 @@ Ok so anything you send it will be freed, even if there is an error, which is
 rather handy. Thus if i call a fill with func and send the result to fjoin,
 even if the fjoin fails the fill with is free, so i don't need to handle that
 error case.
-
-ft triple join():
-Joins 3 strings together, fewer allocations than 2 fstrjoin, does not free
-not currently in use
 
 #### Minor Extra
 ft fstrlen():
@@ -289,14 +368,6 @@ IE it creates a str x long of a given char.
 
 ft fstrdup():
 A secure version of strdup.
-
-ft fstrncpy():
-A secure version of strncpy.
-
-
-
-
-
 
 
 

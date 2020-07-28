@@ -68,6 +68,10 @@ int		ft_printf(const char *format, ...)
 		ft_putnbr(ret);					// necessary for testing now cuz
 		ft_putchar('\n');				// no one calls print ret of printf
 	}
+/*	if ((ret = ft_parsing_hq((char*)format, &ap, &lst)) == -1)	// the final version?
+		return (-1);
+	else
+		ret = ft_display_del(1, &lst);	*/
 	va_end(ap);
 	return (ret);
 }

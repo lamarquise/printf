@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// where does ft_fstrncpy() get called ??? do i still need it ???
-
 #include "printf.h"
 
 size_t	ft_fstrlen(const char *s)	// secure, returns 0 if NULL input
@@ -27,10 +25,9 @@ size_t	ft_fstrlen(const char *s)	// secure, returns 0 if NULL input
 	return (a);
 }
 
-// would it be better to secure in scott_free ???
-int		ft_scott_free(char **str)
+int		ft_scott_free(char **str)	// Secure
 {
-	if (str && *str)			// this version seems fine
+	if (str && *str)
 	{
 		ft_bzero(*str, ft_fstrlen(*str));
 		free(*str);
@@ -57,8 +54,8 @@ char	*ft_fill_with(char this, size_t len)	// secure
 
 char	*ft_fstrdup(char *str)		// secure.
 {
-	char 	*ret;
-	int	a;
+	char	*ret;
+	int		a;
 
 	if (!str)
 		return (NULL);
@@ -74,18 +71,4 @@ char	*ft_fstrdup(char *str)		// secure.
 		++a;
 	}
 	return (ret);
-}
-
-// different return ???
-char	*ft_fstrncpy(char *dst, char *src, int size)
-{
-	int	a;
-
-	a = 0;
-	if (!dst || !src)
-		return (NULL);
-	while (*src && a < size)
-		dst[a++] = *src++;
-	dst[a] = '\0';
-	return (dst);
 }

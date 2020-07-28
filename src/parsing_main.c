@@ -63,6 +63,8 @@ int     	ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst)
 			if ((c = ft_spec_parsing(&format[i], ap, &str, &m)) <= -1)	// get rid of -1?
 				return (ft_scott_free(&str));
 			i += c;							// can not use m here, is that a good idea?
+
+				// if this fails, free str and pflist
 			if (ft_pflist_append(lst, ft_str_to_elem(str, m)) == -1) // -1 necessary
 //			if (ft_pflist_append(lst, NULL) == -1)	// testing error cases.
 				return (ft_scott_free(&str));

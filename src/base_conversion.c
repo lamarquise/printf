@@ -12,47 +12,22 @@
 
 #include "printf.h"
 
-
-	// what if insead i did a single huge allocation and put everything to the
-	// right end and added towards the left. then chop off the front for the
-	// return ... would that be more efficient ?
-
-char		*ft_add_char(char c, char **str)
-{
-	char	*tmp;
-	int		i;
-
-	tmp = NULL;
-	if ((!str || !*str) && !c)
-		return (NULL);
-	if (!(tmp = ft_memalloc(sizeof(char) * (ft_fstrlen(*str) + 2))))
-		return (NULL);
-	i = 0;
-	tmp[i] = c;
-	while (*str && (*str)[i])
-	{
-		tmp[i + 1] = (*str)[i];
-		++i;
-	}
-	tmp[i + 1] = '\0';
-	ft_scott_free(str);
-	return (tmp);
-}
-
-int			ft_base_check(char *base)
+int			ft_base_check(char *base)	// Secure
 {
 	int		i;
 	int		ret;
 
 	ret = 0;
-	if (!base)			// want so doesnt seg fault below
+	if (!base)
 		return (-1);
 	while (base[ret])
 	{
+		if (base[ret] < 33 || base[ret] > 126)
+			return (-1);
 		i = ret + 1;
 		while (base[i])
 		{
-			if (base[ret] == base[i])		// more conditions ???????
+			if (base[ret] == base[i])
 				return (-1);
 			++i;
 		}
@@ -61,24 +36,25 @@ int			ft_base_check(char *base)
 	return (ret > 1 ? ret : -1);
 }
 
-	// better way of doing add_char, like only 1 appel ?
-char		*ft_any_base_convert(unsigned long long nb, char *base)
+char		*ft_any_base_convert(unsigned long long nb, char *base)	// Secure :)
 {
+	int		pos;
 	int		size;
 	char	*ret;
+	char	buf[64];
 
-	ret = NULL;
 	if ((size = ft_base_check(base)) == -1)
 		return (NULL);
-	while (nb >= (unsigned int)size)	// better cast ?
+	buf[63] = '\0';
+	pos = 62;
+	ret = NULL;
+	while (nb >= (unsigned int)size)
 	{
-		if (!(ret = ft_add_char(base[nb % size], &ret)))
-			return (ft_scott_free(&ret) == -1 ? NULL : NULL);		//ghetto af
+		buf[pos--] = base[nb % size];
 		nb /= size;
 	}
-	if (!(ret = ft_add_char(base[nb % size], &ret)))
-		return (ft_scott_free(&ret) == -1 ? NULL : NULL);	// kinda janky...
+	buf[pos] = base[nb % size];
+	if (!(ret = ft_fstrdup(&buf[pos])))
+		return (NULL);
 	return (ret);
 }
-
-

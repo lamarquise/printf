@@ -17,8 +17,10 @@
 #include "printf.h"
 
 	// really need a return ???
-int		ft_init_param(t_param *p)
+int		ft_init_param(t_param *p)	// secure
 {
+	if (!p)
+		return (-1);
 	p->flag = 0;
 	p->width = 0;
 	p->precision = 0;
@@ -31,6 +33,8 @@ int		ft_init_param(t_param *p)
 
 int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)
 {
+	if (!ap || !str || !p || !*m)
+		return (-1);
 	if (*m <= 2)
 		*m = ft_handle_int(ap, str, p);
 	else if (*m <= 7)
@@ -41,21 +45,22 @@ int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)
 		*m = ft_handle_str(ap, str, p);
 	else if (*m == 10)
 		*m = ft_handle_pointer(ap, str, p);
-	else if (*m == 11)		// assuming no flags, is that correct ????
-	{
+	else if (*m == 11)		// %n	// this is where nothing printed but # up to this
+	{								// point is counted.
 		*str = ft_strdup("");
 		*m = 1;
+		printf("%%n test time\n");
 	}
-/*	else if (*m == 12)
+	else if (*m == 12)		// %N	// no idea what this one is supposed to do...
 	{
-		*str = va_arg(ap, void*);
+		*str = va_arg(*ap, void*);
+		*m = ft_fstrlen(*str);
 	}
-*/	else if (*m == 13)
+	else if (*m == 13)
 		*m = ft_handle_modulo(str, p);
 	// do i need an else here? as a catch all ?
 
-	return (1);		// how to use this better?
-					// could ret m ?
+	return (1);		// don't ret m, no need
 }
 
 	// You need m to be sent cuz it returns len of str
@@ -65,24 +70,21 @@ int		ft_spec_parsing(char *format, va_list *ap, char **str, int *m)
 	int		ret;
 	t_param	p;
 
+	if (!format || !ap || !str || !m)
+		return (-1);
 	*m = 0;
 	ret = 0;
-	ft_init_param(&p);
+	if (ft_init_param(&p) == -1)
+		return (-2);
 	if (format[ret++] != '%')
-		return (-1);
+		return (-3);
 	if ((ret += ft_flag_parsing(&format[ret], &p, ap)) <= -1)
-		return (-2);		// this only works cuz ret if error is much bigger than -1
-	if ((*m = ft_findchar("diBbuoxXcspNn%", format[ret])) < 0)
-		return (-3);		// can do this better i bet
-	p.spec = format[ret];
-
-	if (!ft_pick_handler(ap, str, &p, m))	// can also do this better...
 		return (-4);
-
-//	printf("field parsing test end\n");
-
-//	printf("parse buff n= %d, ret=%d, str:|%s|\n", *m, ret, *str);
-//	printf("parse buff ret: %d\n", (n == -1) ? -1 : n + ret);
-	return ((*m <= -1) ? -4 : 1 + ret);
+	if ((*m = ft_findchar("diBbuoxXcspnN%", format[ret])) < 0)
+		return (-5);
+	p.spec = format[ret];
+	if (ft_pick_handler(ap, str, &p, m) == -1)
+		return (-6);
+	return ((*m <= -1) ? -7 : 1 + ret);
 }
 
