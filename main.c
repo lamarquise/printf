@@ -39,12 +39,13 @@ int		main(int ac, char **av)
 		str = av[1];
 
 
-//	ft_printf("this is the first test\n");
-//	ft_printf("%s the second test\n", "this is");
+	ft_printf("my number: |%+7.5d|\n", b);
+	printf("OG number: |%+7.5d|\n", b);
 
-	ft_printf("me: |%n|\n", &a);
-	printf("OG: |%n|\n", &b);
-	printf("the results: a:%d, b:%d\n", a, b);
+//	ft_printf("me: |%N| and another |%N|\n", &a, &b);
+//	printf("the results: a:%d, b:%d\n", a, b);
+//	printf("OG: |%n| and another |%n|\n", &a, &b);
+//	printf("the results: a:%d, b:%d\n", a, b);
 //	ft_printf("unsigned: |%lu|\n", (long)c);
 //	printf("OG unsigned: |%lu|\n", (long)c);
 
@@ -79,7 +80,8 @@ int		main(int ac, char **av)
 
 //	printf("OG test: a was: %d, |%n|\n", a, &a);
 //	printf("number in int: %d\n", a);
-//	ft_printf("my test: |%+12s|\n", line);
+//	ft_printf("my test: |%.0s|\n", line);
+//	printf("OG test: |%.0s|\n", line);
 	
 //	printf("OG test: |% s|\n", NULL);
 //	ft_printf("my test: |%s|\n", NULL);

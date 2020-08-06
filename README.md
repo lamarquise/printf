@@ -58,6 +58,24 @@ The next sections will detail what all these options are, how they interact,
 what algorythms i use to produce particular outcomes, and what can be found in
 each of my files and functions.
 
+
+
+Seems like my standard/goto is to free at the lowest point, rather than at the
+point of creation. So when something fucks up, i free what needs to be free then
+and there, rather than returning falls all the way up to the point of creation
+and freeing then. Reason being, while i think for the most part my achitecture is
+a tree, I am fairly certain some instances of vars being created and migrated to
+parallel or above the point of creation, exist. This as policy, i free imediately.
+
+Wait ok so it's more like 1 level above the point of failur mostly.
+So like I call a function, it fails, in the function that called it, i free shit.
+Except fstrjoin, cuz that shit frees under normal circumstances so needs to also
+free if failure...
+
+
+
+
+
 ### Options
 
 #### Specefiers
@@ -73,8 +91,8 @@ X: Uppercase unsigned hexadecimal integer, subject to size modifications.
 c: Single Character.
 s: String of Characters.
 p: Pointer address.
-N: ?
-n: Stores number of characters written at the integer addess passed as arg.
+N: Prints the number of chars written at the point it is called.
+n: Stores number of characters written at the integer addess passed as arg. (the real one)
 %: Writes a single % modulo.
 
 #### Flags
@@ -235,12 +253,32 @@ Solution: neg still 0 if pos and -1 if neg number, but not factored into len ime
 which represents the number of digits only, then we add 1 if there is a sign, + or -. This new len is used to calculate wlen and everything else.
 The main diference is that we now treat pos num with + flag the same as neg num.
 
+Precision is calculated without sign + or -. Width is calculated with sign - or + (if + flag).
+
 
 
 Ok so this is how B works. B is for turning any number into a base that you provide,
 if you don't provide a base, it's like yo, no base...
 The number comes first then the base...
 If the base is invalide it's like the fuck you need a real base...
+
+
+Gen Arg Str I():
+Manages most of the setting of the string recovered from va arg list, in accordance
+with the flags and options.
+The str in question is passed as a pointer to a string, and freed in all error
+cases. Additionally, a pointer to t param p, the len of str and neg (indicating it's
+sign) are also passed as arguments. The precision and width are modified to take the
+len and sign into account. Then begins the process of creating the strings that will
+be attached in front and behind the main result string. (details not provided here).
+Essencially it invloves creating the correct numer of the correct char and attaching
+it in the correct place, rather fineky.
+In oder to meed the norm, a few functions containing sub processes of gen arg str i
+were created in Gen Arg Str.c 
+
+
+everything else is free bellow, either defined in func or by fjoin which free's so much shit...
+
 
 
 
@@ -298,19 +336,24 @@ Dup starts here
 
 #### Pfelem List
 ft new pfelem():
-creates a new var of type pf elem, and populates it with the
+Creates a new var of type pf elem, and populates it with the
 arguments passed to it (a str and a size).
 
 ft pflist append():
-appends a pfelem to a pfelem list.
+Appends a pfelem to a pfelem list.
 
 ft str to elem():
-turns a string into a new pfelem with new pfelem, but not
+Turns a string into a new pfelem with new pfelem, but not
 necessarily the whole string, only up to the len that was specified as an
 argument. Don't free cp in this func because it is stored in the linked list
 as the final output, str from which it comes gets freed right after, each link
 is added, but there is a new cp for each link, so don't free till printed with
 display.
+A few things added to accomodate the %n and %N specs, bit of a patch, but its
+near the end so it's acceptable.
+
+
+
 
 ft pflist del all(): 
 
@@ -354,12 +397,20 @@ rather handy. Thus if i call a fill with func and send the result to fjoin,
 even if the fjoin fails the fill with is free, so i don't need to handle that
 error case.
 
+ft cstrjoin():
+Joins a single char to a pointer to a string, frees the pointer it receives
+no matter what (error or not). Reallocates new string to be sent back.
+
 #### Minor Extra
 ft fstrlen():
 A secure version of strlen(), can take a NULL pointer passed in parameter.
 
 ft scott free():
 A short cut function, it takes a str and bzero, free and sets it to NULL.
+Policy regarding Scott Free is ret -1 if an int, 0 if not checked or needs
+to be NULL cuz char star.
+Need to cast in the return if using it to spoof a NULL.
+
 
 ft fill with():
 Mallocs an amount of memory + 1 and fills it with the requested char and

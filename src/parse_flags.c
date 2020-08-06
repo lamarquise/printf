@@ -57,7 +57,7 @@ int			ft_get_precision(char *format, t_param *p, va_list *ap)	// secure
 		psize = va_arg(*ap, int);
 		++rlen;
 	}
-	else if ((rlen += ft_latoi(&format[rlen], &psize)) <= -1)
+	else if ((rlen += ft_latoi(&format[rlen], (long*)&psize)) <= -1)
 		return (-10);
 	if (psize < 0)		// if neg i ignore ???
 		psize = 0;
@@ -83,7 +83,7 @@ int			ft_get_width(char *format, t_param *p, va_list *ap) // secure
 		++rlen;
 	}
 	else if (format[rlen] >= '1' && format[rlen] <= '9'
-			&& (rlen += ft_latoi(&format[rlen], &wsize)) <= -1) //fine if goes wrong
+			&& (rlen += ft_latoi(&format[rlen], (long*)&wsize)) <= -1) //fine if goes wrong
 		return (-10);
 	if (wsize < 0)
 	{

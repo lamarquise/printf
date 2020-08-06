@@ -128,6 +128,7 @@ int					ft_gen_arg_str_s(t_param *p, char **str, size_t len);
 
 int					ft_add_hash(char **pre, t_param *p);
 int					ft_prec_is_zero(char **str, size_t *len);
+int					ft_h_int_wid(t_param *p, char **pre, char **tmp, int neg);
 
 /*
 **	Display
@@ -140,17 +141,20 @@ int					ft_display_del(int fd, t_pfelem **lst);
 */
 
 char				*ft_pos_itoa(unsigned long long n);
-int					ft_latoi(char *str, int *num);
+int					ft_latoi(char *str, long *num);
+//int					ft_latoi(char *str, int *num);
 char				*ft_fstrjoin(char **s1, char **s2);
+char				*ft_cstrjoin(char c, char **s2);
 
 /*
 **	Minor Extra
 */
 
 size_t				ft_fstrlen(const char *s);
-int					ft_scott_free(char **str);
+long				ft_scott_free(char **str, int ret);
 char				*ft_fill_with(char this, size_t len);
 char				*ft_fstrdup(char *str);
+int					ft_nstrdup(char **cp, char *og);
 
 /*
 **	Base Convert

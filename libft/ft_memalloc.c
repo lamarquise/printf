@@ -17,6 +17,8 @@ void	*ft_memalloc(size_t size)
 	unsigned int	a;
 	char			*ret;
 
+	if (size < 1)
+		return (NULL);
 	a = 0;
 	if (!(ret = (char*)malloc(sizeof(void) * size)))
 		return (NULL);

@@ -11,38 +11,10 @@
 /* ************************************************************************** */
 
 	// needs to be shorter. more concise ?
-	// add a ft_cast like for ints  ????	No.
 	// double check the return for str, and char why not
 
 
 #include "printf.h"
-
-	// this is for those times when you need to verify with a number..
-	// add to lib ?
-	// Don't add to lib, the if (!og) ret(1) is my printf specific, good idea to have one like this in lib, but not this one.
-
-int				ft_nstrdup(char **cp, char *og)		// secure but gross
-{
-	int		a;
-
-	ft_scott_free(cp);		// changed scott free to check str and *str (now also str)
-	if (!og)
-		return (1);
-	if (!cp)
-		return (-1);
-	a = 0;
-	while (og[a])
-		++a;
-	if (!(*cp = ft_memalloc(sizeof(char) * (a + 1))))
-		return (-1);
-	a = 0;
-	while (og[a])
-	{
-		(*cp)[a] = og[a];
-		++a;
-	}
-	return (1);
-}
 
 int				ft_handle_char(va_list *ap, char **str, t_param *p)	// Secure
 {
@@ -82,8 +54,8 @@ int				ft_handle_str(va_list *ap, char **str, t_param *p)	// Secure except Gen A
 	if (!ap || !str || !p)
 		return (-1);
 	if (ft_nstrdup(str, va_arg(*ap, char*)) == -1)
-		return (-1);
-	len = ft_fstrlen(*str);
+		return (-1);		// scott_free str ? just in case
+	len = ft_fstrlen(*str);		// shouldn't exist but what if it does...
 	if (!*str)
 	{
 		if (!(*str = ft_fstrdup("(null)")))
@@ -111,7 +83,7 @@ int				ft_handle_str(va_list *ap, char **str, t_param *p)	// Secure except Gen A
 int			ft_gen_arg_str_s(t_param *p, char **str, size_t len)
 {
 	char	c;
-	int		n;
+	int		n;	// do i need n ?
 	char	*pre;
 	char	*post;
 
@@ -120,12 +92,12 @@ int			ft_gen_arg_str_s(t_param *p, char **str, size_t len)
 	post = NULL;
 	if (p->flag & F_PREC)
 	{
-		if (p->precision == 0 && !ft_prec_is_zero(str, &len))
-			return (-1);
+		if (p->precision == 0 && ft_prec_is_zero(str, &len) == -1)
+			return (-1);		// scott free str
 		else if ((n = (p->precision < len ? p->precision : 0)) > 0)
 		{
-			pre = ft_substr(*str, 0, n);
-			ft_scott_free(str);
+			pre = ft_substr(*str, 0, n);	// secure
+			ft_scott_free(str, 0);
 			*str = pre;
 			pre = NULL;
 			len = n;
@@ -135,13 +107,13 @@ int			ft_gen_arg_str_s(t_param *p, char **str, size_t len)
 //	printf("len in mid: %zu\n", len);
 	n = (p->width <= len ? 0 : p->width - len);
 	c = ' ';
-	if (n)
+	if (n)		// double check what happens when n = 0
 	{
 		if (p->flag & F_MINU)
 		{
 //			post = ft_fill_with(c, n);
 			pre = ft_fill_with(c, n);		// is better but i hate it...
-			*str = ft_fstrjoin(str, &pre);
+			*str = ft_fstrjoin(str, &pre);	// WHY LIKE THIS !!!!
 			return (len + n);
 //			pre = NULL;
 		}
@@ -155,6 +127,7 @@ int			ft_gen_arg_str_s(t_param *p, char **str, size_t len)
 	else if (p->flag & F_SPAC)
 	{
 		pre = ft_fill_with(c, 1);
+	//	something = ft_cstrjoin(' ', &pre); // and secure...
 		++len;
 	}
 //	printf("len at end: %zu\n", len);

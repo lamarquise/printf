@@ -38,7 +38,10 @@ char		*ft_pos_itoa(unsigned long long n)	// secure
 	return (ret);
 }
 
-int			ft_latoi(char *str, int *num)	// Secure
+	// testing latoi with long
+
+
+int			ft_latoi(char *str, long *num)	// Secure
 {
 	int		a;
 	int		neg;
@@ -80,18 +83,40 @@ char		*ft_fstrjoin(char **s1, char **s2)	// Secure
 	a = ft_fstrlen(*s1) + ft_fstrlen(*s2) + 1;
 	if (!(ret = ft_memalloc(sizeof(char) * a)))
 	{
-		ft_scott_free(s1);
-		ft_scott_free(s2);
-		return (NULL);
+		ft_scott_free(s1, 0);
+		return ((char*)ft_scott_free(s2, 0));
 	}
 	a = 0;
 	b = 0;
 	c = 0;
 	while (*s1 && (*s1)[b])
-		(ret)[a++] = (*s1)[b++];
+		ret[a++] = (*s1)[b++];
 	while (*s2 && (*s2)[c])
-		(ret)[a++] = (*s2)[c++];
-	ft_scott_free(s1);
-	ft_scott_free(s2);
+		ret[a++] = (*s2)[c++];
+	ft_scott_free(s1, 0);
+	ft_scott_free(s2, 0);
 	return (ret);
 }
+
+char		*ft_cstrjoin(char c, char **s2)	// Secure
+{
+	int		a;
+	int		b;
+	char	*ret;
+
+		// also protect against 'c' being shit ?
+	if (!s2)	// now accept if null string sent...
+		return (NULL);
+	a = ft_fstrlen(*s2) + 2;
+	if (!(ret = ft_memalloc(sizeof(char) * a)))
+		return ((char*)ft_scott_free(s2, 0));
+	a = 0;
+	b = 0;
+	ret[a++] = c;
+	while (*s2 && (*s2)[b])
+		ret[a++] = (*s2)[b++];
+	ft_scott_free(s2, 0);
+	return (ret);
+}
+
+

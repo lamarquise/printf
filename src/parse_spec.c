@@ -16,7 +16,6 @@
 
 #include "printf.h"
 
-	// really need a return ???
 int		ft_init_param(t_param *p)	// secure
 {
 	if (!p)
@@ -31,9 +30,11 @@ int		ft_init_param(t_param *p)	// secure
 
 	// does it even need a return ?
 
+	// in theory m is only -1 if error
+
 int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)
 {
-	if (!ap || !str || !p || !*m)
+	if (!ap || !str || !p || !m)
 		return (-1);
 	if (*m <= 2)
 		*m = ft_handle_int(ap, str, p);
@@ -45,21 +46,23 @@ int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)
 		*m = ft_handle_str(ap, str, p);
 	else if (*m == 10)
 		*m = ft_handle_pointer(ap, str, p);
-	else if (*m == 11)		// %n	// this is where nothing printed but # up to this
-	{								// point is counted.
-		*str = ft_strdup("");
-		*m = 1;
-		printf("%%n test time\n");
-	}
-	else if (*m == 12)		// %N	// no idea what this one is supposed to do...
+	else if (*m == 11)	// %N	//prints # char counted
 	{
-		*str = va_arg(*ap, void*);
-		*m = ft_fstrlen(*str);
+		if (ft_nstrdup(str, "") == -1)	// test error case
+			return (-1);
+		*m = -2;
+	}
+	else if (*m == 12)	// %n	// # up to char passed to pointer
+	{
+		if (!(*str = ft_pos_itoa(va_arg(*ap, long))))	// test error case
+			return (-1);
+		*m = -3;
 	}
 	else if (*m == 13)
 		*m = ft_handle_modulo(str, p);
 	// do i need an else here? as a catch all ?
-
+	if (*m == -1)
+		return (-1);
 	return (1);		// don't ret m, no need
 }
 
@@ -80,11 +83,11 @@ int		ft_spec_parsing(char *format, va_list *ap, char **str, int *m)
 		return (-3);
 	if ((ret += ft_flag_parsing(&format[ret], &p, ap)) <= -1)
 		return (-4);
-	if ((*m = ft_findchar("diBbuoxXcspnN%", format[ret])) < 0)
+	if ((*m = ft_findchar("diBbuoxXcspNn%", format[ret])) < 0)
 		return (-5);
 	p.spec = format[ret];
 	if (ft_pick_handler(ap, str, &p, m) == -1)
 		return (-6);
-	return ((*m <= -1) ? -7 : 1 + ret);
+	return ((*m == -1) ? -7 : 1 + ret);
 }
 

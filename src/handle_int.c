@@ -27,7 +27,7 @@
 	// 0x of # does not count in precision but does in width...
 
 
-long long				ft_cast_d(va_list *ap, t_param *p)		// works for %d and %i
+long long			ft_cast_d(va_list *ap, t_param *p)	// works for %d and %i
 {
 	if (p->size & C_H)
 		return (va_arg(*ap, int));	// short
@@ -48,7 +48,7 @@ long long				ft_cast_d(va_list *ap, t_param *p)		// works for %d and %i
 	// not secure ? i mean it just returns a number, how can it be secured?
 	// technically insecure, I know how i could secure it, but seems worse,
 	// and i check it like right before this appel...
-unsigned long long		ft_cast_u(va_list *ap, t_param *p)		// works for %uoxX
+unsigned long long	ft_cast_u(va_list *ap, t_param *p)		// works for %uoxX
 {
 	if (p->size & C_H)
 		return (va_arg(*ap, int));	// unsigned short	// make it unsigned instead ?
@@ -68,7 +68,7 @@ unsigned long long		ft_cast_u(va_list *ap, t_param *p)		// works for %uoxX
 
 	// Str is secure till it gets to gen_arg, in gen_arg str needs to be freed if
 	// anything fails
-int						ft_handle_uint(va_list *ap, char **str, t_param *p)
+int					ft_handle_uint(va_list *ap, char **str, t_param *p)
 {
 	unsigned long	num;
 
@@ -83,15 +83,15 @@ int						ft_handle_uint(va_list *ap, char **str, t_param *p)
 	else
 	{
 		if (p->spec == 'u' && !(*str = ft_pos_itoa(num)))// better way of doing that below ?
-			return (-2);
+			return (-1);
 		else if (p->spec == 'x' && !(*str = ft_any_base_convert(num, "0123456789abcdef")))
-			return (-2);
+			return (-1);
 		else if (p->spec == 'X' && !(*str = ft_any_base_convert(num, "0123456789ABCDEF")))
-			return (-2);
+			return (-1);
 		else if (p->spec == 'b' && !(*str = ft_any_base_convert(num, "01")))
-			return (-2);
+			return (-1);
 		else if (p->spec == 'o' && !(*str = ft_any_base_convert(num, "01234567")))
-			return (-2);	// scott_free something???	// I don't think so...
+			return (-1);	// scott_free something???	// I don't think so...
 	}
 	*str = ft_gen_arg_str_i(p, str, ft_fstrlen(*str), 0);	// secure this shit
 	return (ft_fstrlen(*str));
@@ -108,7 +108,7 @@ int					ft_handle_int(va_list *ap, char **str, t_param *p)
 
 	if (!ap || !str || !p)	// free str just in case ? i think no
 		return (-1);
-	base = NULL;	// extrememly necessary, might not be necessary if i had 
+	base = NULL;
 	neg = 0;
 	if ((num = ft_cast_d(ap, p)) == 0 && p->flag & F_PREC && p->precision == 0)
 	{
@@ -125,9 +125,9 @@ int					ft_handle_int(va_list *ap, char **str, t_param *p)
 			num = -num;		// is it a problem for long long max or min ??? seems like no
 		}
 		if ((p->spec == 'd' || p->spec == 'i') && !(*str = ft_pos_itoa(num)))
-			return (-2);
+			return (-1);
 		else if (p->spec == 'B' && !(*str = ft_any_base_convert(num, va_arg(*ap, char*))))
-			return (-2);
+			return (-1);
 	}
 	if (!(*str = ft_gen_arg_str_i(p, str, ft_fstrlen(*str), neg)))	// len had - neg// secure now ?
 		return (-1);		// is there a case where result is NULL correctly ????
@@ -135,70 +135,32 @@ int					ft_handle_int(va_list *ap, char **str, t_param *p)
 }
 
 
-		// Gonna need to be shorter
-		// free tmp if anything goes wrong
+		// Expect to be secure but test
+	// also
+		// free str if anything goes wrong
 
-char				*ft_gen_arg_str_i(t_param *p, char **tmp, size_t len, int neg)
+char				*ft_gen_arg_str_i(t_param *p, char **str, size_t len, int neg)
 {
-	char	c;
-	int		plen;
-	int		wlen;
 	char	*pre;
-	char	*mid;
-	char	*post;
+
+//	printf("str:|%s|\n", *str);
 
 	pre = NULL;
-	mid = NULL;
-	post = NULL;
-
-
-	plen = (p->precision <= len ? 0 : p->precision - len);
+	p->precision = (p->precision <= len ? 0 : p->precision - len);
 	len += (p->flag & F_PLUS ? 1 : 0);
-
-	wlen = (p->width <= len ? 0 : p->width - len);
-//	printf("len:%zu,wlen:%d,plen:%d,wid:%zu,prec:%zu\n",len,wlen,plen,p->width,p->precision);
-	if (plen)
-		pre = ft_fill_with('0', plen);
-	if (p->flag & F_HASH && !ft_add_hash(&pre, p))	// Handles Hash
-		return (NULL);
-	if (wlen > plen)
-	{
-		c = ' ';
-		if (p->flag & F_ZERO && !(p->flag & F_MINU) && !(p->flag & F_PREC))
-			c = '0';
-		post = ft_fill_with(c, wlen - plen);
-		if (!(p->flag & F_MINU))
-		{
-			if (c != '0' && p->flag & F_PLUS)
-			{
-				mid = neg < 0 ? ft_fstrdup("-") : ft_fstrdup("+");	// was more efficient
-				pre = ft_fstrjoin(&mid, &pre);	// to just swap out a char, but...
-//				post[wlen - plen - 1] = neg < 0 ? '-' : '+'; // sadly didn't work
-				p->flag &= (0 << 2);
-			}
-			pre = ft_fstrjoin(&post, &pre);
-		}
-		if (p->flag & F_SPAC && !(p->flag & F_PLUS))
-			pre[0] = ' ';
-	}
-	if (p->flag & F_PLUS)
-	{
-		mid = neg < 0 ? ft_fstrdup("-") : ft_fstrdup("+");
-		pre = ft_fstrjoin(&mid, &pre);
-	}
-	else if (p->flag & F_SPAC && wlen <= plen)	// else cuz no ' ' if '+'m
-	{
-		mid = ft_fstrdup(" ");
-		pre = ft_fstrjoin(&mid, &pre);
-	}
-	pre = ft_fstrjoin(&pre, tmp);
-	pre = ft_fstrjoin(&pre, &post);
-
-//	*tmp = ft_triple_join(pre, *tmp, post);		// no cuz need another var or leaks...
-
-
-//	printf("gen arg str: |%s|\n", str);
-	return (pre);		//ret tmp instead ???
-//	return (ft_fstrjoin(ft_fstrjoin(pre, tmp), post));
+	p->width = (p->width <= len ? 0 : p->width - len);
+	if (p->precision && !(pre = ft_fill_with('0', p->precision)))
+		return ((char*)ft_scott_free(str, 0));
+	if (p->flag & F_HASH && ft_add_hash(&pre, p) == -1)
+		return ((char*)ft_scott_free(str, 0));
+//	printf("pre:|%s|\n", pre);
+	if (p->width > p->precision && (ft_h_int_wid(p, &pre, str, neg)) == -1)
+		return ((char*)ft_scott_free(str, 0));
+	if (p->flag & F_PLUS && !(pre = ft_cstrjoin((neg < 0 ? '-' : '+'), &pre)))
+		return ((char*)ft_scott_free(str, 0));
+	if (!(p->flag & F_PLUS) && p->flag & F_SPAC && p->width <= p->precision
+		&& !(pre = ft_cstrjoin(' ', &pre)))
+		return ((char*)ft_scott_free(str, 0));
+	return (ft_fstrjoin(&pre, str));	// secures itself ?
 }
 

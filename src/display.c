@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 	// make sure frees are good...
-	// need to fix %N
+	// double check %n
+	// double check %N
+	
 
 #include "printf.h"
 
@@ -20,6 +22,8 @@ int		ft_display_del(int fd, t_pfelem **lst)
 	int			c;
 	int			ret;
 	int			len;
+	long			another;
+	int			*test;	// temporary var ?
 	char		*str;
 	t_pfelem	*tmp;
 
@@ -29,29 +33,34 @@ int		ft_display_del(int fd, t_pfelem **lst)
 	ret = 0;
 	len = 0;
 	str = NULL;
+	test = NULL;
+	another = 0;
 	if (!lst)
 		return (-1);
-	while (*lst)	// maybe secure, if something fucks up then ret 0....
+	while (*lst)
 	{
-/*		if ((*lst)->content[0] == '\0')	// needs to be fixed...
+		if ((*lst)->size == -2)	// %N we print # printed so far
 		{
 			str = ft_itoa(c);
 			write(fd, str, ft_fstrlen(str));
 			c = ft_fstrlen(str);
 			ret += c;
-			ft_scott_free(&str);
+			ft_scott_free(&str, 0);
+		}
+		else if ((*lst)->size == -3) //%n # printed so far to pointer
+		{
+			int		arb;
+			arb = ft_latoi((*lst)->content, &another);
+			test = (int*)another;
+			*test = c;
 		}
 		else
 		{
-*/	//		printf("[lst cont: |%s|\n]", (*lst)->content);
-
-//			len = ft_fstrlen((*lst)->content);
-//			printf("display size: %d\n", (*lst)->size);
-
+			len += (*lst)->size;
 			write(fd, (*lst)->content, (*lst)->size);
 			c += (*lst)->size;
 			ret += (*lst)->size;
-//		}
+		}
 		tmp = (*lst)->next;
 		free((*lst)->content);
 		free(*lst);

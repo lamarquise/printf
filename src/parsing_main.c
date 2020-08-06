@@ -34,8 +34,8 @@ int			ft_listify_not_spec(int i, int c, char *format, t_pfelem **lst)
 		return (-2);
 	ft_memcpy(str, &format[c], i - c);
 	if (!ft_pflist_append(lst, ft_str_to_elem(str, i - c)))
-		return (ft_scott_free(&str));
-	ft_scott_free(&str);
+		return (ft_scott_free(&str, -1));
+	ft_scott_free(&str, 0);
 	return (1);
 }
 
@@ -51,31 +51,26 @@ int     	ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst)
 	c = 0;
 	m = 0;
 	str = NULL;
-//	printf("hq test 1\n");
 	while (format[i])
 	{
-//		printf("hq loop start test\n");
 		if ((m = ft_findchar(&format[c], '%')) != -1)
 		{
 			i += m;
 			if (m > 0 && !ft_listify_not_spec(i, c, format, lst))
-					return (ft_scott_free(&str));	// does str even exist here?
-			if ((c = ft_spec_parsing(&format[i], ap, &str, &m)) <= -1)	// get rid of -1?
-				return (ft_scott_free(&str));
-			i += c;							// can not use m here, is that a good idea?
+					return (ft_scott_free(&str, -1));	// does str even exist here?
+			if ((c = ft_spec_parsing(&format[i], ap, &str, &m)) <= -1)
+				return (ft_scott_free(&str, -1));
+			i += c;					// can not use m here, is that a good idea?
 
-				// if this fails, free str and pflist
-			if (ft_pflist_append(lst, ft_str_to_elem(str, m)) == -1) // -1 necessary
+				// if this fails, free str and pflist ?
+			if (ft_pflist_append(lst, ft_str_to_elem(str, m)) == -1)
 //			if (ft_pflist_append(lst, NULL) == -1)	// testing error cases.
-				return (ft_scott_free(&str));
+				return (ft_scott_free(&str, -1));
 			c = i;
-//			printf("test1\n");
-//			ft_print_lst(lst);
-			ft_scott_free(&str);
+			ft_scott_free(&str, 0);
 		}
 		else
 			return (ft_listify_not_spec(ft_fstrlen(format), c, format, lst));
 	}
-//	printf("end of hq\n");
 	return (1);		// amount that has been read ???
 }
