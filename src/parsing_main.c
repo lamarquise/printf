@@ -37,22 +37,19 @@ int		ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst) // secure
 	if (!format || !ap || !lst)
 		return (-1);
 	i = 0;
-//	c = 0;				// might be able to get away with no init of c here
 	str = NULL;
 	while (format[i])
-	{							// c = i here ?
+	{
 		if ((m = ft_findchar(&format[i], '%')) != -1)
 		{
-			i += m;							 // c is i - m
+			i += m;
 			if ((m > 0 && ft_listify_not_spec(i, i - m, format, lst) == -1)
 				|| (c = ft_spec_parsing(&format[i], ap, &str, &m)) == -1
 				|| ft_pflist_append(lst, ft_str_to_elem(str, m)) == -1)
 				return (ft_scott_free(&str, -1));
 			i += ft_scott_free(&str, c);
-//			i += c;
-//			c = ft_scott_free(&str, i);
 		}
-		else										// c = i here ?
+		else
 			return (ft_listify_not_spec(ft_fstrlen(format), i, format, lst));
 	}
 	return (1);
