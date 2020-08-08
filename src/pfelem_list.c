@@ -51,13 +51,21 @@ t_pfelem	*ft_str_to_elem(char *str, int size) // secure but ugly
 {
 	t_pfelem	*new;
 	char		*cp;
+	int			num;
 
 //	size = -1;
 	
 	if (!str || size == -1)	// maybe, seems like im making things not 
 		return (NULL);		// generic any more tho...
+
+
+//	printf("str: |%s|, size: %d\n", str, size);
+	num = (size < -1 ? ft_fstrlen(str) : size);
+//	printf("num1: %d\n", num);
+
 //	if (!(cp = (char*)ft_memalloc(sizeof(char) * (size + 1))))
-	if (!(cp = (char*)ft_memalloc(sizeof(char) * ((size < -1 ? 0 : size) + 1))))
+//	if (!(cp = (char*)ft_memalloc(sizeof(char) * ((size < -1 ? 0 : size) + 1))))
+	if (!(cp = (char*)ft_memalloc(sizeof(char) * (num + 1))))
 		return (NULL);		// i hope this works, c'est particulier
 
 //	printf("str to elem test1, str:{%s}\n", str);
@@ -65,7 +73,8 @@ t_pfelem	*ft_str_to_elem(char *str, int size) // secure but ugly
 //	size = -1;		// makes memcpy segfault... regardless of ternaire
 
 //	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, size), size)))
-	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, (size < -1 ? ft_fstrlen(str) : size)), size)))
+//	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, (size < -1 ? ft_fstrlen(str) : size)), size)))
+	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, num), size)))
 //		return (ft_scott_free(&cp, -1) == -1 ? NULL : NULL);
 		return ((t_pfelem*)ft_scott_free(&cp, 0));	// test this shit !!!
 	return (new);
@@ -87,7 +96,6 @@ int			ft_pflist_del_all(t_pfelem **lst)
 		free(*lst);
 		*lst = tmp;
 	}
-	lst = NULL;
 	return (-1);		// correct ret ???
 }
 

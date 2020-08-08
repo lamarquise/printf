@@ -10,10 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-	// needs to be much shorter...
-	// fix %n or is it %N
-
 #include "printf.h"
 
 int		ft_init_param(t_param *p)	// secure
@@ -28,13 +24,9 @@ int		ft_init_param(t_param *p)	// secure
 	return (1);
 }
 
-	// does it even need a return ?
-
-	// in theory m is only -1 if error
-
-int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)
+int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)//secure
 {
-	if (!ap || !str || !p || !m)
+	if (!ap || !str || !p || !m || *m > 13 || *m < 0)
 		return (-1);
 	if (*m <= 2)
 		*m = ft_handle_int(ap, str, p);
@@ -46,29 +38,18 @@ int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)
 		*m = ft_handle_str(ap, str, p);
 	else if (*m == 10)
 		*m = ft_handle_pointer(ap, str, p);
-	else if (*m == 11)	// %N	//prints # char counted
-	{
-		if (ft_nstrdup(str, "") == -1)	// test error case
-			return (-1);
+	else if (*m == 11 && ft_nstrdup(str, "") != -1)
 		*m = -2;
-	}
-	else if (*m == 12)	// %n	// # up to char passed to pointer
-	{
-		if (!(*str = ft_pos_itoa(va_arg(*ap, long))))	// test error case
-			return (-1);
+	else if (*m == 12 && (*str = ft_pos_itoa(va_arg(*ap, unsigned long))))
 		*m = -3;
-	}
 	else if (*m == 13)
 		*m = ft_handle_modulo(str, p);
-	// do i need an else here? as a catch all ?
-	if (*m == -1)
+	else
 		return (-1);
-	return (1);		// don't ret m, no need
+	return (1);
 }
 
-	// You need m to be sent cuz it returns len of str
-
-int		ft_spec_parsing(char *format, va_list *ap, char **str, int *m)
+int		ft_spec_parsing(char *format, va_list *ap, char **str, int *m)//secure
 {
 	int		ret;
 	t_param	p;
@@ -77,17 +58,14 @@ int		ft_spec_parsing(char *format, va_list *ap, char **str, int *m)
 		return (-1);
 	*m = 0;
 	ret = 0;
-	if (ft_init_param(&p) == -1)
-		return (-2);
-	if (format[ret++] != '%')
-		return (-3);
+	if (ft_init_param(&p) == -1 || format[ret++] != '%')
+		return (-1);
 	if ((ret += ft_flag_parsing(&format[ret], &p, ap)) <= -1)
-		return (-4);
+		return (-1);
 	if ((*m = ft_findchar("diBbuoxXcspNn%", format[ret])) < 0)
-		return (-5);
+		return (-1);
 	p.spec = format[ret];
 	if (ft_pick_handler(ap, str, &p, m) == -1)
-		return (-6);
-	return ((*m == -1) ? -7 : 1 + ret);
+		return (-1);
+	return ((*m == -1) ? -1 : 1 + ret);
 }
-

@@ -74,6 +74,11 @@ free if failure...
 
 
 
+So far there is only 1 point of failure that results in a unpatchable leak, if
+pflist del all() fails there are leak, obvi, since it handles the everything at
+the end...
+
+
 
 
 ### Options
@@ -155,6 +160,11 @@ there are no % specs, everything is handed to the listify not spec function.
 m is the size of the thing that was created from the format str and specs/flags
 ret is c is the len of format that was read to get through 1 % thing.
 
+Can't do i += ft spec parsing instead of c = ... and i += c after, cuz the format
+string could be any length, so would have to subtract a really big number, and
+risk a bunch of stuff..
+
+This may be one of the most refined functions i have ever writen....
 
 #### Spec Parsing
 Spec parsing mostly outsources work but it serves as a main switch or junction.
@@ -294,6 +304,11 @@ One quirk of Handle str, because it is supposed to print (null) if it is passed
 NULL, it needs to be able to distinguish between a function fucking up and
 being passed NULL from the get go...
 nstrdup i made handles this, it's not generic but it works and is secure.
+
+Gen Arg Str S():
+Most of the inards were passed of to functions created in gen arg str.c
+
+
 
 #### Handle Char (lives in handle str.c)
 Ok so here is the bit that's really quite tricky. In the even you get a -

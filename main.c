@@ -39,12 +39,13 @@ int		main(int ac, char **av)
 		str = av[1];
 
 
-	ft_printf("my number: |%+7.5d|\n", b);
-	printf("OG number: |%+7.5d|\n", b);
+//	ft_printf("my number: |%+7.5d|\n", b);
+//	printf("OG number: |%+7.5d|\n", b);
 
-//	ft_printf("me: |%N| and another |%N|\n", &a, &b);
+	ft_printf("n: |%n| and another |%n|\n", &a, &b);
+	ft_printf("N: |%N| and another |%N|\n");
 //	printf("the results: a:%d, b:%d\n", a, b);
-//	printf("OG: |%n| and another |%n|\n", &a, &b);
+//	printf("O: |%n| and another |%n|\n", &a, &b);
 //	printf("the results: a:%d, b:%d\n", a, b);
 //	ft_printf("unsigned: |%lu|\n", (long)c);
 //	printf("OG unsigned: |%lu|\n", (long)c);
@@ -66,7 +67,8 @@ int		main(int ac, char **av)
 */
 
 	char	*line = "Hi there";
-	char	let = 'h';
+//	char	let = 'h';
+//	char 	*line2;
 /*	wchar_t	*wct;
 
 	wct = ft_memalloc(sizeof(wchar_t) * 4);
@@ -75,16 +77,29 @@ int		main(int ac, char **av)
 	wct[2] = 'l';
 	wct[3] = '\0';
 */	
+
+//	if (!(line2 = malloc(sizeof(char) * 3)))
+//		return (-1);
+
+//	line2 = ft_strdup("hi again");
+
+//	ft_printf("my test: |%s|\n", line2);
+//	printf("OG test: |%s|\n", line2);
+	
+//	line2 = ft_strdup("hi again again");
+	
+
 	(void)line;
-	(void)let;
+//	(void)let;
 
 //	printf("OG test: a was: %d, |%n|\n", a, &a);
 //	printf("number in int: %d\n", a);
-//	ft_printf("my test: |%.0s|\n", line);
-//	printf("OG test: |%.0s|\n", line);
+	ft_printf("my test: |%s|\n", line);
+//	printf("OG test: |%s|\n", line);
 	
-//	printf("OG test: |% s|\n", NULL);
-//	ft_printf("my test: |%s|\n", NULL);
+//	printf("OG test: |%s|\n", line);
+//	ft_printf("my test: |%N|, a num: %d |%n|\n", a, &a);
+//	ft_printf("num: %d\n", a);
 	
 
 

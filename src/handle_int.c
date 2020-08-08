@@ -145,6 +145,8 @@ char				*ft_gen_arg_str_i(t_param *p, char **str, size_t len, int neg)
 
 //	printf("str:|%s|\n", *str);
 
+	if (!p || !str)
+		return ((char*)ft_scott_free(str, 0));
 	pre = NULL;
 	p->precision = (p->precision <= len ? 0 : p->precision - len);
 	len += (p->flag & F_PLUS ? 1 : 0);

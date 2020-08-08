@@ -127,13 +127,17 @@ int					ft_gen_arg_str_s(t_param *p, char **str, size_t len);
 */
 
 int					ft_add_hash(char **pre, t_param *p);
-int					ft_prec_is_zero(char **str, size_t *len);
 int					ft_h_int_wid(t_param *p, char **pre, char **tmp, int neg);
+int					ft_prec_is_zero(char **str, size_t *len);
+int					ft_h_str_prec(t_param *p, char **str, size_t *len);
+int					ft_h_str_wid(t_param *p, char **str, size_t len);
 
 /*
 **	Display
 */
 
+int					ft_disp_bn(int fd, int c, int *ret);
+int					ft_handle_sn(char *str, int c);
 int					ft_display_del(int fd, t_pfelem **lst);
 
 /*

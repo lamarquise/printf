@@ -45,9 +45,8 @@ int				ft_handle_char(va_list *ap, char **str, t_param *p)	// Secure
 	return (len + wlen + plen);
 }
 
-	// double check the return...
-
-int				ft_handle_str(va_list *ap, char **str, t_param *p)	// Secure except Gen Arg
+	// secure i think but test error cases
+int				ft_handle_str(va_list *ap, char **str, t_param *p)
 {
 	size_t	len;
 
@@ -63,78 +62,18 @@ int				ft_handle_str(va_list *ap, char **str, t_param *p)	// Secure except Gen A
 		p->flag |= (1 << 7);
 		len = 6;
 	}
-
-
-	int a;
-
-	a = ft_gen_arg_str_s(p, str, len);	// secure !!!!!!!!
-
-//	printf("a = %d\n", a);
-
-	return (a);
-//	printf("crusial str: |%s|\n", *str);
-
-//	return (ft_fstrlen(*str));		// not len += n ????
+	return (ft_gen_arg_str_s(p, str, len));
 }
 
-
-	// this whole thing needs mad security...
-
+	// secure i think but test...
 int			ft_gen_arg_str_s(t_param *p, char **str, size_t len)
 {
-	char	c;
-	int		n;	// do i need n ?
-	char	*pre;
-	char	*post;
-
-//	printf("len at start: %zu\n", len);
-	pre = NULL;
-	post = NULL;
-	if (p->flag & F_PREC)
-	{
-		if (p->precision == 0 && ft_prec_is_zero(str, &len) == -1)
-			return (-1);		// scott free str
-		else if ((n = (p->precision < len ? p->precision : 0)) > 0)
-		{
-			pre = ft_substr(*str, 0, n);	// secure
-			ft_scott_free(str, 0);
-			*str = pre;
-			pre = NULL;
-			len = n;
-		}
-		// free things ????
-	}
-//	printf("len in mid: %zu\n", len);
-	n = (p->width <= len ? 0 : p->width - len);
-	c = ' ';
-	if (n)		// double check what happens when n = 0
-	{
-		if (p->flag & F_MINU)
-		{
-//			post = ft_fill_with(c, n);
-			pre = ft_fill_with(c, n);		// is better but i hate it...
-			*str = ft_fstrjoin(str, &pre);	// WHY LIKE THIS !!!!
-			return (len + n);
-//			pre = NULL;
-		}
-		else
-		{
-			if (p->flag & F_ZERO)
-				c = '0';
-			pre = ft_fill_with(c, n);
-		}
-	}
-	else if (p->flag & F_SPAC)
-	{
-		pre = ft_fill_with(c, 1);
-	//	something = ft_cstrjoin(' ', &pre); // and secure...
-		++len;
-	}
-//	printf("len at end: %zu\n", len);
-
-	*str = ft_fstrjoin(str, &post);		// 2 of these is too many
-	*str = ft_fstrjoin(&pre, str);
-
-	return (len + n);
+	if (!p || !str)
+		return (ft_scott_free(str, -1));
+	if (p->flag & F_PREC && ft_h_str_prec(p, str, &len) == -1)
+		return (ft_scott_free(str, -1));
+	if ((len = ft_h_str_wid(p, str, len)) == -1)
+		return (ft_scott_free(str, -1));
+	return (len);
 }
 

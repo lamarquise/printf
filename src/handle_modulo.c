@@ -14,13 +14,11 @@
 
 int		ft_handle_modulo(char **str, t_param *p)
 {
-	char	*add;
 	char	c;
+	char	*add;
 
-	if (!str || !p)
-		return (-1);
 	add = NULL;
-	if (!(*str = ft_fstrdup("%")))
+	if (!str || !p || !(*str = ft_fstrdup("%")))
 		return (-1);
 	if (p->width > 1)
 	{
@@ -29,7 +27,7 @@ int		ft_handle_modulo(char **str, t_param *p)
 		{
 			if (!(add = ft_fill_with(c, p->width - 1))
 				|| !(*str = ft_fstrjoin(str, &add)))
-				return (-1);
+				return (ft_scott_free(str, -1));
 		}
 		else
 		{
@@ -37,7 +35,7 @@ int		ft_handle_modulo(char **str, t_param *p)
 				c = '0';
 			if (!(add = ft_fill_with(c, p->width - 1))
 				|| !(*str = ft_fstrjoin(&add, str)))
-				return (-1);
+				return (ft_scott_free(str, -1));
 		}
 	}
 	return (p->width > 0 ? p->width : 1);

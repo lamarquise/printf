@@ -11,25 +11,6 @@
 /* ************************************************************************** */
 
 #include "printf.h"
-/*
-char	*ft_cprintf(const char *format, ...)
-{
-	int			ret;
-	char		*str;
-	va_list		ap;
-	t_pfelem	*lst;
-
-	str = NULL;
-	lst = NULL;
-	va_start(ap, format);
-	if ((ret = ft_parsing_hq((char*)format, ap, &lst)) == 1)
-		ret = ft_display_del(fd, &lst);	// something else that joins all
-	else								// into ret
-		ft_putnbr(ret);		// for now
-	va_end(ap);
-	return (ret);
-}
-*/
 
 int		ft_fdprintf(int fd, const char *format, ...)
 {
@@ -41,37 +22,34 @@ int		ft_fdprintf(int fd, const char *format, ...)
 	va_start(ap, format);
 	if ((ret = ft_parsing_hq((char*)format, &ap, &lst)) == 1)
 		ret = ft_display_del(fd, &lst);
-	else
-		ft_putnbr(ret);		// for now
+	if (ret == -1)
+		ret = ft_pflist_del_all(&lst);
 	va_end(ap);
 	return (ret);
 }
 
+
+	// secure except pflist_del_all (not sure possible to secure...)
 int		ft_printf(const char *format, ...)
 {
 	int			ret;
 	va_list		ap;
 	t_pfelem	*lst;
 
-//	printf("main test\n");
-	
 	lst = NULL;
 	va_start(ap, format);
+//	if ((ret = ft_parsing_hq((char*)format, &ap, NULL)) == 1)
 	if ((ret = ft_parsing_hq((char*)format, &ap, &lst)) == 1)
-		ret = ft_display_del(1, &lst);
-	else
 	{
-//		ft_putnbr(ret);
-//		ft_putchar('\n');		
-		// FREE EVERYTHING ???? like the list and stuff ????
-		ret = ft_pflist_del_all(&lst);
-		ft_putnbr(ret);					// necessary for testing now cuz
-		ft_putchar('\n');				// no one calls print ret of printf
+//		ret = ft_display_del(1, NULL);
+		ret = ft_display_del(1, &lst);
 	}
-/*	if ((ret = ft_parsing_hq((char*)format, &ap, &lst)) == -1)	// the final version?
-		return (-1);
-	else
-		ret = ft_display_del(1, &lst);	*/
+	if (ret == -1)
+	{
+		write(1, "-1\n", 3);
+//		ret = ft_pflist_del_all(NULL);		// if this fails, we have a leak
+		ret = ft_pflist_del_all(&lst);
+	}
 	va_end(ap);
 	return (ret);
 }

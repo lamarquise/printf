@@ -10,67 +10,50 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// double check securities and frees
-
-// The algorythm: go through format, if find % deal with str before, then deal
-// with %, if no % deal with everything after the most recent %
-
-
 #include "printf.h"
 
-	// Does work but is it the best/most elegant solution ?
-	// might as well use i cuz clear
-	// can i send fewer vars?
-	// return **lst ? maybe...
-
-int			ft_listify_not_spec(int i, int c, char *format, t_pfelem **lst)
+int		ft_listify_not_spec(int i, int c, char *format, t_pfelem **lst)//secure
 {
 	char	*str;
 
 	str = NULL;
-	if (!format)	// check for i - c here ?
-		return (-1);		// good place for an error handling func
-	if (!(str = ft_memalloc(sizeof(char) * (i - c + 1))))
-		return (-2);
-	ft_memcpy(str, &format[c], i - c);
+	if (!format || !lst || c < 0 || c > i)
+		return (-1);
+	if (!(str = ft_substr(format, c, i - c)))
+		return (-1);
 	if (!ft_pflist_append(lst, ft_str_to_elem(str, i - c)))
 		return (ft_scott_free(&str, -1));
 	ft_scott_free(&str, 0);
 	return (1);
 }
 
-	// ideally get rid of str and m...
-int     	ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst)
+int		ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst) // secure
 {
-	int			i;
-	int			c;
-	int			m;
-	char		*str;
+	int		i;
+	int		c;
+	int		m;
+	char	*str;
 
+	if (!format || !ap || !lst)
+		return (-1);
 	i = 0;
-	c = 0;
-	m = 0;
+//	c = 0;				// might be able to get away with no init of c here
 	str = NULL;
 	while (format[i])
-	{
-		if ((m = ft_findchar(&format[c], '%')) != -1)
+	{							// c = i here ?
+		if ((m = ft_findchar(&format[i], '%')) != -1)
 		{
-			i += m;
-			if (m > 0 && !ft_listify_not_spec(i, c, format, lst))
-					return (ft_scott_free(&str, -1));	// does str even exist here?
-			if ((c = ft_spec_parsing(&format[i], ap, &str, &m)) <= -1)
+			i += m;							 // c is i - m
+			if ((m > 0 && ft_listify_not_spec(i, i - m, format, lst) == -1)
+				|| (c = ft_spec_parsing(&format[i], ap, &str, &m)) == -1
+				|| ft_pflist_append(lst, ft_str_to_elem(str, m)) == -1)
 				return (ft_scott_free(&str, -1));
-			i += c;					// can not use m here, is that a good idea?
-
-				// if this fails, free str and pflist ?
-			if (ft_pflist_append(lst, ft_str_to_elem(str, m)) == -1)
-//			if (ft_pflist_append(lst, NULL) == -1)	// testing error cases.
-				return (ft_scott_free(&str, -1));
-			c = i;
-			ft_scott_free(&str, 0);
+			i += ft_scott_free(&str, c);
+//			i += c;
+//			c = ft_scott_free(&str, i);
 		}
-		else
-			return (ft_listify_not_spec(ft_fstrlen(format), c, format, lst));
+		else										// c = i here ?
+			return (ft_listify_not_spec(ft_fstrlen(format), i, format, lst));
 	}
-	return (1);		// amount that has been read ???
+	return (1);
 }

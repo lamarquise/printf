@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int			ft_handle_pointer_prec(char **str, t_param *p, size_t *len)		// Secure
+int			ft_h_point_prec(char **str, t_param *p, size_t *len)		// Secure
 {
 	char	*pre;
 	size_t	plen;
@@ -44,8 +44,8 @@ int			ft_handle_pointer(va_list *ap, char **str, t_param *p)	// Secure
 	if (!(*str = ft_any_base_convert((long)va_arg(*ap, void*), "0123456789abcdef")))
 		return (-1);
 	len = ft_fstrlen(*str);
-	if (ft_handle_pointer_prec(str, p, &len) == -1 || !(pre = ft_fstrdup("0x")) || !(*str = ft_fstrjoin(&pre, str)))	// join free's pre even if error
-		return (-1);
+	if (ft_h_point_prec(str, p, &len) == -1 || !(pre = ft_fstrdup("0x")) || !(*str = ft_fstrjoin(&pre, str)))
+		return (ft_scott_free(str, -1));
 	len = ft_fstrlen(*str);
 	wlen = (p->width <= len ? 0 : p->width - len);	
 	if (wlen)
@@ -54,13 +54,13 @@ int			ft_handle_pointer(va_list *ap, char **str, t_param *p)	// Secure
 		{
 			if (!(pre = ft_fill_with(' ', wlen))
 			|| !(*str = ft_fstrjoin(str, &pre)))
-				return (-1); // join free's pre even if error
+				return (ft_scott_free(str, -1));
 		}
 		else
 		{ 
 			if (!(pre = ft_fill_with(' ', wlen))
 				|| !(*str = ft_fstrjoin(&pre, str)))
-				return (-1); // join free's pre even if error
+				return (ft_scott_free(str, -1));
 		}
 	}
 	return (ft_fstrlen(*str));
