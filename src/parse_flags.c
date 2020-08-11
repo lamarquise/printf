@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int			ft_flag_parsing(char *format, t_param *p, va_list *ap) // secure
+int		ft_flag_parsing(char *format, t_param *p, va_list *ap) // secure
 {
 	int		i;
 	int		prev;
@@ -20,14 +20,13 @@ int			ft_flag_parsing(char *format, t_param *p, va_list *ap) // secure
 
 	if (!format || !p || !ap)
 		return (-8);
-	i = 0;
 	prev = 0;
 	ret = 0;
 	while ((i = ft_findchar("0#+- .123456789*hljz", format[ret])) >= 0)
 	{
-		if ((prev >= 5 && (i < 5 && i > 0)) || (prev >= 16 && i < 16)) // move to bot
-			return (-8);								// if necessary... (# of lines)
-		if (i <= 4 && ++ret) // this is cheap
+		if ((prev >= 5 && (i < 5 && i > 0)) || (prev >= 16 && i < 16))
+			return (-8);
+		if (i <= 4 && ++ret)
 			p->flag |= (1 << i);
 		else if (i == 5)
 			ret += ft_get_precision(&format[ret], p, ap);
@@ -42,10 +41,10 @@ int			ft_flag_parsing(char *format, t_param *p, va_list *ap) // secure
 	return (ret);
 }
 
-int			ft_get_precision(char *format, t_param *p, va_list *ap)	// secure
+int		ft_get_precision(char *format, t_param *p, va_list *ap)	// secure
 {
-	int		psize;	// precision size
-	int		rlen;	// read length
+	int		psize;
+	int		rlen;
 
 	if (!format || !p || !ap)
 		return (-10);
@@ -57,21 +56,20 @@ int			ft_get_precision(char *format, t_param *p, va_list *ap)	// secure
 		psize = va_arg(*ap, int);
 		++rlen;
 	}
-	else if ((rlen += ft_latoi(&format[rlen], (long*)&psize)) <= -1)
+	else if ((rlen += ft_latoi(&format[rlen], (long*)&psize)) < 1)
 		return (-10);
-	if (psize < 0)		// if neg i ignore ???
+	if (psize < 0)
 		psize = 0;
 	else
-		p->flag |= (1 << 5);	
+		p->flag |= (1 << 5);
 	p->precision = psize;
-//	printf("pprec: %zu, rlen:%d, p->flag & PREC: %#x\n", p->precision, rlen, p->flag);
 	return (rlen);
 }
 
-int			ft_get_width(char *format, t_param *p, va_list *ap) // secure
+int		ft_get_width(char *format, t_param *p, va_list *ap) // secure
 {
-	int		wsize;	// width size
-	int		rlen;	// read length
+	int		wsize;
+	int		rlen;
 
 	if (!format || !p || !ap)
 		return (-10);
@@ -83,7 +81,7 @@ int			ft_get_width(char *format, t_param *p, va_list *ap) // secure
 		++rlen;
 	}
 	else if (format[rlen] >= '1' && format[rlen] <= '9'
-			&& (rlen += ft_latoi(&format[rlen], (long*)&wsize)) <= -1) //fine if goes wrong
+			&& (rlen += ft_latoi(&format[rlen], (long*)&wsize)) <= -1)
 		return (-10);
 	if (wsize < 0)
 	{
@@ -91,34 +89,35 @@ int			ft_get_width(char *format, t_param *p, va_list *ap) // secure
 		p->flag |= (1 << 3);
 	}
 	p->width = wsize;
-//	printf("pwidth: %zu, rlen:%d\n", p->width, rlen);
 	p->flag |= (1 << 6);
 	return (rlen);
 }
-	// make so can't have multiple size flags ?
-int			ft_get_size(char *format, t_param *p)	// secure
+
+int		ft_get_size(char *format, t_param *p)	// secure
 {
-	int		ret;
 	int		i;
+	int		ret;
+	int		prev;
 
 	if (!format || !p)
 		return (-10);
 	ret = 0;
+	prev = -1;
 	while ((i = ft_findchar("hlzj", format[ret])) >= 0)
 	{
-		if (i < 2)
+		if (((prev > -1 && (prev != i || i > 2))) || p->size & (i * 6 + 2))
+			return (-10);
+		else if (i < 2)
 		{
 			if (p->size & (i * 3 + 1))
-			{
-				p->size &= (0 << (i * 2));
-				p->size |= (1 << (i * 2 + 1));
-			}
+				p->size <<= 1;
 			else
 				p->size |= ((1 << i * 2));
 		}
 		else
 			p->size |= (1 << (i + 2));
 		++ret;
+		prev = i;
 	}
-	return (ret); 
+	return (ret);
 }

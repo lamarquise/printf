@@ -26,12 +26,39 @@ t_pfelem	*ft_new_pfelem(char *str, int size)//secured by call & ret in ft_str_to
 	return (new);
 }
 
+t_pfelem	*ft_str_to_elem(char *str, int size) // secure
+{
+	t_pfelem	*new;
+	char		*cp;
+	int			num;
+	
+	if (!str)
+		return (NULL);
+	cp = NULL;
+	new = NULL; // necessary ???
+	num = (size < -1 ? ft_fstrlen(str) : size);
+/*	if (!(cp = ft_substr(str, 0, num)))			// doesn't work in exacly 1 case...
+		return (NULL);
+	if (!(new = ft_new_pfelem(cp, size)))
+		return ((t_pfelem*)ft_scott_free(&cp, 0));
+*/
+	if (!(cp = (char*)ft_memalloc(sizeof(char) * (num + 1))))
+		return (NULL);
+	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, num), size)))
+//	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, -2), size)))
+		return ((t_pfelem*)ft_scott_free(&cp, 0));
+
+
+
+	return (new);
+}
+
 int		ft_pflist_append(t_pfelem **lst, t_pfelem *new)	// secure
 {
 	t_pfelem	*tmp;
 
 	if (!lst || !new)
-		return (-1);
+		return (0);
 	if (!(*lst))
 	{
 		*lst = new;
@@ -45,50 +72,12 @@ int		ft_pflist_append(t_pfelem **lst, t_pfelem *new)	// secure
 	return (1);
 }
 
-	// if half way through size = -1, seg fault...
-
-t_pfelem	*ft_str_to_elem(char *str, int size) // secure but ugly
-{
-	t_pfelem	*new;
-	char		*cp;
-	int			num;
-
-//	size = -1;
-	
-	if (!str || size == -1)	// maybe, seems like im making things not 
-		return (NULL);		// generic any more tho...
-
-
-//	printf("str: |%s|, size: %d\n", str, size);
-	num = (size < -1 ? ft_fstrlen(str) : size);
-//	printf("num1: %d\n", num);
-
-//	if (!(cp = (char*)ft_memalloc(sizeof(char) * (size + 1))))
-//	if (!(cp = (char*)ft_memalloc(sizeof(char) * ((size < -1 ? 0 : size) + 1))))
-	if (!(cp = (char*)ft_memalloc(sizeof(char) * (num + 1))))
-		return (NULL);		// i hope this works, c'est particulier
-
-//	printf("str to elem test1, str:{%s}\n", str);
-
-//	size = -1;		// makes memcpy segfault... regardless of ternaire
-
-//	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, size), size)))
-//	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, (size < -1 ? ft_fstrlen(str) : size)), size)))
-	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, num), size)))
-//		return (ft_scott_free(&cp, -1) == -1 ? NULL : NULL);
-		return ((t_pfelem*)ft_scott_free(&cp, 0));	// test this shit !!!
-	return (new);
-}
-
-int			ft_pflist_del_all(t_pfelem **lst)
+int			ft_pflist_del_all(t_pfelem **lst)	// test security
 {
 	t_pfelem	*tmp;
 
 	if (!lst)
-		return (-1);	// make better ???
-	if (!*lst)
 		return (-1);
-	tmp = *lst;
 	while (*lst)
 	{
 		tmp = (*lst)->next;
@@ -96,6 +85,5 @@ int			ft_pflist_del_all(t_pfelem **lst)
 		free(*lst);
 		*lst = tmp;
 	}
-	return (-1);		// correct ret ???
+	return (-1);
 }
-

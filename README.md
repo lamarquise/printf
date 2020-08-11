@@ -72,6 +72,8 @@ So like I call a function, it fails, in the function that called it, i free shit
 Except fstrjoin, cuz that shit frees under normal circumstances so needs to also
 free if failure...
 
+Actually that does not apply for lst (freed at point of creation if error) but that
+might be the only one.
 
 
 So far there is only 1 point of failure that results in a unpatchable leak, if
@@ -166,6 +168,23 @@ risk a bunch of stuff..
 
 This may be one of the most refined functions i have ever writen....
 
+ft list add() exists to facilitate the freeing of the new pfelem in the case of
+error, it breaks up the creation of a new pfelem from str to elem, and the
+transfering of that elem to the lst with append lst.
+
+ft listify not spec():
+Does a little math and securely adds everything that isn't a spec to the pflist.
+Returns -1 because ft printf works better if recieves -1 as error value.
+
+
+In case of Error:
+lst if freed in ft printf(), str is freed in parsing HQ, tmp exists only in listify
+and is freed there, s exist as a proxy for tmp or str and is freed one above,
+so either in listify or HQ depending on where it was called.
+
+
+
+
 #### Spec Parsing
 Spec parsing mostly outsources work but it serves as a main switch or junction.
 First it initialized the param structure type variable, next it calls the flag
@@ -179,6 +198,9 @@ t param p is never malloc'd and nothign in it is either, and it never moves up
 the tree, only down branches, so it doesn't need to be freed, it will die as
 soon as it's instance of parse specs is complete.
 
+Return is -1 if error since ret otherwise represents the number of char read,
+which i think could be 0 ? maybe ?
+
 
 #### Flag Parsing (also includes width, precision and size parsing)
 This may be the most elaborate of the parsing files but it's also the most
@@ -187,10 +209,26 @@ the param structure, and the va arguments list) is passed to the flag parsing
 function. It uses a findchar in a while to loop through the format string until
 it reaches a char that isn't a flag, precision, width or size (in that order).
 
+While in findchar loop, if ret < 1 by end, -1 the whole thing, i think 1 better
+than 0 cuz means hasn't stayed stationary, but only works for first flag, pretty
+much useless later...
+
+
 Precision:
+If using star to pass precision as an argument, if the value is negative it is
+treated as though there is no precision.
+psize is precision size
+rlen is read length
+
+Ok so when theres a . but no number or star, correct behavior is to still
+produce something.
+Thus don't worry about latoi not -1ing the whole thing when there's no number
+passed, incorrect char are handled elsewehere (by findchar in main flag parsing
+func).
 
 
 Width:
+wsize is width size, absolutely necessary to initialize it.
 
 
 Size:
@@ -207,8 +245,7 @@ more straight forward, they are or they aren't. The order and values as shown by
 the defines in the .h explain the factors and other math around i to make it all
 work as intended while not being completly explicit and thus redundant.
 
-Presently, i do not in any way test if multiple sizes have been switched on...
-
+Now secure against multiple flags and too many of a single flag.
 
 
 
@@ -273,6 +310,10 @@ The number comes first then the base...
 If the base is invalide it's like the fuck you need a real base...
 
 
+0x or 0o or 0b or whatever must be counted as part of width but not as a part of the precision...
+
+
+
 Gen Arg Str I():
 Manages most of the setting of the string recovered from va arg list, in accordance
 with the flags and options.
@@ -326,6 +367,30 @@ Is secure once again because of the fill with and fjoin combination.
 
 ### Everything Else
 
+##### Gen Arg Strs
+
+ft add hash():
+Only used by handle int.c Its an if tree for mallocing the correct symboles to
+prepend numbers with in the even they not be base 10 and have the Hash flag.
+
+ft h int wid():
+Handle Int Width(), only used by gen arg str i in handle int.c
+
+
+ft prec is zero():
+Used by handle Str and Pointer, used in the very particular case that there is
+a precision and it is 0, need to create an empty string.
+
+ft h str prec():
+Handle Str Precision(), deals with the precision for gen arg str s in handle str.c
+
+
+ft h str wid():
+Handle Str Width(), deals with the width for gen arg str s in handle str.c
+
+
+
+
 #### Base Conversions
 The three Base Conversion functions are capable of taking a positive number
 as large as an unsigned long long, any base, checking that base and returning
@@ -366,11 +431,15 @@ is added, but there is a new cp for each link, so don't free till printed with
 display.
 A few things added to accomodate the %n and %N specs, bit of a patch, but its
 near the end so it's acceptable.
-
-
-
+Str of HQ sent here to be turned into cp, str is freed in HQ in both error and
+success cases. Cp is only freed in str to elem() in error case, else it is freed
+by pfelem del all() or display del() at very end.
+There is a tiny potencial for it to segfault in the event of num or size being
+equal to -1 starting half way through... Memcpy doesn't handle things so well.
 
 ft pflist del all(): 
+Ok so it cycles through a list freeing the contents and the elems, returns -1
+in all cases, error or success because printf error value is -1.
 
 
 
@@ -402,6 +471,7 @@ option if success.
 return (-8) if error because i do rlen += latoi and since rlen can already
 be > 0, i don't know how much to decrese by to have it be exactly -1, so
 way to big ret and <= -1 if check.
+Made to turn string into a long so can manage addresses/pointers.
 
 
 ft fstrjoin():

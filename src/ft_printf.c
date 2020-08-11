@@ -46,6 +46,7 @@ int		ft_printf(const char *format, ...)
 	}
 	if (ret == -1)
 	{
+//		printf("final error\n");
 		write(1, "-1\n", 3);
 //		ret = ft_pflist_del_all(NULL);		// if this fails, we have a leak
 		ret = ft_pflist_del_all(&lst);

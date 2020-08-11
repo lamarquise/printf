@@ -12,8 +12,6 @@
 
 #include "printf.h"
 
-//only used for handle_int
-
 int		ft_add_hash(char **pre, t_param *p)	// secure ? i think so but test
 {
 	char *mid;
@@ -74,14 +72,13 @@ int		ft_h_int_wid(t_param *p, char **pre, char **str, int neg)
 }
 
 
-// only used for handle str and pointer
 // Seriously Double check that this shit does what i want it to, like leaks and such
 
 int		ft_prec_is_zero(char **str, size_t *len)
 {	// i think secure cuz in theory str doesn't exist yet, but not sure...
 	if (!str || !len)
 		return (-1);	// do we want this ???
-	if (*str)
+	if (*str)			// useful ???
 		free(*str);
 	if (!(*str = ft_fstrdup("")))
 		return (-1);	// free str here ? or above ?

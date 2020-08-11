@@ -38,14 +38,11 @@ char		*ft_pos_itoa(unsigned long long n)	// secure
 	return (ret);
 }
 
-	// testing latoi with long
-
-
 int			ft_latoi(char *str, long *num)	// Secure
 {
 	int		a;
 	int		neg;
-	long	nlen;
+	int		nlen;
 
 	if (!str || !num)
 		return (-8);

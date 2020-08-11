@@ -82,6 +82,7 @@ int					ft_fdprintf(int fd, const char *format, ...);
 
 int					ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst);
 int					ft_listify_not_spec(int i, int c, char *format, t_pfelem **lst);
+int					ft_list_add(t_pfelem **lst, char **s, int len);
 int					ft_spec_parsing(char *format, va_list *ap, char **str, int *m);
 int					ft_pick_handler(va_list *ap, char **str, t_param *p, int *m);
 int					ft_init_param(t_param *p);
@@ -91,13 +92,12 @@ int					ft_get_width(char *format, t_param *p, va_list *ap);
 int					ft_get_size(char *format, t_param *p);
 
 /*
-**	List stuff
+**	PF List stuff
 */
 
-int					ft_print_lst(t_pfelem **lst);
 t_pfelem			*ft_new_pfelem(char *str, int size);
-int					ft_pflist_append(t_pfelem **lst, t_pfelem *new);
 t_pfelem			*ft_str_to_elem(char *str, int size);
+int					ft_pflist_append(t_pfelem **lst, t_pfelem *new);
 int					ft_pflist_del_all(t_pfelem **lst);
 
 /*

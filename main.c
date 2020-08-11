@@ -28,7 +28,7 @@ int		main(int ac, char **av)
 //	llmin = -9223372036854775808;
 	imin = -2147483648;
 	imax = 2147483647;
-	a = 1;
+	a = -7;
 	b = 1234;
 	m = 9384;
 	c = -394859289238473452;
@@ -39,22 +39,27 @@ int		main(int ac, char **av)
 		str = av[1];
 
 
-//	ft_printf("my number: |%+7.5d|\n", b);
-//	printf("OG number: |%+7.5d|\n", b);
+	ft_printf("OK OK my number: |%+7.5d|\n", b);
+//	printf("OG number: |%+7.d|\n", b);
 
-	ft_printf("n: |%n| and another |%n|\n", &a, &b);
-	ft_printf("N: |%N| and another |%N|\n");
+//	ft_printf("my number: |%hd|\n", m);
+//	ft_printf("my number: |%hhd|\n", m);
+
+
 //	printf("the results: a:%d, b:%d\n", a, b);
 //	printf("O: |%n| and another |%n|\n", &a, &b);
 //	printf("the results: a:%d, b:%d\n", a, b);
 //	ft_printf("unsigned: |%lu|\n", (long)c);
 //	printf("OG unsigned: |%lu|\n", (long)c);
 
-
 /*
+	ft_printf("n: |%n| and another |%n|\n", &a, &b);
+	ft_printf("N: |%N| and another |%N|\n");
+	ft_printf("my nums: |%#8.5x|\n", b);
+	printf("OG nums: |%#8.5x|\n", b);
+
 	ft_printf("not sure what this is: |%b|\n", a);
 	ft_printf("no idea what this is: |%B|\n", a, "ab");
-
 
 	ft_printf("reg: |%d|\n", a);		
 	ft_printf("hex: |%x|\n", a);
@@ -94,7 +99,7 @@ int		main(int ac, char **av)
 
 //	printf("OG test: a was: %d, |%n|\n", a, &a);
 //	printf("number in int: %d\n", a);
-	ft_printf("my test: |%s|\n", line);
+//	ft_printf("my test: |%s|\n", line);
 //	printf("OG test: |%s|\n", line);
 	
 //	printf("OG test: |%s|\n", line);

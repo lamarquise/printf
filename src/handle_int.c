@@ -149,7 +149,7 @@ char				*ft_gen_arg_str_i(t_param *p, char **str, size_t len, int neg)
 		return ((char*)ft_scott_free(str, 0));
 	pre = NULL;
 	p->precision = (p->precision <= len ? 0 : p->precision - len);
-	len += (p->flag & F_PLUS ? 1 : 0);
+	len += (p->flag & F_PLUS ? 1 : 0) + (p->flag & F_HASH);
 	p->width = (p->width <= len ? 0 : p->width - len);
 	if (p->precision && !(pre = ft_fill_with('0', p->precision)))
 		return ((char*)ft_scott_free(str, 0));

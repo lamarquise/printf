@@ -12,18 +12,41 @@
 
 #include "printf.h"
 
+int		ft_list_add(t_pfelem **lst, char **s, int len)
+{
+	t_pfelem	*new;
+
+	new = NULL;
+	if (!lst || !s)
+		return (0);
+	if (!(new = ft_str_to_elem(*s, len)))
+		return (0);
+	if (!ft_pflist_append(lst, new))	// was lst, new
+	{
+//		printf("listify test\n");
+		free(new->content);
+		free(new);
+		return (0);
+	}
+	return (1);
+}
+
+	// ret is -1 cuz works better for ft_printf.c
+
 int		ft_listify_not_spec(int i, int c, char *format, t_pfelem **lst)//secure
 {
-	char	*str;
+	char		*tmp;
+	t_pfelem	*new;
 
-	str = NULL;
+	tmp = NULL;
+	new = NULL;
 	if (!format || !lst || c < 0 || c > i)
 		return (-1);
-	if (!(str = ft_substr(format, c, i - c)))
+	if (!(tmp = ft_substr(format, c, i - c)))
 		return (-1);
-	if (!ft_pflist_append(lst, ft_str_to_elem(str, i - c)))
-		return (ft_scott_free(&str, -1));
-	ft_scott_free(&str, 0);
+	if (!ft_list_add(lst, &tmp, i - c))
+		return (ft_scott_free(&tmp, -1));
+	ft_scott_free(&tmp, 0);
 	return (1);
 }
 
@@ -45,7 +68,7 @@ int		ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst) // secure
 			i += m;
 			if ((m > 0 && ft_listify_not_spec(i, i - m, format, lst) == -1)
 				|| (c = ft_spec_parsing(&format[i], ap, &str, &m)) == -1
-				|| ft_pflist_append(lst, ft_str_to_elem(str, m)) == -1)
+				|| !ft_list_add(lst, &str, m))
 				return (ft_scott_free(&str, -1));
 			i += ft_scott_free(&str, c);
 		}
