@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_handle_modulo(char **str, t_param *p)	// secure as it's gonna be
+int		ft_handle_modulo(char **str, t_param *p)
 {
 	char	c;
 	char	*add;

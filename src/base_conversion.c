@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int			ft_base_check(char *base)	// Secure
+int			ft_base_check(char *base)
 {
 	int		i;
 	int		ret;
@@ -36,7 +36,7 @@ int			ft_base_check(char *base)	// Secure
 	return (ret > 1 ? ret : -1);
 }
 
-char		*ft_to_base(unsigned long long nb, char *base)	// Secure :)
+char		*ft_to_base(unsigned long long nb, char *base)
 {
 	int		pos;
 	int		size;

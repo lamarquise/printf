@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_disp_bn(int fd, int c, int *ret)	// secure
+int		ft_disp_bn(int fd, int c, int *ret)
 {
 	char	*str;
 
@@ -25,7 +25,7 @@ int		ft_disp_bn(int fd, int c, int *ret)	// secure
 	return (1);
 }
 
-int		ft_handle_sn(char *str, int c)	// secure i think...
+int		ft_handle_sn(char *str, int c)
 {
 	long	n;
 	int		*num;
@@ -37,7 +37,7 @@ int		ft_handle_sn(char *str, int c)	// secure i think...
 	return (1);
 }
 
-int		ft_display_del(int fd, t_pfelem **lst)	// secure
+int		ft_display_del(int fd, t_pfelem **lst)
 {
 	int			c;
 	int			ret;

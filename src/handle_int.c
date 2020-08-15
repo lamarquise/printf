@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_cast_d(va_list *ap, t_param *p, long long *num, int *neg)//secure
+int		ft_cast_d(va_list *ap, t_param *p, long long *num, int *neg)
 {
 	if (!ap || !p || !num || !neg)
 		return (0);
@@ -36,7 +36,7 @@ int		ft_cast_d(va_list *ap, t_param *p, long long *num, int *neg)//secure
 	return (1);
 }
 
-int		ft_cast_u(va_list *ap, t_param *p, unsigned long long *num)	// secure
+int		ft_cast_u(va_list *ap, t_param *p, unsigned long long *num)
 {
 	if (!ap || !p || !num)
 		return (0);
@@ -57,7 +57,7 @@ int		ft_cast_u(va_list *ap, t_param *p, unsigned long long *num)	// secure
 	return (1);
 }
 
-int		ft_handle_uint(va_list *ap, char **str, t_param *p)		// secure
+int		ft_handle_uint(va_list *ap, char **str, t_param *p)
 {
 	unsigned long long	n;
 
@@ -86,7 +86,7 @@ int		ft_handle_uint(va_list *ap, char **str, t_param *p)		// secure
 	return (ft_nstrlen(*str, -1));
 }
 
-int		ft_handle_int(va_list *ap, char **str, t_param *p)	// secure
+int		ft_handle_int(va_list *ap, char **str, t_param *p)
 {
 	char		*base;
 	long long	n;
@@ -112,7 +112,7 @@ int		ft_handle_int(va_list *ap, char **str, t_param *p)	// secure
 	return (ft_nstrlen(*str, -1));
 }
 
-int		ft_gen_arg_str_i(t_param *p, char **str, int len, int neg)//secure
+int		ft_gen_arg_str_i(t_param *p, char **str, int len, int neg)
 {
 	char	*pre;
 

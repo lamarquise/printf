@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_list_add(t_pfelem **lst, char **s, int len)	// secure
+int		ft_list_add(t_pfelem **lst, char **s, int len)
 {
 	t_pfelem	*new;
 
@@ -30,7 +30,7 @@ int		ft_list_add(t_pfelem **lst, char **s, int len)	// secure
 	return (1);
 }
 
-int		ft_listify_not_spec(int i, int c, char *format, t_pfelem **lst)//secure
+int		ft_listify_not_spec(int i, int c, char *format, t_pfelem **lst)
 {
 	char		*tmp;
 	t_pfelem	*new;
@@ -47,7 +47,7 @@ int		ft_listify_not_spec(int i, int c, char *format, t_pfelem **lst)//secure
 	return (1);
 }
 
-int		ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst) // secure
+int		ft_parsing_hq(char *format, va_list *ap, t_pfelem **lst)
 {
 	int		i;
 	int		c;

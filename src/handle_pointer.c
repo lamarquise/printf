@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int			ft_h_point_prec(char **str, t_param *p, int *len)		// Secure
+int			ft_h_point_prec(char **str, t_param *p, int *len)
 {
 	char	*pre;
 	size_t	plen;
@@ -32,7 +32,7 @@ int			ft_h_point_prec(char **str, t_param *p, int *len)		// Secure
 	return (1);
 }
 
-int			ft_h_point_wid(t_param *p, char **pre, char **str)	// secure
+int			ft_h_point_wid(t_param *p, char **pre, char **str)
 {
 	if (!p || !pre || !str)
 		return (0);
@@ -51,7 +51,7 @@ int			ft_h_point_wid(t_param *p, char **pre, char **str)	// secure
 	return (1);
 }
 
-int			ft_handle_pointer(va_list *ap, char **str, t_param *p)	// Secure
+int			ft_handle_pointer(va_list *ap, char **str, t_param *p)
 {
 	char	*pre;
 	int		len;

@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-t_pfelem	*ft_new_pfelem(char *str, int size)	//secure
+t_pfelem	*ft_new_pfelem(char *str, int size)
 {
 	t_pfelem	*new;
 
@@ -26,7 +26,7 @@ t_pfelem	*ft_new_pfelem(char *str, int size)	//secure
 	return (new);
 }
 
-t_pfelem	*ft_str_to_elem(char *str, int size) // secure
+t_pfelem	*ft_str_to_elem(char *str, int size)
 {
 	t_pfelem	*new;
 	char		*cp;
@@ -46,7 +46,7 @@ t_pfelem	*ft_str_to_elem(char *str, int size) // secure
 	return (new);
 }
 
-int			ft_pflist_append(t_pfelem **lst, t_pfelem *new)	// secure
+int			ft_pflist_append(t_pfelem **lst, t_pfelem *new)
 {
 	t_pfelem	*tmp;
 
@@ -65,7 +65,7 @@ int			ft_pflist_append(t_pfelem **lst, t_pfelem *new)	// secure
 	return (1);
 }
 
-int			ft_pflist_del_all(t_pfelem **lst)	// secure
+int			ft_pflist_del_all(t_pfelem **lst)
 {
 	t_pfelem	*tmp;
 

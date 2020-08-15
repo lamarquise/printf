@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_fstrlen(const char *s)	// secure
+int		ft_fstrlen(const char *s)
 {
 	int		a;
 
@@ -37,7 +37,7 @@ int		ft_nstrlen(char *s, int ret)
 	return (a);
 }
 
-long	ft_scott_free(char **str, int ret)	// Secure
+long	ft_scott_free(char **str, int ret)
 {
 	if (str && *str)
 	{
@@ -48,7 +48,7 @@ long	ft_scott_free(char **str, int ret)	// Secure
 	return (ret);
 }
 
-char	*ft_fstrdup(char *str)	// secure.
+char	*ft_fstrdup(char *str)
 {
 	char	*ret;
 	int		a;
@@ -69,7 +69,7 @@ char	*ft_fstrdup(char *str)	// secure.
 	return (ret);
 }
 
-int		ft_nstrdup(char **cp, char *og)		// secure
+int		ft_nstrdup(char **cp, char *og)
 {
 	int		a;
 

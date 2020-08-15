@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-char	*ft_pos_itoa(unsigned long long n)	// secure
+char	*ft_pos_itoa(unsigned long long n)
 {
 	unsigned long long	nb;
 	char				*ret;
@@ -38,7 +38,7 @@ char	*ft_pos_itoa(unsigned long long n)	// secure
 	return (ret);
 }
 
-int		ft_latoi(char *str, long *num)	// Secure
+int		ft_latoi(char *str, long *num)
 {
 	int	a;
 	int	neg;
@@ -67,7 +67,7 @@ int		ft_latoi(char *str, long *num)	// Secure
 	return (nlen);
 }
 
-char	*ft_fstrjoin(char **s1, char **s2)	// Secure
+char	*ft_fstrjoin(char **s1, char **s2)
 {
 	int		a;
 	int		b;
@@ -91,7 +91,7 @@ char	*ft_fstrjoin(char **s1, char **s2)	// Secure
 	return (ret);
 }
 
-char	*ft_cstrjoin(char c, char **s2)	// Secure
+char	*ft_cstrjoin(char c, char **s2)
 {
 	int		a;
 	int		b;
@@ -111,7 +111,7 @@ char	*ft_cstrjoin(char c, char **s2)	// Secure
 	return (ret);
 }
 
-char	*ft_fill_with(char this, int len)	// secure
+char	*ft_fill_with(char this, int len)
 {
 	char	*ret;
 	int		i;

@@ -78,7 +78,7 @@ fclean: clean
 
 re: fclean all
 
-
+bonus: all
 
 new: $(OBJS) $(NEWOBJS) $(LIBFT) $(IDIR)
 	cp $(LIBFT) $@
@@ -89,8 +89,6 @@ old: $(OBJS) $(OLDOBJS) $(LIBFT) $(IDIR)
 	cp $(LIBFT) $@
 	ar rsc $@ $(OBJS) $(OLDOBJS)
 	printf "$(_GREEN)\r\33[2K\r$(NAME) created  😎\n$(_END)"
-
-
 
 test: all
 	gcc $(CFLAGS) -L. -lftprintf ./main.c -o test
@@ -116,7 +114,7 @@ otest: old
 	gcc $(CFLAGS) -L. -lftprintf ./main.c -o test
 	echo "$(_CYAN)Test ready  😬$(_END)"
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus new old test tests testl tclean ntest otest
 
 ##################
 ##    COLORS    ##

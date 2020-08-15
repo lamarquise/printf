@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_add_hash(char **pre, t_param *p)	// secure
+int		ft_add_hash(char **pre, t_param *p)
 {
 	char *mid;
 
@@ -32,7 +32,7 @@ int		ft_add_hash(char **pre, t_param *p)	// secure
 	return (1);
 }
 
-int		ft_h_int_space(t_param *p, char **pre)	// secure but don't love
+int		ft_h_int_space(t_param *p, char **pre)
 {
 	if (!p || !pre)
 		return (0);
@@ -43,7 +43,7 @@ int		ft_h_int_space(t_param *p, char **pre)	// secure but don't love
 	return (1);
 }
 
-int		ft_h_int_wid(t_param *p, char **pre, char **str, int neg)	// secure
+int		ft_h_int_wid(t_param *p, char **pre, char **str, int neg)
 {
 	char	c;
 	char	*post;
@@ -72,7 +72,7 @@ int		ft_h_int_wid(t_param *p, char **pre, char **str, int neg)	// secure
 	return (ft_h_int_space(p, pre));
 }
 
-int		ft_prec_is_zero(char **str, int *len)	// secure
+int		ft_prec_is_zero(char **str, int *len)
 {
 	if (!str || !len)
 		return (0);
@@ -83,7 +83,7 @@ int		ft_prec_is_zero(char **str, int *len)	// secure
 	return (1);
 }
 
-int		ft_h_str_prec(t_param *p, char **str, int *len)	// secure
+int		ft_h_str_prec(t_param *p, char **str, int *len)
 {
 	int		n;
 	char	*pre;

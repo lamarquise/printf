@@ -134,8 +134,10 @@ X: Uppercase unsigned hexadecimal integer, subject to size modifications.
 c: Single Character.
 s: String of Characters.
 p: Pointer address.
-N: Prints the number of chars written at the point it is called since the last %N call.
-n: Stores number of characters written at the integer addess passed as arg. (the real one)
+N: Prints the number of chars written at the point it is called since the
+last %N call.
+n: Stores number of characters written at the integer addess passed as arg.
+(the real one)
 %: Writes a single % modulo.
 
 #### Flags
@@ -427,6 +429,8 @@ flag, but it gets overriden by '-' flag.
 Space is not a valid flag, it has no effect, left untreated. Width can be any size.
 Is secure once again because of the fill with and fjoin combination.
 Frees are a bit insanely overlly redundant, but id rather that than leaks...
+Security is questionable, have str = ... if that thing fails, str leaks...
+
 
 
 ### Everything Else
@@ -575,6 +579,7 @@ A short cut function, it takes a str and bzero, free and sets it to NULL.
 Policy regarding Scott Free is ret -1 if an int, 0 if not checked or needs
 to be NULL cuz char star.
 Need to cast in the return if using it to spoof a NULL.
+The Return is a long in the event it needs to be cast as a pointer.
 
 ft fstrdup():
 A secure version of strdup.

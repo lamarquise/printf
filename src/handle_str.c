@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_handle_char(va_list *ap, char **str, t_param *p)	// Secure
+int		ft_handle_char(va_list *ap, char **str, t_param *p)
 {
 	int		len;
 	int		plen;
@@ -41,7 +41,7 @@ int		ft_handle_char(va_list *ap, char **str, t_param *p)	// Secure
 	return (len + wlen + plen);
 }
 
-int		ft_handle_str(va_list *ap, char **str, t_param *p)	// secure
+int		ft_handle_str(va_list *ap, char **str, t_param *p)
 {
 	int		len;
 
@@ -61,7 +61,7 @@ int		ft_handle_str(va_list *ap, char **str, t_param *p)	// secure
 	return (len);
 }
 
-int		ft_str_has_wid(t_param *p, char **pre, char **str)	// secure
+int		ft_str_has_wid(t_param *p, char **pre, char **str)
 {
 	char	c;
 
@@ -82,7 +82,7 @@ int		ft_str_has_wid(t_param *p, char **pre, char **str)	// secure
 	return (1);
 }
 
-int		ft_h_str_wid(t_param *p, char **str, int *len)	// secure
+int		ft_h_str_wid(t_param *p, char **str, int *len)
 {
 	char	*pre;
 
@@ -106,7 +106,7 @@ int		ft_h_str_wid(t_param *p, char **str, int *len)	// secure
 	return (1);
 }
 
-int		ft_gen_arg_str_s(t_param *p, char **str, int *len)	// secure
+int		ft_gen_arg_str_s(t_param *p, char **str, int *len)
 {
 	if (!p || !str)
 		return (0);

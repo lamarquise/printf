@@ -12,10 +12,10 @@
 
 #include "printf.h"
 
-int		ft_init_param(t_param *p)	// secure
+int		ft_init_param(t_param *p)
 {
 	if (!p)
-		return (-1);
+		return (0);
 	p->flag = 0;
 	p->width = 0;
 	p->precision = 0;
@@ -24,10 +24,10 @@ int		ft_init_param(t_param *p)	// secure
 	return (1);
 }
 
-int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)//secure
+int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)
 {
 	if (!ap || !str || !p || !m || *m > 13 || *m < 0)
-		return (-1);
+		return (0);
 	if (*m <= 2)
 		*m = ft_handle_int(ap, str, p);
 	else if (*m <= 7)
@@ -45,11 +45,11 @@ int		ft_pick_handler(va_list *ap, char **str, t_param *p, int *m)//secure
 	else if (*m == 13)
 		*m = ft_handle_modulo(str, p);
 	else
-		return (-1);
+		return (0);
 	return (1);
 }
 
-int		ft_spec_parsing(char *format, va_list *ap, char **str, int *m)//secure
+int		ft_spec_parsing(char *format, va_list *ap, char **str, int *m)
 {
 	int		ret;
 	t_param	p;
@@ -58,14 +58,14 @@ int		ft_spec_parsing(char *format, va_list *ap, char **str, int *m)//secure
 		return (-1);
 	*m = 0;
 	ret = 0;
-	if (ft_init_param(&p) == -1 || format[ret++] != '%')
+	if (!ft_init_param(&p) || format[ret++] != '%')
 		return (-1);
 	if ((ret += ft_flag_parsing(&format[ret], &p, ap)) <= -1)
 		return (-1);
 	if ((*m = ft_findchar("diBbuoxXcspNn%", format[ret])) < 0)
 		return (-1);
 	p.spec = format[ret];
-	if (ft_pick_handler(ap, str, &p, m) == -1)
+	if (!ft_pick_handler(ap, str, &p, m))
 		return (-1);
 	return ((*m == -1) ? -1 : 1 + ret);
 }

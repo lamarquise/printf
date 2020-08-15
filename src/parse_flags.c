@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_flag_parsing(char *format, t_param *p, va_list *ap) // secure
+int		ft_flag_parsing(char *format, t_param *p, va_list *ap)
 {
 	int		i;
 	int		prev;
@@ -41,23 +41,23 @@ int		ft_flag_parsing(char *format, t_param *p, va_list *ap) // secure
 	return (ret);
 }
 
-int		ft_get_precision(char *format, t_param *p, va_list *ap)	// secure
+int		ft_get_precision(char *format, t_param *p, va_list *ap)
 {
 	int		psize;
 	int		rlen;
 
 	if (!format || !p || !ap)
-		return (-10);
+		return (-20);
 	rlen = 0;
 	if (format[rlen++] != '.')
-		return (-10);
+		return (-20);
 	if (format[rlen] == '*')
 	{
 		psize = va_arg(*ap, int);
 		++rlen;
 	}
 	else if ((rlen += ft_latoi(&format[rlen], (long*)&psize)) < 1)
-		return (-10);
+		return (-20);
 	if (psize < 0)
 		psize = 0;
 	else
@@ -66,13 +66,13 @@ int		ft_get_precision(char *format, t_param *p, va_list *ap)	// secure
 	return (rlen);
 }
 
-int		ft_get_width(char *format, t_param *p, va_list *ap) // secure
+int		ft_get_width(char *format, t_param *p, va_list *ap)
 {
 	int		wsize;
 	int		rlen;
 
 	if (!format || !p || !ap)
-		return (-10);
+		return (-20);
 	rlen = 0;
 	wsize = 0;
 	if (format[rlen] == '*')
@@ -82,7 +82,7 @@ int		ft_get_width(char *format, t_param *p, va_list *ap) // secure
 	}
 	else if (format[rlen] >= '1' && format[rlen] <= '9'
 			&& (rlen += ft_latoi(&format[rlen], (long*)&wsize)) <= -1)
-		return (-10);
+		return (-20);
 	if (wsize < 0)
 	{
 		wsize = -wsize;
@@ -93,20 +93,20 @@ int		ft_get_width(char *format, t_param *p, va_list *ap) // secure
 	return (rlen);
 }
 
-int		ft_get_size(char *format, t_param *p)	// secure
+int		ft_get_size(char *format, t_param *p)
 {
 	int		i;
 	int		ret;
 	int		prev;
 
 	if (!format || !p)
-		return (-10);
+		return (-20);
 	ret = 0;
 	prev = -1;
 	while ((i = ft_findchar("hlzj", format[ret])) >= 0)
 	{
 		if (((prev > -1 && (prev != i || i > 2))) || p->size & (i * 6 + 2))
-			return (-10);
+			return (-20);
 		else if (i < 2)
 		{
 			if (p->size & (i * 3 + 1))
