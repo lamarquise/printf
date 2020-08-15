@@ -10,17 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-	// needs to be shorter. more concise ?
-	// double check the return for str, and char why not
-
-
 #include "printf.h"
 
-int				ft_handle_char(va_list *ap, char **str, t_param *p)	// Secure
+int		ft_handle_char(va_list *ap, char **str, t_param *p)	// Secure
 {
-	size_t	len;
-	size_t	plen;
-	size_t	wlen;
+	int		len;
+	int		plen;
+	int		wlen;
 
 	if (!ap || !str || !p)
 		return (-1);
@@ -45,35 +41,78 @@ int				ft_handle_char(va_list *ap, char **str, t_param *p)	// Secure
 	return (len + wlen + plen);
 }
 
-	// secure i think but test error cases
-int				ft_handle_str(va_list *ap, char **str, t_param *p)
+int		ft_handle_str(va_list *ap, char **str, t_param *p)	// secure
 {
-	size_t	len;
+	int		len;
 
 	if (!ap || !str || !p)
 		return (-1);
-	if (ft_nstrdup(str, va_arg(*ap, char*)) == -1)
-		return (-1);		// scott_free str ? just in case
-	len = ft_fstrlen(*str);		// shouldn't exist but what if it does...
+	if (!ft_nstrdup(str, va_arg(*ap, char*)))
+		return (-1);
 	if (!*str)
 	{
 		if (!(*str = ft_fstrdup("(null)")))
 			return (-1);
 		p->flag |= (1 << 7);
-		len = 6;
 	}
-	return (ft_gen_arg_str_s(p, str, len));
-}
-
-	// secure i think but test...
-int			ft_gen_arg_str_s(t_param *p, char **str, size_t len)
-{
-	if (!p || !str)
-		return (ft_scott_free(str, -1));
-	if (p->flag & F_PREC && ft_h_str_prec(p, str, &len) == -1)
-		return (ft_scott_free(str, -1));
-	if ((len = ft_h_str_wid(p, str, len)) == -1)
+	len = ft_fstrlen(*str);
+	if (!ft_gen_arg_str_s(p, str, &len))
 		return (ft_scott_free(str, -1));
 	return (len);
 }
 
+int		ft_str_has_wid(t_param *p, char **pre, char **str)	// secure
+{
+	char	c;
+
+	if (!p || !pre || !str)
+		return (0);
+	c = ' ';
+	if (!(p->flag & F_MINU))
+	{
+		if (p->flag & F_ZERO)
+			c = '0';
+		if (!(*pre = ft_fill_with(c, p->width))
+			|| !(*str = ft_fstrjoin(pre, str)))
+			return (0);
+	}
+	else if (!(*pre = ft_fill_with(c, p->width))
+			|| !(*str = ft_fstrjoin(str, pre)))
+		return (0);
+	return (1);
+}
+
+int		ft_h_str_wid(t_param *p, char **str, int *len)	// secure
+{
+	char	*pre;
+
+	if (!p || !str || !len)
+		return (0);
+	pre = NULL;
+	p->width = (p->width <= *len ? 0 : p->width - *len);
+	if (p->width)
+	{
+		if (!ft_str_has_wid(p, &pre, str))
+			return (ft_scott_free(&pre, 0));
+	}
+	else if (p->flag & F_SPAC)
+	{
+		if (!(pre = ft_cstrjoin(' ', &pre))
+			|| (*str = ft_fstrjoin(&pre, str)))
+			return (ft_scott_free(&pre, 0));
+		++*len;
+	}
+	*len += p->width;
+	return (1);
+}
+
+int		ft_gen_arg_str_s(t_param *p, char **str, int *len)	// secure
+{
+	if (!p || !str)
+		return (0);
+	if (p->flag & F_PREC && !ft_h_str_prec(p, str, len))
+		return (0);
+	if (!ft_h_str_wid(p, str, len))
+		return (0);
+	return (1);
+}

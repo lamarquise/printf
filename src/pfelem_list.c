@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-t_pfelem	*ft_new_pfelem(char *str, int size)//secured by call & ret in ft_str_to_elem
+t_pfelem	*ft_new_pfelem(char *str, int size)	//secure
 {
 	t_pfelem	*new;
 
@@ -31,29 +31,22 @@ t_pfelem	*ft_str_to_elem(char *str, int size) // secure
 	t_pfelem	*new;
 	char		*cp;
 	int			num;
-	
+
 	if (!str)
 		return (NULL);
 	cp = NULL;
-	new = NULL; // necessary ???
+	new = NULL;
 	num = (size < -1 ? ft_fstrlen(str) : size);
-/*	if (!(cp = ft_substr(str, 0, num)))			// doesn't work in exacly 1 case...
-		return (NULL);
-	if (!(new = ft_new_pfelem(cp, size)))
-		return ((t_pfelem*)ft_scott_free(&cp, 0));
-*/
 	if (!(cp = (char*)ft_memalloc(sizeof(char) * (num + 1))))
 		return (NULL);
-	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, num), size)))
-//	if (!(new = ft_new_pfelem(ft_memcpy(cp, str, -2), size)))
+	if (!ft_memcpy(cp, str, num))
 		return ((t_pfelem*)ft_scott_free(&cp, 0));
-
-
-
+	if (!(new = ft_new_pfelem(cp, size)))
+		return ((t_pfelem*)ft_scott_free(&cp, 0));
 	return (new);
 }
 
-int		ft_pflist_append(t_pfelem **lst, t_pfelem *new)	// secure
+int			ft_pflist_append(t_pfelem **lst, t_pfelem *new)	// secure
 {
 	t_pfelem	*tmp;
 
@@ -72,7 +65,7 @@ int		ft_pflist_append(t_pfelem **lst, t_pfelem *new)	// secure
 	return (1);
 }
 
-int			ft_pflist_del_all(t_pfelem **lst)	// test security
+int			ft_pflist_del_all(t_pfelem **lst)	// secure
 {
 	t_pfelem	*tmp;
 

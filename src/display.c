@@ -12,9 +12,9 @@
 
 #include "printf.h"
 
-int		ft_disp_bn(int fd, int c, int *ret)
+int		ft_disp_bn(int fd, int c, int *ret)	// secure
 {
-	char *str;
+	char	*str;
 
 	if (!ret || !(str = ft_itoa(c)))
 		return (-1);
@@ -25,21 +25,19 @@ int		ft_disp_bn(int fd, int c, int *ret)
 	return (1);
 }
 
-int		ft_handle_sn(char *str, int c)
+int		ft_handle_sn(char *str, int c)	// secure i think...
 {
 	long	n;
 	int		*num;
-	
+
 	if (!str || ft_latoi(str, &n) == -8)
-		return (-1);
+		return (0);
 	num = (int*)n;
 	*num = c;
 	return (1);
 }
 
-	// no idea what to do in case of error...
-
-int		ft_display_del(int fd, t_pfelem **lst)
+int		ft_display_del(int fd, t_pfelem **lst)	// secure
 {
 	int			c;
 	int			ret;
@@ -51,15 +49,14 @@ int		ft_display_del(int fd, t_pfelem **lst)
 		return (-1);
 	while (*lst)
 	{
-		if ((*lst)->size > 0)	// > 0 ??? or >= 0 ...
+		if ((*lst)->size > 0)
 		{
 			write(fd, (*lst)->content, (*lst)->size);
 			c += (*lst)->size;
 			ret += (*lst)->size;
 		}
-		else if ((*lst)->size == -2 && (c = ft_disp_bn(fd, c, &ret)) == -1)
-				return (-1);
-		else if ((*lst)->size == -3 && ft_handle_sn((*lst)->content, c) == -1)
+		else if (((*lst)->size == -2 && (c = ft_disp_bn(fd, c, &ret)) == -1)
+				|| ((*lst)->size == -3 && !ft_handle_sn((*lst)->content, c)))
 			return (-1);
 		tmp = (*lst)->next;
 		free((*lst)->content);

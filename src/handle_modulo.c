@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_handle_modulo(char **str, t_param *p)
+int		ft_handle_modulo(char **str, t_param *p)	// secure as it's gonna be
 {
 	char	c;
 	char	*add;
@@ -27,7 +27,7 @@ int		ft_handle_modulo(char **str, t_param *p)
 		{
 			if (!(add = ft_fill_with(c, p->width - 1))
 				|| !(*str = ft_fstrjoin(str, &add)))
-				return (ft_scott_free(str, -1));
+				return (ft_scott_free(&add, -1));
 		}
 		else
 		{
@@ -35,7 +35,7 @@ int		ft_handle_modulo(char **str, t_param *p)
 				c = '0';
 			if (!(add = ft_fill_with(c, p->width - 1))
 				|| !(*str = ft_fstrjoin(&add, str)))
-				return (ft_scott_free(str, -1));
+				return (ft_scott_free(&add, -1));
 		}
 	}
 	return (p->width > 0 ? p->width : 1);

@@ -36,7 +36,7 @@ int			ft_base_check(char *base)	// Secure
 	return (ret > 1 ? ret : -1);
 }
 
-char		*ft_any_base_convert(unsigned long long nb, char *base)	// Secure :)
+char		*ft_to_base(unsigned long long nb, char *base)	// Secure :)
 {
 	int		pos;
 	int		size;

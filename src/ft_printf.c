@@ -18,6 +18,8 @@ int		ft_fdprintf(int fd, const char *format, ...)
 	va_list		ap;
 	t_pfelem	*lst;
 
+	if (!format)
+		return (-1);
 	lst = NULL;
 	va_start(ap, format);
 	if ((ret = ft_parsing_hq((char*)format, &ap, &lst)) == 1)
@@ -28,29 +30,20 @@ int		ft_fdprintf(int fd, const char *format, ...)
 	return (ret);
 }
 
-
-	// secure except pflist_del_all (not sure possible to secure...)
 int		ft_printf(const char *format, ...)
 {
 	int			ret;
 	va_list		ap;
 	t_pfelem	*lst;
 
+	if (!format)
+		return (-1);
 	lst = NULL;
 	va_start(ap, format);
-//	if ((ret = ft_parsing_hq((char*)format, &ap, NULL)) == 1)
 	if ((ret = ft_parsing_hq((char*)format, &ap, &lst)) == 1)
-	{
-//		ret = ft_display_del(1, NULL);
 		ret = ft_display_del(1, &lst);
-	}
 	if (ret == -1)
-	{
-//		printf("final error\n");
-		write(1, "-1\n", 3);
-//		ret = ft_pflist_del_all(NULL);		// if this fails, we have a leak
 		ret = ft_pflist_del_all(&lst);
-	}
 	va_end(ap);
 	return (ret);
 }

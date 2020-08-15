@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-char		*ft_pos_itoa(unsigned long long n)	// secure
+char	*ft_pos_itoa(unsigned long long n)	// secure
 {
 	unsigned long long	nb;
 	char				*ret;
@@ -38,11 +38,11 @@ char		*ft_pos_itoa(unsigned long long n)	// secure
 	return (ret);
 }
 
-int			ft_latoi(char *str, long *num)	// Secure
+int		ft_latoi(char *str, long *num)	// Secure
 {
-	int		a;
-	int		neg;
-	int		nlen;
+	int	a;
+	int	neg;
+	int	nlen;
 
 	if (!str || !num)
 		return (-8);
@@ -58,17 +58,16 @@ int			ft_latoi(char *str, long *num)	// Secure
 			neg = -1;
 		++a;
 	}
-	while (str[a] >= 48 && str[a] <= 57)
+	while (str[a + nlen] >= 48 && str[a + nlen] <= 57)
 	{
-		*num = *num * 10 + (str[a] - 48);
-		++a;
+		*num = *num * 10 + (str[a + nlen] - 48);
 		++nlen;
 	}
 	*num *= neg;
 	return (nlen);
 }
 
-char		*ft_fstrjoin(char **s1, char **s2)	// Secure
+char	*ft_fstrjoin(char **s1, char **s2)	// Secure
 {
 	int		a;
 	int		b;
@@ -76,13 +75,10 @@ char		*ft_fstrjoin(char **s1, char **s2)	// Secure
 	char	*ret;
 
 	if (!*s1 && !*s2)
-		return (NULL);
+		return ((char*)(ft_scott_free(s1, 0) + ft_scott_free(s2, 0)));
 	a = ft_fstrlen(*s1) + ft_fstrlen(*s2) + 1;
 	if (!(ret = ft_memalloc(sizeof(char) * a)))
-	{
-		ft_scott_free(s1, 0);
-		return ((char*)ft_scott_free(s2, 0));
-	}
+		return ((char*)(ft_scott_free(s1, 0) + ft_scott_free(s2, 0)));
 	a = 0;
 	b = 0;
 	c = 0;
@@ -95,14 +91,13 @@ char		*ft_fstrjoin(char **s1, char **s2)	// Secure
 	return (ret);
 }
 
-char		*ft_cstrjoin(char c, char **s2)	// Secure
+char	*ft_cstrjoin(char c, char **s2)	// Secure
 {
 	int		a;
 	int		b;
 	char	*ret;
 
-		// also protect against 'c' being shit ?
-	if (!s2)	// now accept if null string sent...
+	if (!s2)
 		return (NULL);
 	a = ft_fstrlen(*s2) + 2;
 	if (!(ret = ft_memalloc(sizeof(char) * a)))
@@ -116,4 +111,18 @@ char		*ft_cstrjoin(char c, char **s2)	// Secure
 	return (ret);
 }
 
+char	*ft_fill_with(char this, int len)	// secure
+{
+	char	*ret;
+	int		i;
 
+	if (!this || len < 1)
+		return (NULL);
+	if (!(ret = ft_memalloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	i = 0;
+	while (i < len)
+		ret[i++] = this;
+	ret[i] = '\0';
+	return (ret);
+}

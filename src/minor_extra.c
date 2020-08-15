@@ -12,9 +12,9 @@
 
 #include "printf.h"
 
-size_t	ft_fstrlen(const char *s)	// secure, returns 0 if NULL input
+int		ft_fstrlen(const char *s)	// secure
 {
-	size_t	a;
+	int		a;
 
 	a = 0;
 	if (s)
@@ -22,6 +22,18 @@ size_t	ft_fstrlen(const char *s)	// secure, returns 0 if NULL input
 		while (s[a])
 			++a;
 	}
+	return (a);
+}
+
+int		ft_nstrlen(char *s, int ret)
+{
+	int		a;
+
+	a = 0;
+	if (!s)
+		return (ret);
+	while (s[a])
+		++a;
 	return (a);
 }
 
@@ -36,26 +48,10 @@ long	ft_scott_free(char **str, int ret)	// Secure
 	return (ret);
 }
 
-char	*ft_fill_with(char this, size_t len)	// secure
-{
-	char	*ret;
-	size_t	i;
-
-	if (!this || len < 1)
-		return (NULL);
-	if (!(ret = ft_memalloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	i = 0;
-	while (i < len)
-		ret[i++] = this;
-	ret[i] = '\0';
-	return (ret);
-}
-
 char	*ft_fstrdup(char *str)	// secure.
 {
 	char	*ret;
-	int	a;
+	int		a;
 
 	if (!str)
 		return (NULL);
@@ -73,26 +69,19 @@ char	*ft_fstrdup(char *str)	// secure.
 	return (ret);
 }
 
-	// this is for those times when you need to verify with a number..
-	// add to lib ?
-	// Don't add to lib, the if (!og) ret(1) is my printf specific,
-	// good idea to have one like this in lib, but not this one.
-
-
-int		ft_nstrdup(char **cp, char *og)		// secure but gross
+int		ft_nstrdup(char **cp, char *og)		// secure
 {
-	int             a;
+	int		a;
 
-	ft_scott_free(cp, 0);	// still want this here ?
 	if (!og)
 		return (1);
 	if (!cp)
-		return (-1);
+		return (0);
 	a = 0;
 	while (og[a])
 		++a;
 	if (!(*cp = ft_memalloc(sizeof(char) * (a + 1))))
-		return (-1);
+		return (0);
 	a = 0;
 	while (og[a])
 	{
@@ -101,7 +90,3 @@ int		ft_nstrdup(char **cp, char *og)		// secure but gross
 	}
 	return (1);
 }
-
-
-
-

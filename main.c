@@ -1,6 +1,8 @@
 
 
 #include "printf.h"
+#include <stdio.h>
+
 
 int		main(int ac, char **av)
 {
@@ -23,15 +25,16 @@ int		main(int ac, char **av)
 	llmin = 0;
 	ullmax = 0;
 
-//	ullmax = 18446744073709551615;
+//	ullmax = 18446744073709551614;
 	llmax = 9223372036854775807;
 //	llmin = -9223372036854775808;
 	imin = -2147483648;
 	imax = 2147483647;
-	a = -7;
+	a = 0;
 	b = 1234;
 	m = 9384;
-	c = -394859289238473452;
+	c = 8273464519982314;
+//	c = -9223372036854775808;
 	if (ac < 0)
 		return (0);
 
@@ -39,8 +42,8 @@ int		main(int ac, char **av)
 		str = av[1];
 
 
-	ft_printf("OK OK my number: |%+7.5d|\n", b);
-//	printf("OG number: |%+7.d|\n", b);
+	ft_printf("OK OK my number: |%.0d|\n", a);
+	printf("pf return: %d\n", printf("OG number: |%.0d|\n", a));
 
 //	ft_printf("my number: |%hd|\n", m);
 //	ft_printf("my number: |%hhd|\n", m);
@@ -52,14 +55,13 @@ int		main(int ac, char **av)
 //	ft_printf("unsigned: |%lu|\n", (long)c);
 //	printf("OG unsigned: |%lu|\n", (long)c);
 
-/*
+
 	ft_printf("n: |%n| and another |%n|\n", &a, &b);
 	ft_printf("N: |%N| and another |%N|\n");
 	ft_printf("my nums: |%#8.5x|\n", b);
-	printf("OG nums: |%#8.5x|\n", b);
 
-	ft_printf("not sure what this is: |%b|\n", a);
-	ft_printf("no idea what this is: |%B|\n", a, "ab");
+	ft_printf("cool cool: |%p|\n", &a);
+	ft_printf("no idea what this is: |%p|\n", &b);
 
 	ft_printf("reg: |%d|\n", a);		
 	ft_printf("hex: |%x|\n", a);
@@ -69,7 +71,7 @@ int		main(int ac, char **av)
 	printf("OG hex: |%x|\n", a);
 	printf("OG HEX: |%X|\n", a);
 	printf("OG oct: |%o|\n", a);
-*/
+
 
 	char	*line = "Hi there";
 //	char	let = 'h';
@@ -99,8 +101,10 @@ int		main(int ac, char **av)
 
 //	printf("OG test: a was: %d, |%n|\n", a, &a);
 //	printf("number in int: %d\n", a);
-//	ft_printf("my test: |%s|\n", line);
-//	printf("OG test: |%s|\n", line);
+	ft_printf("my test: |%p|\n",&line);
+	printf("OG test: |%p|\n",&line);
+	ft_printf("my test: |%4.0s|\n", line);
+	printf("OG test: |%4.0s|\n", line);
 	
 //	printf("OG test: |%s|\n", line);
 //	ft_printf("my test: |%N|, a num: %d |%n|\n", a, &a);

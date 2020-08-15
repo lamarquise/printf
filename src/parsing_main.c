@@ -12,7 +12,7 @@
 
 #include "printf.h"
 
-int		ft_list_add(t_pfelem **lst, char **s, int len)
+int		ft_list_add(t_pfelem **lst, char **s, int len)	// secure
 {
 	t_pfelem	*new;
 
@@ -21,17 +21,14 @@ int		ft_list_add(t_pfelem **lst, char **s, int len)
 		return (0);
 	if (!(new = ft_str_to_elem(*s, len)))
 		return (0);
-	if (!ft_pflist_append(lst, new))	// was lst, new
+	if (!ft_pflist_append(lst, new))
 	{
-//		printf("listify test\n");
 		free(new->content);
 		free(new);
 		return (0);
 	}
 	return (1);
 }
-
-	// ret is -1 cuz works better for ft_printf.c
 
 int		ft_listify_not_spec(int i, int c, char *format, t_pfelem **lst)//secure
 {

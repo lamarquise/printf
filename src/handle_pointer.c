@@ -12,62 +12,63 @@
 
 #include "printf.h"
 
-int			ft_h_point_prec(char **str, t_param *p, size_t *len)		// Secure
+int			ft_h_point_prec(char **str, t_param *p, int *len)		// Secure
 {
 	char	*pre;
 	size_t	plen;
 
 	if (!str || !p || !len)
-		return (-1);
+		return (0);
 	pre = NULL;
 	if (p->flag & F_PREC && p->precision == 0 && !ft_prec_is_zero(str, len))
-		return (-1);
+		return (0);
 	plen = (p->precision <= *len ? 0 : p->precision - *len);
 	if (plen)
 	{
 		if (!(pre = ft_fill_with('0', plen))
 		|| !(*str = ft_fstrjoin(&pre, str)))
-			return (-1);
+			return (0);
 	}
-	return (1);	//was 1
+	return (1);
+}
+
+int			ft_h_point_wid(t_param *p, char **pre, char **str)	// secure
+{
+	if (!p || !pre || !str)
+		return (0);
+	if (p->flag & F_MINU)
+	{
+		if (!(*pre = ft_fill_with(' ', p->width))
+		|| !(*str = ft_fstrjoin(str, pre)))
+			return (0);
+	}
+	else
+	{
+		if (!(*pre = ft_fill_with(' ', p->width))
+		|| !(*str = ft_fstrjoin(pre, str)))
+			return (0);
+	}
+	return (1);
 }
 
 int			ft_handle_pointer(va_list *ap, char **str, t_param *p)	// Secure
 {
 	char	*pre;
-	size_t	len;
-	size_t	wlen;
+	int		len;
 
 	if (!ap || !str || !p)
 		return (-1);
 	pre = NULL;
-	if (!(*str = ft_any_base_convert((long)va_arg(*ap, void*), "0123456789abcdef")))
+	if (!(*str = ft_to_base((long)va_arg(*ap, void*), "0123456789abcdef")))
 		return (-1);
 	len = ft_fstrlen(*str);
-	if (ft_h_point_prec(str, p, &len) == -1 || !(pre = ft_fstrdup("0x")) || !(*str = ft_fstrjoin(&pre, str)))
-		return (ft_scott_free(str, -1));
+	if (!ft_h_point_prec(str, p, &len)
+		|| !(pre = ft_fstrdup("0x"))
+		|| !(*str = ft_fstrjoin(&pre, str)))
+		return (ft_scott_free(&pre, -1));
 	len = ft_fstrlen(*str);
-	wlen = (p->width <= len ? 0 : p->width - len);	
-	if (wlen)
-	{
-		if (p->flag & F_MINU)
-		{
-			if (!(pre = ft_fill_with(' ', wlen))
-			|| !(*str = ft_fstrjoin(str, &pre)))
-				return (ft_scott_free(str, -1));
-		}
-		else
-		{ 
-			if (!(pre = ft_fill_with(' ', wlen))
-				|| !(*str = ft_fstrjoin(&pre, str)))
-				return (ft_scott_free(str, -1));
-		}
-	}
+	p->width = (p->width <= len ? 0 : p->width - len);
+	if (p->width && !ft_h_point_wid(p, &pre, str))
+		return (ft_scott_free(&pre, -1));
 	return (ft_fstrlen(*str));
 }
-
-
-
-
-
-

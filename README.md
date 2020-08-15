@@ -16,14 +16,14 @@ So what does the algorythm that handles the string and it's parameters look like
 
 #### Summary of the Overall Algorythm
 Assuming the inputs are correct this is how the algorythm treats them.
-First the entirety of the inputs (a format string and acompanying optional variables)
-are passed to the main parsing function which is responsible for dividing the
-inputs into ones containing a % and thus a specifier and those which contain
-only characters from the first string.
-If a % specifier is found, the format string starting from that % is sent to be parsed
-by the spec parser. This function sorts through the string to identify flags,
-width, precision and size by calling on the flag parser functions, and then
-aggegating that information into a single easy to read structure variable.
+First the entirety of the inputs (a format string and acompanying optional
+variables) are passed to the main parsing function which is responsible for
+dividing the inputs into ones containing a % and thus a specifier and those
+which contain only characters from the first string.
+If a % specifier is found, the format string starting from that % is sent to
+be parsed by the spec parser. This function sorts through the string to identify
+flags, width, precision and size by calling on the flag parser functions, and
+then aggegating that information into a single easy to read structure variable.
 This variable along with the format string are then passed to the respective
 function corresponding to which type of % specifier it is. The handler function
 modifies the format string in accordance with the flags and returns a new string.
@@ -75,13 +75,49 @@ free if failure...
 Actually that does not apply for lst (freed at point of creation if error) but that
 might be the only one.
 
+Amendament to the freeing policy: Free at point of creation as much as possible,
+shorter and deals with the possibility that the thing failed to be sent to a func
+(which in case of error was suppoed to free it... but can't).
+
 
 So far there is only 1 point of failure that results in a unpatchable leak, if
 pflist del all() fails there are leak, obvi, since it handles the everything at
 the end...
 
 
+For future reference, an fstrjoin where on of the arguments is assigned the result
+is bad practice, if it fails and the fstrjoin can't free that argument, then you
+end up with a leak...
 
+One thing that could be better, when there is a an empty string, and the size is 0,
+meaning its a normal empty string not a %n or whatever, it still creates a pfelem
+and adds it to the linked list, kinda unnecessary...
+
+In the event of failure midst printing, everythat that has already been printed
+remains. There does not appear to be much i can do about that.
+
+I am fairly certain that the correct return in the event of an error is -1, and
+the number of char printed upon success.
+
+Might add a few things, like printing arrays and to files and such later, but lets
+be honest, prolly not unless i need that sort of thing.
+
+
+### Structures and Defines
+
+There are two sets of Defines, the first relates the flags to their bit position in
+the int in which they are stored. The bit position is writen in hexadecimal for
+added clarity. The second relates the size flags to their bit position in much the
+same way.
+
+I created two structures for this function, t param and t pfelem. T param is used
+to store all the information relating to a %, it contains a char and 4 ints,
+representing the specefier, flag, width, precision and size. An instance of t param
+is generated for each % come accross in the format string. T pfelem is a linked list
+structure. Each % and the strings of chars between them in the format string are
+stored in order in an element of the linked list of this type. It is rather simple,
+just a pointer to the char contents, an int representing their size, and a pointer
+to the next element in the list.
 
 ### Options
 
@@ -98,7 +134,7 @@ X: Uppercase unsigned hexadecimal integer, subject to size modifications.
 c: Single Character.
 s: String of Characters.
 p: Pointer address.
-N: Prints the number of chars written at the point it is called.
+N: Prints the number of chars written at the point it is called since the last %N call.
 n: Stores number of characters written at the integer addess passed as arg. (the real one)
 %: Writes a single % modulo.
 
@@ -115,9 +151,6 @@ Width and Precision can be specified either in the format string or as seperate
 arguments passed through va list. If they are passed through va list they may
 also contain the '-' flag which will be treated as though it were in the format
 string.
-
-
-
 
 ##### Sizes
 l:	long, also wchar t
@@ -183,8 +216,6 @@ and is freed there, s exist as a proxy for tmp or str and is freed one above,
 so either in listify or HQ depending on where it was called.
 
 
-
-
 #### Spec Parsing
 Spec parsing mostly outsources work but it serves as a main switch or junction.
 First it initialized the param structure type variable, next it calls the flag
@@ -200,6 +231,8 @@ soon as it's instance of parse specs is complete.
 
 Return is -1 if error since ret otherwise represents the number of char read,
 which i think could be 0 ? maybe ?
+
+"0#+- .123456789 'star' hljz"
 
 
 #### Flag Parsing (also includes width, precision and size parsing)
@@ -260,6 +293,15 @@ unsigned numbers. Each of these also have their own respective casting functions
 which handle the transfer from va arg list to an in memory variable. That switch
 occures with a if forest.
 
+Precision: pads with '0's on right, unaffected by '-', takes precedent over width.
+0s added on left never right of num unless a float ???
+Width: pads with ' 's on right, OR '0's if '0' flag,
+OR left justify with ' '  not '0' if '-'
+
+signs + or - do not count in precision but do count in width...
+0x of # does not count in precision but does in width...
+
+
 Signed:
 
 
@@ -293,11 +335,15 @@ Ok so i have a define for when the num passed is 0 (not sure why)
 Ok the very specific case where num = 0 and prec = 0 you display nothing for the number
 
 
-%+4d if d smaller in len than 4, and positive, you should end up with 4 char printed in total: space + 2 numbers
+%+4d if d smaller in len than 4, and positive, you should end up
+with 4 char printed in total: space + 2 numbers
 (this is not tested but PFT)
-Ok here's something weird, where there's a neg number but no '+' flag and there is a space, it is ignored as though there were a '+' flag...
-Solution: neg still 0 if pos and -1 if neg number, but not factored into len imediately. Instead, we calculate plen relative to the len
-which represents the number of digits only, then we add 1 if there is a sign, + or -. This new len is used to calculate wlen and everything else.
+Ok here's something weird, where there's a neg number but no '+' flag
+and there is a space, it is ignored as though there were a '+' flag...
+Solution: neg still 0 if pos and -1 if neg number, but not factored into
+len imediately. Instead, we calculate plen relative to the len
+which represents the number of digits only, then we add 1 if there is
+a sign, + or -. This new len is used to calculate wlen and everything else.
 The main diference is that we now treat pos num with + flag the same as neg num.
 
 Precision is calculated without sign + or -. Width is calculated with sign - or + (if + flag).
@@ -317,8 +363,14 @@ If the base is invalide it's like the fuck you need a real base...
 Gen Arg Str I():
 Manages most of the setting of the string recovered from va arg list, in accordance
 with the flags and options.
+
 The str in question is passed as a pointer to a string, and freed in all error
-cases. Additionally, a pointer to t param p, the len of str and neg (indicating it's
+cases.
+NO
+Str is freed by handle int in case of error, gen arg str frees everything it creates
+in case of error.
+
+Additionally, a pointer to t param p, the len of str and neg (indicating it's
 sign) are also passed as arguments. The precision and width are modified to take the
 len and sign into account. Then begins the process of creating the strings that will
 be attached in front and behind the main result string. (details not provided here).
@@ -330,6 +382,10 @@ were created in Gen Arg Str.c
 
 everything else is free bellow, either defined in func or by fjoin which free's so much shit...
 
+
+Ok new policy, free things at point of allocation, that way if i pass a thing
+and it fails to get passed, the free happens after not in the place it didn't get
+passed to. Also seems to be a lot fewer scott free funciton calls...
 
 
 
@@ -348,8 +404,16 @@ nstrdup i made handles this, it's not generic but it works and is secure.
 
 Gen Arg Str S():
 Most of the inards were passed of to functions created in gen arg str.c
+Similar to one for Ints, the str created by the Handle gets freed in case
+of error above the gen arg str.
 
+ft h str wid():
+Handle Str Width(), deals with the width for gen arg str s in handle str.c
+Moved to Handle Str from Gen Arg Str cuz self contained and needed the room.
+Many of the frees in error cases are handled by fstrjoin.
 
+ft str has wid():
+h str wid() was too long so moved some of it.
 
 #### Handle Char (lives in handle str.c)
 Ok so here is the bit that's really quite tricky. In the even you get a -
@@ -362,7 +426,7 @@ flag, but it gets overriden by '-' flag.
 #### Handle Modulo
 Space is not a valid flag, it has no effect, left untreated. Width can be any size.
 Is secure once again because of the fill with and fjoin combination.
-
+Frees are a bit insanely overlly redundant, but id rather that than leaks...
 
 
 ### Everything Else
@@ -373,21 +437,19 @@ ft add hash():
 Only used by handle int.c Its an if tree for mallocing the correct symboles to
 prepend numbers with in the even they not be base 10 and have the Hash flag.
 
+ft h int space():
+Exists to help int wid fit in 25 lines, not my favorit, some ugly conditions.
+
 ft h int wid():
 Handle Int Width(), only used by gen arg str i in handle int.c
-
 
 ft prec is zero():
 Used by handle Str and Pointer, used in the very particular case that there is
 a precision and it is 0, need to create an empty string.
+Must free str here cuz the whole point is that it is replaced by an empty string.
 
 ft h str prec():
 Handle Str Precision(), deals with the precision for gen arg str s in handle str.c
-
-
-ft h str wid():
-Handle Str Width(), deals with the width for gen arg str s in handle str.c
-
 
 
 
@@ -412,8 +474,6 @@ EX: ..........11011010001010101\0
 Dup starts here
 
 
-
-
 #### Pfelem List
 ft new pfelem():
 Creates a new var of type pf elem, and populates it with the
@@ -436,11 +496,13 @@ success cases. Cp is only freed in str to elem() in error case, else it is freed
 by pfelem del all() or display del() at very end.
 There is a tiny potencial for it to segfault in the event of num or size being
 equal to -1 starting half way through... Memcpy doesn't handle things so well.
+Use memcpy for the very specific case where the string we want to copy starts
+with \0.
+
 
 ft pflist del all(): 
 Ok so it cycles through a list freeing the contents and the elems, returns -1
 in all cases, error or success because printf error value is -1.
-
 
 
 
@@ -450,6 +512,19 @@ it goes through the linked list that has been created to contain the strings
 and prints them before freeing the element of the linked list.
 It also handles the ( N ) specifier, counting the number of char printed and
 displaying that number should an element containing only '\0' be come accross.
+
+If size of elem is 0 it doesn't even make the call to have anything (nothing)
+printed, useless to have the elem of the linked list, but kinda too late for
+that now.
+
+ft handle sn():
+Handle Small Number, deals with %n, not complicated just needed the space.
+Kinda hard to know if it is truly secure, the user could mess it all up if
+they wanted to...
+
+ft disp bn():
+Display Big Number, deals with %N, just prints, also simple, needed space.
+
 
 
 #### Major Extra
@@ -473,7 +548,6 @@ be > 0, i don't know how much to decrese by to have it be exactly -1, so
 way to big ret and <= -1 if check.
 Made to turn string into a long so can manage addresses/pointers.
 
-
 ft fstrjoin():
 A secure version of strjoin(), can take either pointers sent in param being
 NULL. Not the same as in GNL.
@@ -486,9 +560,15 @@ ft cstrjoin():
 Joins a single char to a pointer to a string, frees the pointer it receives
 no matter what (error or not). Reallocates new string to be sent back.
 
+ft fill with():
+Mallocs an amount of memory + 1 and fills it with the requested char and
+NULL terminates.
+IE it creates a str x long of a given char.
+
 #### Minor Extra
 ft fstrlen():
 A secure version of strlen(), can take a NULL pointer passed in parameter.
+Returns 0 if NULL input.
 
 ft scott free():
 A short cut function, it takes a str and bzero, free and sets it to NULL.
@@ -496,16 +576,22 @@ Policy regarding Scott Free is ret -1 if an int, 0 if not checked or needs
 to be NULL cuz char star.
 Need to cast in the return if using it to spoof a NULL.
 
-
-ft fill with():
-Mallocs an amount of memory + 1 and fills it with the requested char and
-NULL terminates.
-IE it creates a str x long of a given char.
-
 ft fstrdup():
 A secure version of strdup.
 
+ft nstrdup():
+An strdup for those times when you need to verify success with a number.
+If it is possible for one of the arguments to be an empty string and for
+that to be a valid input, then this function is what you need.
+The if (!og) ret(1) is my printf specific, making this not eligible for
+my libft, but a modified version could be added.
 
+ft nstrlen():
+Another candidate for the libft, like scott free you tell it the return you
+want in case of error. I could prolly replace fstrlen with it in many cases
+by having it return 0...
+Mainly useful in Handle Int, since the return was fstrlen, but in the event
+of a NULL pointer being sent, it would still return 0. Not anymore.
 
 
 
