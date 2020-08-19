@@ -56,7 +56,7 @@ int		main(int ac, char **av)
 //	printf("OG unsigned: |%lu|\n", (long)c);
 
 
-	ft_printf("n: |%n| and another |%n|\n", &a, &b);
+	printf("n: |%n| and another |%d|\n", &a, a);
 	ft_printf("N: |%N| and another |%N|\n");
 	ft_printf("my nums: |%#8.5x|\n", b);
 
