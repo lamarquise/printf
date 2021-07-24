@@ -41,9 +41,10 @@ int		main(int ac, char **av)
 	if (ac == 2)
 		str = av[1];
 
+	ft_putstr("hi im here\n");
 
-	ft_printf("OK OK my number: |%.0d|\n", a);
-	printf("pf return: %d\n", printf("OG number: |%.0d|\n", a));
+	ft_printf("OK OK my number: |%d|\n", 9);
+//	printf("pf return: %d\n", printf("OG number: |%.0d|\n", a));
 
 //	ft_printf("my number: |%hd|\n", m);
 //	ft_printf("my number: |%hhd|\n", m);
@@ -55,7 +56,7 @@ int		main(int ac, char **av)
 //	ft_printf("unsigned: |%lu|\n", (long)c);
 //	printf("OG unsigned: |%lu|\n", (long)c);
 
-
+/*
 	printf("n: |%n| and another |%d|\n", &a, a);
 	ft_printf("N: |%N| and another |%N|\n");
 	ft_printf("my nums: |%#8.5x|\n", b);
@@ -71,7 +72,7 @@ int		main(int ac, char **av)
 	printf("OG hex: |%x|\n", a);
 	printf("OG HEX: |%X|\n", a);
 	printf("OG oct: |%o|\n", a);
-
+*/
 
 	char	*line = "Hi there";
 //	char	let = 'h';
@@ -101,10 +102,10 @@ int		main(int ac, char **av)
 
 //	printf("OG test: a was: %d, |%n|\n", a, &a);
 //	printf("number in int: %d\n", a);
-	ft_printf("my test: |%p|\n",&line);
-	printf("OG test: |%p|\n",&line);
-	ft_printf("my test: |%4.0s|\n", line);
-	printf("OG test: |%4.0s|\n", line);
+//	ft_printf("my test: |%p|\n",&line);
+//	printf("OG test: |%p|\n",&line);
+//	ft_printf("my test: |%4.0s|\n", line);
+//	printf("OG test: |%4.0s|\n", line);
 	
 //	printf("OG test: |%s|\n", line);
 //	ft_printf("my test: |%N|, a num: %d |%n|\n", a, &a);
